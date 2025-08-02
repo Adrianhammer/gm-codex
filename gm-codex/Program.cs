@@ -18,3 +18,7 @@ ui.RenderStartScreen();
 //Creating table
 CharacterRepository characterRepository = new CharacterRepository(dbConnector);
 characterRepository.CreateTable(dbConnector);
+
+//lager enkel prompt her for å trigge en funksjon - gjøres om senere bare for testing
+Console.WriteLine("Type 1 to create a character: ");
+string prompt = Console.ReadLine();

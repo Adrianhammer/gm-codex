@@ -29,5 +29,12 @@ public class CharacterRepository
         
         connection.Execute(query);
     }
-
+    
+    public void CreateCharacter(DbConnector db, Character character)
+    {
+           using var connection = db.CreateConnection();
+           connection.Open();
+           
+           //Insert into statement
+    }
 }
