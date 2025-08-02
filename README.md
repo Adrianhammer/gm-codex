@@ -9,3 +9,4 @@ Other naming suggestions:
 - GM Terminal
 - Dungeon Ledger
 - GM Screen
+- gmctl
