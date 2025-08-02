@@ -37,6 +37,8 @@ public class ConsoleUi
         table.Centered();
         
         AnsiConsole.Write(table);
+        
+        
        
     }
 }

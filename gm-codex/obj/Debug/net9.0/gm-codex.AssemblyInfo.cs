@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("gm-codex")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e660c946ed4b8cdec06825f5e83aa05ed53a5de")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34a0b336b7ddbfef31cbf8fff6e68c2d09dc4cc2")]
 [assembly: System.Reflection.AssemblyProductAttribute("gm-codex")]
 [assembly: System.Reflection.AssemblyTitleAttribute("gm-codex")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
