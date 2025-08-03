@@ -1,6 +1,7 @@
 using System.Data.Common;
 using Dapper;
 using gm_codex.Models;
+using Microsoft.Data.Sqlite;
 
 namespace gm_codex.Data;
 
@@ -13,9 +14,9 @@ public class CharacterRepository
         _db = db;
     }
 
-    public void CreateTable(DbConnector db)
+    public void CreateTable()
     {
-        using var connection = db.CreateConnection();
+        using var connection = _db.CreateConnection();
         connection.Open();
         
         var query = @"CREATE TABLE IF NOT EXISTS Characters (
@@ -30,11 +31,15 @@ public class CharacterRepository
         connection.Execute(query);
     }
     
-    public void CreateCharacter(DbConnector db, Character character)
+    public void InsertCharacter(Character character)
     {
-           using var connection = db.CreateConnection();
+           using var connection = _db.CreateConnection();
            connection.Open();
+
+           var query = @"INSERT INTO Characters (Name, Race, SubRace, CharacterClass, SubClass) 
+                         VALUES (@Name, @Race, @SubRace, @CharacterClass, @SubClass)";
            
-           //Insert into statement
+           connection.Execute(query, character);
+           
     }
 }
