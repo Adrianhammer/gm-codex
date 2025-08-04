@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using gm_codex.ConsoleUI;
 using gm_codex.Data;
+using gm_codex.Services;
 
 //Loading appsettings json into project
 var config = new ConfigurationBuilder()
@@ -17,8 +18,7 @@ ui.RenderStartScreen();
 
 //Creating table
 CharacterRepository characterRepository = new CharacterRepository(dbConnector);
-characterRepository.CreateTable(dbConnector);
+characterRepository.CreateTable();
 
-//lager enkel prompt her for å trigge en funksjon - gjøres om senere bare for testing
-Console.WriteLine("Type 1 to create a character: ");
-string prompt = Console.ReadLine();
+CharacterService characterService = new CharacterService(characterRepository);
+characterService.CreateCharacter();
