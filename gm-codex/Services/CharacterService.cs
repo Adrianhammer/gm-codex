@@ -24,17 +24,34 @@ public class CharacterService
         
         Console.WriteLine("Name: ");
         string name = Console.ReadLine();
+        
         Console.WriteLine("Race: ");
-        string race = Console.ReadLine();
+        string raceInput = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(raceInput) || !Enum.TryParse(raceInput, true, out Race parsedRace))
+        {
+            Console.WriteLine("Race needs to be of a valid race");
+            return;
+        }
+        
         Console.WriteLine("Sub Race: ");
         string subRace = Console.ReadLine();
+        
         Console.WriteLine("Class: ");
-        string characterClass = Console.ReadLine();
+        string characterClassInput = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(characterClassInput) ||
+            !Enum.TryParse(characterClassInput, true, out Class parsedClass))
+        {
+            Console.WriteLine("Class needs to be of a valid class");
+            return;
+        }
+        
         Console.WriteLine("Sub Class: ");
         string characterSubClass = Console.ReadLine();
 
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(race) ||
-            string.IsNullOrWhiteSpace(characterClass))
+        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(raceInput) ||
+            string.IsNullOrWhiteSpace(characterClassInput))
         {
             Console.WriteLine("Name, Race and Class needs to be provided");
             return;
@@ -43,9 +60,9 @@ public class CharacterService
         var character = new Character
         {
             Name = name,
-            Race = race,
+            Race = parsedRace,
             SubRace = subRace,
-            CharacterClass = characterClass,
+            CharacterClass = parsedClass,
             SubClass = characterSubClass
         };
         

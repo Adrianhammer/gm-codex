@@ -38,7 +38,6 @@ public class ConsoleUi
         
         AnsiConsole.Write(table);
         
-        
-       
     }
+    
 }
