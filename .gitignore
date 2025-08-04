@@ -13,6 +13,7 @@
 [Dd]ist/
 [Oo]ut/
 .vs/
+
 # NuGet packages
 *.nupkg
 *.snupkg
@@ -52,6 +53,10 @@
 *.scc.tmp
 *.scc.vspscc
 *.scc.vsscc
+*.nuget.g.props
+*.nuget.g.targets
+*.dgspec.json
+**/*.GeneratedMSBuildEditorConfig.editorconfig
 
 # Rider generated build/restore paths
 rider-sync-config.json
