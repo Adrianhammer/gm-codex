@@ -1,5 +1,5 @@
-namespace gm_codex.ConsoleUI;
 using Spectre.Console;
+namespace gm_codex.ConsoleUI;
 
 //Class for general ui of app
 public class ConsoleUi

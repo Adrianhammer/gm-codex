@@ -4,37 +4,34 @@ using gm_codex.Data;
 using gm_codex.Services;
 using Spectre.Console;
 
-//Loading appsettings json into project
+
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
-    
-//Giving dbConnector class the db config
+        
 var dbConnector = new DbConnector(config);
+var characterRepository = new CharacterRepository(dbConnector);
+var characterService = new CharacterService(characterRepository);
 
 ConsoleUi ui = new ConsoleUi();
-
 ui.RenderStartScreen();
 
-//Creating table
-CharacterRepository characterRepository = new CharacterRepository(dbConnector);
-characterRepository.CreateTable();
-
-Console.WriteLine("Type 1 to create a new character");
-var prompt = Console.ReadLine();
-switch (prompt)
+while (true)
 {
-    case "1":
-        CharacterService characterService = new CharacterService(characterRepository);
-        characterService.CreateCharacter();
-        break;
-    case "2":
-        AnsiConsole.Markup("[green]Functionality coming...[/]");
-        break;
-    default:
-        AnsiConsole.Markup("[red]Functionality not recognized.[/]");
-        break;
+    var input = Console.ReadLine()?.Trim().ToLower();
+
+    switch (input)
+    {
+        case "create-character":
+            characterService.CreateCharacter();
+            break;
+        case "exit":
+            AnsiConsole.MarkupLine("[yellow]Goodbye[/] :waving_hand:");
+            return 0;
+        default:
+            AnsiConsole.MarkupLine("[red]Unknown command[/]");
+            break;
+    }
+    Console.WriteLine();
 }
-
-

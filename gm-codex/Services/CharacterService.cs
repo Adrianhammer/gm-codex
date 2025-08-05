@@ -1,6 +1,8 @@
+using System;
 using gm_codex.ConsoleUI;
 using gm_codex.Data;
 using gm_codex.Models;
+using Spectre.Console;
 
 namespace gm_codex.Services;
 
@@ -18,7 +20,7 @@ public class CharacterService
         var characterData = CreateCharacterUi.CreateCharacterCommand();
         if (characterData == null)
         {
-            Console.WriteLine("ERROR: Character creation aborted due to invalid input.");
+            AnsiConsole.MarkupLine("[red]ERROR[/]: Character creation aborted due to invalid input.");
             return;
         }
 
@@ -35,5 +37,6 @@ public class CharacterService
         
         _repository.InsertCharacter(character);
         Console.WriteLine("Character created");
+        AnsiConsole.MarkupLine("[green]Success[/] Character created :check_mark_button:");
     }
 }
