@@ -1,3 +1,4 @@
+using gm_codex.ConsoleUI;
 using gm_codex.Data;
 using gm_codex.Models;
 
@@ -11,59 +12,25 @@ public class CharacterService
     {
         _repository = repository;
     }
+    
     public void CreateCharacter()
     {
-        Console.WriteLine("Type 1 to create a character: ");
-        string prompt = Console.ReadLine();
-        
-        if (prompt != "1")
+        var characterData = CreateCharacterUi.CreateCharacterCommand();
+        if (characterData == null)
         {
-            Console.WriteLine("Cancelled");
+            Console.WriteLine("ERROR: Character creation aborted due to invalid input.");
             return;
         }
-        
-        Console.WriteLine("Name: ");
-        string name = Console.ReadLine();
-        
-        Console.WriteLine("Race: ");
-        string raceInput = Console.ReadLine();
 
-        if (string.IsNullOrWhiteSpace(raceInput) || !Enum.TryParse(raceInput, true, out Race parsedRace))
-        {
-            Console.WriteLine("Race needs to be of a valid race");
-            return;
-        }
-        
-        Console.WriteLine("Sub Race: ");
-        string subRace = Console.ReadLine();
-        
-        Console.WriteLine("Class: ");
-        string characterClassInput = Console.ReadLine();
-
-        if (string.IsNullOrWhiteSpace(characterClassInput) ||
-            !Enum.TryParse(characterClassInput, true, out Class parsedClass))
-        {
-            Console.WriteLine("Class needs to be of a valid class");
-            return;
-        }
-        
-        Console.WriteLine("Sub Class: ");
-        string characterSubClass = Console.ReadLine();
-
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(raceInput) ||
-            string.IsNullOrWhiteSpace(characterClassInput))
-        {
-            Console.WriteLine("Name, Race and Class needs to be provided");
-            return;
-        }
+        var (name, race, subRace, characterClass, subClass) = characterData.Value;
         
         var character = new Character
         {
             Name = name,
-            Race = parsedRace,
+            Race = race,
             SubRace = subRace,
-            CharacterClass = parsedClass,
-            SubClass = characterSubClass
+            CharacterClass = characterClass,
+            SubClass = subClass
         };
         
         _repository.InsertCharacter(character);

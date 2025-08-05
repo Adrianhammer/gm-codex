@@ -2,6 +2,7 @@
 using gm_codex.ConsoleUI;
 using gm_codex.Data;
 using gm_codex.Services;
+using Spectre.Console;
 
 //Loading appsettings json into project
 var config = new ConfigurationBuilder()
@@ -20,5 +21,20 @@ ui.RenderStartScreen();
 CharacterRepository characterRepository = new CharacterRepository(dbConnector);
 characterRepository.CreateTable();
 
-CharacterService characterService = new CharacterService(characterRepository);
-characterService.CreateCharacter();
+Console.WriteLine("Type 1 to create a new character");
+var prompt = Console.ReadLine();
+switch (prompt)
+{
+    case "1":
+        CharacterService characterService = new CharacterService(characterRepository);
+        characterService.CreateCharacter();
+        break;
+    case "2":
+        AnsiConsole.Markup("[green]Functionality coming...[/]");
+        break;
+    default:
+        AnsiConsole.Markup("[red]Functionality not recognized.[/]");
+        break;
+}
+
+
