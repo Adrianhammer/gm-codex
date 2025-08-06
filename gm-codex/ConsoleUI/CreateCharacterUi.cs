@@ -1,3 +1,4 @@
+using System;
 namespace gm_codex.ConsoleUI;
 
 public class CreateCharacterUi

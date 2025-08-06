@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 using gm_codex.ConsoleUI;
 using gm_codex.Data;
 using gm_codex.Services;
@@ -17,21 +20,30 @@ var characterService = new CharacterService(characterRepository);
 ConsoleUi ui = new ConsoleUi();
 ui.RenderStartScreen();
 
+var commands = new Dictionary<string, Action>()
+{
+    ["create-character"] = () => characterService.CreateCharacter(),
+    ["help"] = () => AnsiConsole.MarkupLine("[yellow]Available commands: create-character, help, exit[/]"),
+};
+
 while (true)
 {
-    var input = Console.ReadLine()?.Trim().ToLower();
+    var input = AnsiConsole.Ask<string>("[green]Welcome!:[/]")
+        .Trim().ToLower();
 
-    switch (input)
+    if (input == "exit")
     {
-        case "create-character":
-            characterService.CreateCharacter();
-            break;
-        case "exit":
-            AnsiConsole.MarkupLine("[yellow]Goodbye[/] :waving_hand:");
-            return 0;
-        default:
-            AnsiConsole.MarkupLine("[red]Unknown command[/]");
-            break;
+        AnsiConsole.MarkupLine("[yellow]Goodbye[/] :waving_hand:");
+        break;
     }
+    if (commands.ContainsKey(input))
+    {
+        commands[input]();
+    }
+    else
+    {
+        AnsiConsole.MarkupLine("[red]Unknown command: {invalid}. Type 'help' for a list of available commands.[/]");
+    }
+    
     Console.WriteLine();
 }
