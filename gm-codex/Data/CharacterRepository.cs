@@ -1,7 +1,5 @@
-using System.Data.Common;
 using Dapper;
 using gm_codex.Models;
-using Microsoft.Data.Sqlite;
 
 namespace gm_codex.Data;
 
@@ -36,10 +34,19 @@ public class CharacterRepository
            using var connection = _db.CreateConnection();
            connection.Open();
 
+           var characterEntity = new CharacterEntity
+           {
+               Name = character.Name,
+               Race = character.Race.ToString(),
+               SubRace = character.SubRace,
+               CharacterClass = character.CharacterClass.ToString(),
+               SubClass = character.SubClass
+           };
+
            var query = @"INSERT INTO Characters (Name, Race, SubRace, CharacterClass, SubClass) 
                          VALUES (@Name, @Race, @SubRace, @CharacterClass, @SubClass)";
            
-           connection.Execute(query, character);
+           connection.Execute(query, characterEntity);
            
     }
 }
