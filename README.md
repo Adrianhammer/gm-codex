@@ -8,7 +8,7 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
 - **Monster & NPC Tracking**: Keep all your monsters, NPCs, and their stats at your fingertips.
 - **Quick Commands**: Run encounters, update statuses, and resolve combat with simple CLI commands.
 - **Extensible Design**: Built with C# and .NET
-- 
+
 ## Installation 🛠️
 
 1. Clone the repository:
@@ -56,7 +56,6 @@ create-character
 - GM Screen
 - gmctl
 - Battle Bard
-- 
 
 ---
 
