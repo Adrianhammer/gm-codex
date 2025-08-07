@@ -26,10 +26,13 @@ var commands = new Dictionary<string, Action>()
     ["help"] = () => AnsiConsole.MarkupLine("[yellow]Available commands: create-character, help, exit[/]"),
 };
 
+AnsiConsole.MarkupLine("[green]Welcome! :mage:[/]");
+
 while (true)
 {
-    var input = AnsiConsole.Ask<string>("[green]Welcome!:[/]")
+    var input = AnsiConsole.Ask<string>(">")
         .Trim().ToLower();
+    Console.WriteLine();
 
     if (input == "exit")
     {

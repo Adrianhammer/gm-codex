@@ -17,13 +17,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="appsettings.json">
+        <Content Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Fonts\Delta Corps Priest 1.flf" />
+        <Content Remove="Fonts\Delta Corps Priest 1.flf" />
         <Content Include="Fonts\Delta Corps Priest 1.flf">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
