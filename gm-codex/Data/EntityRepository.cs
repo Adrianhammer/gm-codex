@@ -3,11 +3,11 @@ using gm_codex.Models;
 
 namespace gm_codex.Data;
 
-public class CharacterRepository
+public class EntityRepository
 {
     private readonly DbConnector _db;
 
-    public CharacterRepository(DbConnector db)
+    public EntityRepository(DbConnector db)
     {
         _db = db;
     }
@@ -17,19 +17,22 @@ public class CharacterRepository
         using var connection = _db.CreateConnection();
         connection.Open();
         
-        var query = @"CREATE TABLE IF NOT EXISTS Characters (
+        var query = @"CREATE TABLE IF NOT EXISTS Entities (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Name TEXT NOT NULL,
+                        EntityType TEXT NOT NULL CHECK ( EntityType IN ('PC', 'NPC')),
                         Race TEXT NOT NULL,
                         SubRace TEXT,
                         CharacterClass TEXT NOT NULL,
-                        SubClass TEXT
+                        SubClass TEXT,
+                        MaxHp INTEGER,
+                        ArmorClass Integer
             )";
         
         connection.Execute(query);
     }
     
-    public void InsertCharacter(Character character)
+    public void InsertEntity(Character character)
     {
            using var connection = _db.CreateConnection();
            connection.Open();
@@ -37,14 +40,15 @@ public class CharacterRepository
            var characterEntity = new CharacterEntity
            {
                Name = character.Name,
+               EntityType = character.EntityType,
                Race = character.Race.ToString(),
                SubRace = character.SubRace,
                CharacterClass = character.CharacterClass.ToString(),
                SubClass = character.SubClass
            };
 
-           var query = @"INSERT INTO Characters (Name, Race, SubRace, CharacterClass, SubClass) 
-                         VALUES (@Name, @Race, @SubRace, @CharacterClass, @SubClass)";
+           var query = @"INSERT INTO Entities (Name, Race, EntityType, SubRace, CharacterClass, SubClass) 
+                         VALUES (@Name, @Race, @EntityType, @SubRace, @CharacterClass, @SubClass)";
            
            connection.Execute(query, characterEntity);
            

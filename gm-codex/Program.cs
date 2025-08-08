@@ -14,15 +14,16 @@ var config = new ConfigurationBuilder()
     .Build();
         
 var dbConnector = new DbConnector(config);
-var characterRepository = new CharacterRepository(dbConnector);
-var characterService = new CharacterService(characterRepository);
+var entityRepository = new EntityRepository(dbConnector);
+var characterService = new CharacterService(entityRepository);
+entityRepository.CreateTable();
 
 ConsoleUi ui = new ConsoleUi();
 ui.RenderStartScreen();
 
 var commands = new Dictionary<string, Action>()
 {
-    ["create-character"] = () => characterService.CreateCharacter(),
+    ["create-character"] = () => characterService.CreateEntity(),
     ["help"] = () => AnsiConsole.MarkupLine("[yellow]Available commands: create-character, help, exit[/]"),
 };
 

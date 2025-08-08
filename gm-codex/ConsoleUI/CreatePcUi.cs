@@ -1,7 +1,7 @@
 using System;
 namespace gm_codex.ConsoleUI;
 
-public class CreateCharacterUi
+public static class CreatePcUi
 {
     public static (string Name, Race Race, string? EntityType, string? SubRace, Class CharacterClass, string? SubClass)? CreateCharacterCommand()
     {
