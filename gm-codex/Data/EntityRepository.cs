@@ -40,7 +40,7 @@ public class EntityRepository
            var characterEntity = new EntityRecord
            {
                Name = entity.Name,
-               EntityType = entity.EntityType,
+               EntityType = entity.EntityType.ToString(),
                Race = entity.Race.ToString(),
                SubRace = entity.SubRace,
                EntityClass = entity.EntityClass.ToString(),
