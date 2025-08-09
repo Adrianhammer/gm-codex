@@ -1,12 +1,16 @@
+using System;
 namespace gm_codex.ConsoleUI;
 
-public class CreateCharacterUi
+public static class CreatePcUi
 {
-    public static (string Name, Race Race, string? SubRace, Class CharacterClass, string? SubClass)? CreateCharacterCommand()
+    public static (string Name, Race Race, string? EntityType, string? SubRace, Class CharacterClass, string? SubClass)? CreateCharacterCommand()
     {
         
         Console.WriteLine("Name: ");
         var name = Console.ReadLine();
+        
+        Console.WriteLine("Entity type (PC or NPC): ");
+        string? entityType = Console.ReadLine().ToUpper();
         
         Console.WriteLine("Race: ");
         var raceInput = Console.ReadLine();
@@ -39,7 +43,7 @@ public class CreateCharacterUi
             return null;
         }
         
-        return (name, parsedRace, subRace, parsedClass, subClass);
+        return (name, parsedRace, entityType, subRace, parsedClass, subClass);
 
     }
 }

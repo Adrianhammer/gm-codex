@@ -1,3 +1,4 @@
+using System.IO;
 using Spectre.Console;
 namespace gm_codex.ConsoleUI;
 
@@ -21,17 +22,19 @@ public class ConsoleUi
         AnsiConsole.WriteLine();
         
         AnsiConsole.Write(new Align(
-            new Markup("[bold]Design under construction[/] " + Emoji.Known.HammerAndWrench + "\nWill fix commands later"),
+            new Markup("[bold]Design under construction[/] " + Emoji.Known.HammerAndWrench + "\nWill add more and better commands later"),
             HorizontalAlignment.Center,
             VerticalAlignment.Bottom)
         );
         
         var table = new Table();
 
-        table.AddColumn("Select options");
+        table.AddColumn("Commands");
         table.AddColumn(new TableColumn("Description").Centered());
 
-        table.AddRow("1", "Create character");
+        table.AddRow("help", "Get a list of available commands");
+        table.AddRow("create-character", "Create a character");
+        table.AddRow("exit", "Exits the application");
         
         table.Border(TableBorder.Simple);
         table.Centered();

@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 using gm_codex.ConsoleUI;
 using gm_codex.Data;
 using gm_codex.Services;
@@ -11,27 +14,40 @@ var config = new ConfigurationBuilder()
     .Build();
         
 var dbConnector = new DbConnector(config);
-var characterRepository = new CharacterRepository(dbConnector);
-var characterService = new CharacterService(characterRepository);
+var entityRepository = new EntityRepository(dbConnector);
+var characterService = new CharacterService(entityRepository);
+entityRepository.CreateTable();
 
 ConsoleUi ui = new ConsoleUi();
 ui.RenderStartScreen();
 
+var commands = new Dictionary<string, Action>()
+{
+    ["create-character"] = () => characterService.CreateEntity(),
+    ["help"] = () => AnsiConsole.MarkupLine("[yellow]Available commands: create-character, help, exit[/]"),
+};
+
+AnsiConsole.MarkupLine("[green]Welcome! :mage:[/]");
+
 while (true)
 {
-    var input = Console.ReadLine()?.Trim().ToLower();
+    var input = AnsiConsole.Ask<string>(">")
+        .Trim().ToLower();
+    Console.WriteLine();
 
-    switch (input)
+    if (input == "exit")
     {
-        case "create-character":
-            characterService.CreateCharacter();
-            break;
-        case "exit":
-            AnsiConsole.MarkupLine("[yellow]Goodbye[/] :waving_hand:");
-            return 0;
-        default:
-            AnsiConsole.MarkupLine("[red]Unknown command[/]");
-            break;
+        AnsiConsole.MarkupLine("[yellow]Goodbye[/] :waving_hand:");
+        break;
     }
+    if (commands.ContainsKey(input))
+    {
+        commands[input]();
+    }
+    else
+    {
+        AnsiConsole.MarkupLine("[red]Unknown command: {invalid}. Type 'help' for a list of available commands.[/]");
+    }
+    
     Console.WriteLine();
 }

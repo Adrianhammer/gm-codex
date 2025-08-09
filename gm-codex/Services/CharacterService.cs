@@ -8,35 +8,36 @@ namespace gm_codex.Services;
 
 public class CharacterService
 {
-    private readonly CharacterRepository _repository;
+    private readonly EntityRepository _repository;
 
-    public CharacterService(CharacterRepository repository)
+    public CharacterService(EntityRepository repository)
     {
         _repository = repository;
     }
     
-    public void CreateCharacter()
+    public void CreateEntity()
     {
-        var characterData = CreateCharacterUi.CreateCharacterCommand();
+        var characterData = CreatePcUi.CreateCharacterCommand();
         if (characterData == null)
         {
-            AnsiConsole.MarkupLine("[red]ERROR[/]: Character creation aborted due to invalid input.");
+            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity creation aborted due to invalid input.");
             return;
         }
 
-        var (name, race, subRace, characterClass, subClass) = characterData.Value;
+        var (name, race, entityType, subRace, characterClass, subClass) = characterData.Value;
         
-        var character = new Character
+        var character = new Entity
         {
             Name = name,
             Race = race,
+            EntityType = entityType,
             SubRace = subRace,
-            CharacterClass = characterClass,
+            EntityClass = characterClass,
             SubClass = subClass
         };
         
-        _repository.InsertCharacter(character);
-        Console.WriteLine("Character created");
-        AnsiConsole.MarkupLine("[green]Success[/] Character created :check_mark_button:");
+        _repository.InsertEntity(character);
+        Console.WriteLine("Entity created");
+        AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");
     }
 }
