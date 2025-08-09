@@ -27,7 +27,7 @@ public class EntityRepository
                         SubClass TEXT,
                         MaxHp INTEGER,
                         ArmorClass Integer
-            )";
+                    )";
         
         connection.Execute(query);
     }
