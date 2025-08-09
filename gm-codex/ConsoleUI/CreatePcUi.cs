@@ -3,14 +3,13 @@ namespace gm_codex.ConsoleUI;
 
 public static class CreatePcUi
 {
-    public static (string Name, Race Race, string? EntityType, string? SubRace, Class CharacterClass, string? SubClass)? CreateCharacterCommand()
+    public static (string Name, Race Race, EntityType EntityType, string? SubRace, Class CharacterClass, string? SubClass)? CreateCharacterCommand()
     {
-        
         Console.WriteLine("Name: ");
-        var name = Console.ReadLine();
+        string name = Console.ReadLine().ToLower();
         
         Console.WriteLine("Entity type (PC or NPC): ");
-        string? entityType = Console.ReadLine().ToUpper();
+        var entityType = Console.ReadLine().ToUpper();
         
         Console.WriteLine("Race: ");
         var raceInput = Console.ReadLine();
@@ -29,6 +28,12 @@ public static class CreatePcUi
             Console.WriteLine("Name needs to be provided");
             return null;
         }
+
+        if (string.IsNullOrWhiteSpace(entityType) || !Enum.TryParse(entityType, out EntityType parsedEntityType))
+        {
+            Console.WriteLine("Entity needs to be provided (PC or NPC)");
+            return null;
+        }
         
         if (string.IsNullOrWhiteSpace(raceInput) || !Enum.TryParse(raceInput, true, out Race parsedRace))
         {
@@ -43,7 +48,7 @@ public static class CreatePcUi
             return null;
         }
         
-        return (name, parsedRace, entityType, subRace, parsedClass, subClass);
+        return (name, parsedRace, parsedEntityType, subRace, parsedClass, subClass);
 
     }
 }
