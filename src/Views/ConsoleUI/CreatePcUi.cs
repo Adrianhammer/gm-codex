@@ -1,5 +1,7 @@
 using System;
-namespace gm_codex.ConsoleUI;
+using gm_codex.Domain.Enums;
+
+namespace gm_codex.Views.ConsoleUI;
 
 public static class CreatePcUi
 {
@@ -9,7 +11,7 @@ public static class CreatePcUi
         string name = Console.ReadLine().ToLower();
         
         Console.WriteLine("Entity type (PC or NPC): ");
-        var entityType = Console.ReadLine().ToUpper();
+        var entityType = Console.ReadLine().ToLower();
         
         Console.WriteLine("Race: ");
         var raceInput = Console.ReadLine();

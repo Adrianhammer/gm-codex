@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using gm_codex.ConsoleUI;
-using gm_codex.Data;
-using gm_codex.Services;
 using Spectre.Console;
+using gm_codex.Application.Services;
+using gm_codex.Application.Services.ConsoleUI;
+using gm_codex.Infrastructure.Data;
+using gm_codex.Infrastructure.Repositories;
 
 
 var config = new ConfigurationBuilder()

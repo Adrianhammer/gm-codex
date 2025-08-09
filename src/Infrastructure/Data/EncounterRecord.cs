@@ -1,4 +1,4 @@
-namespace gm_codex.Data;
+namespace gm_codex.Infrastructure.Data;
 
 public class EncounterRecord
 {

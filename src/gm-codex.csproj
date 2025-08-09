@@ -23,14 +23,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Remove="Fonts\Delta Corps Priest 1.flf" />
-        <Content Include="Fonts\Delta Corps Priest 1.flf">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
+      <Folder Include="Application\Commands\" />
+      <Folder Include="Domain\" />
+      <Folder Include="Infrastructure\" />
+      <Folder Include="Resources\" />
+      <Folder Include="Views\" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Commands\" />
+      <None Update="Resources\Fonts\Delta Corps Priest 1.flf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 

@@ -1,10 +1,10 @@
 using System;
-using gm_codex.ConsoleUI;
-using gm_codex.Data;
-using gm_codex.Models;
+using gm_codex.Domain.Models;
+using gm_codex.Infrastructure.Repositories;
+using gm_codex.Views.ConsoleUI;
 using Spectre.Console;
 
-namespace gm_codex.Services;
+namespace gm_codex.Application.Services;
 
 public class CharacterService
 {

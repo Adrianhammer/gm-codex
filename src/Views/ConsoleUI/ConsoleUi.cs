@@ -1,8 +1,7 @@
 using System.IO;
 using Spectre.Console;
-namespace gm_codex.ConsoleUI;
+namespace gm_codex.Application.Services.ConsoleUI;
 
-//Class for general ui of app
 public class ConsoleUi
 {
 
@@ -12,7 +11,7 @@ public class ConsoleUi
         rule.Centered();
         AnsiConsole.Write(rule);
 
-        var font = FigletFont.Load(Path.Combine("Fonts", "Delta Corps Priest 1.flf"));
+        var font = FigletFont.Load(Path.Combine("Resources/Fonts", "Delta Corps Priest 1.flf"));
             
         AnsiConsole.Write(
             new FigletText(font, "TTRPG Console")

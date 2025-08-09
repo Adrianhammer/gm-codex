@@ -1,4 +1,6 @@
-namespace gm_codex.Models;
+using gm_codex.Domain.Enums;
+
+namespace gm_codex.Domain.Models;
 
 public class Entity
 {

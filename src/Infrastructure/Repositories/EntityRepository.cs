@@ -1,7 +1,8 @@
 using Dapper;
-using gm_codex.Models;
+using gm_codex.Domain.Models;
+using gm_codex.Infrastructure.Data;
 
-namespace gm_codex.Data;
+namespace gm_codex.Infrastructure.Repositories;
 
 public class EntityRepository
 {
@@ -20,7 +21,7 @@ public class EntityRepository
         var query = @"CREATE TABLE IF NOT EXISTS Entities (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         Name TEXT NOT NULL,
-                        EntityType TEXT NOT NULL CHECK ( EntityType IN ('PC', 'NPC')),
+                        EntityType TEXT NOT NULL CHECK ( EntityType IN ('pc', 'npc')),
                         Race TEXT NOT NULL,
                         SubRace TEXT,
                         EntityClass TEXT NOT NULL,

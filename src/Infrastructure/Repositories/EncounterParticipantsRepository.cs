@@ -1,6 +1,7 @@
 using Dapper;
+using gm_codex.Infrastructure.Data;
 
-namespace gm_codex.Data;
+namespace gm_codex.Infrastructure.Repositories;
 
 public class EncounterParticipantsRepository
 {

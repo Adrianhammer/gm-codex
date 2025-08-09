@@ -1,4 +1,4 @@
-namespace gm_codex;
+namespace gm_codex.Domain.Enums;
 
 public enum Class
 {

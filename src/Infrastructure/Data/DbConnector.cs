@@ -2,7 +2,7 @@ using System.Data;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 
-namespace gm_codex.Data;
+namespace gm_codex.Infrastructure.Data;
 
 public class DbConnector
 {
