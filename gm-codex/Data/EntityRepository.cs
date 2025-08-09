@@ -37,7 +37,7 @@ public class EntityRepository
            using var connection = _db.CreateConnection();
            connection.Open();
 
-           var characterEntity = new CharacterEntity
+           var characterEntity = new EntityRecord
            {
                Name = entity.Name,
                EntityType = entity.EntityType,

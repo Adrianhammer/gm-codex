@@ -1,6 +1,6 @@
 ﻿namespace gm_codex.Data;
 
-public class CharacterEntity
+public class EntityRecord
 {
     public int Id { get; set; }
     public required string Name { get; set; }

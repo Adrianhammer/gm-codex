@@ -15,8 +15,12 @@ var config = new ConfigurationBuilder()
         
 var dbConnector = new DbConnector(config);
 var entityRepository = new EntityRepository(dbConnector);
+var encounterRepository = new EncounterRepository(dbConnector);
+
 var characterService = new CharacterService(entityRepository);
+
 entityRepository.CreateTable();
+encounterRepository.CreateTable();
 
 ConsoleUi ui = new ConsoleUi();
 ui.RenderStartScreen();
