@@ -31,7 +31,8 @@ ui.RenderStartScreen();
 var commands = new Dictionary<string, Action>()
 {
     ["create-character"] = () => characterService.CreateEntity(),
-    ["help"] = () => AnsiConsole.MarkupLine("[yellow]Available commands: create-character, help, exit[/]"),
+    ["read-character"] = () => characterService.ReadEntity(),
+    ["help"] = () => AnsiConsole.MarkupLine("[yellow]Available commands: create-character, read-character, help, exit[/]"),
 };
 
 AnsiConsole.MarkupLine("[green]Welcome! :mage:[/]");

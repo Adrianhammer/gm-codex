@@ -33,9 +33,10 @@ public class ConsoleUi
 
         table.AddRow("help", "Get a list of available commands");
         table.AddRow("create-character", "Create a character");
+        table.AddRow("read-character", "Read a character");
         table.AddRow("exit", "Exits the application");
         
-        table.Border(TableBorder.Simple);
+        table.Border(TableBorder.Horizontal);
         table.Centered();
         
         AnsiConsole.Write(table);

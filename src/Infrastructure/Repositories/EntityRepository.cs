@@ -56,4 +56,22 @@ public class EntityRepository
            connection.Execute(query, characterEntity);
            
     }
+
+    public EntityRecord ReadEntity(string name)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"SELECT * FROM Entities WHERE Name = @Name;";
+        
+        var entity = connection.QuerySingleOrDefault<EntityRecord>(
+            query,
+            new
+            {
+                Name = name
+            }
+            );
+        
+        return entity;
+    }
 }
