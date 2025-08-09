@@ -20,24 +20,24 @@ public class CharacterService
         var characterData = CreatePcUi.CreateCharacterCommand();
         if (characterData == null)
         {
-            AnsiConsole.MarkupLine("[red]ERROR[/]: Character creation aborted due to invalid input.");
+            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity creation aborted due to invalid input.");
             return;
         }
 
         var (name, race, entityType, subRace, characterClass, subClass) = characterData.Value;
         
-        var character = new Character
+        var character = new Entity
         {
             Name = name,
             Race = race,
             EntityType = entityType,
             SubRace = subRace,
-            CharacterClass = characterClass,
+            EntityClass = characterClass,
             SubClass = subClass
         };
         
         _repository.InsertEntity(character);
-        Console.WriteLine("Character created");
-        AnsiConsole.MarkupLine("[green]Success[/] Character created :check_mark_button:");
+        Console.WriteLine("Entity created");
+        AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");
     }
 }

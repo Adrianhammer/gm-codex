@@ -23,7 +23,7 @@ public class EntityRepository
                         EntityType TEXT NOT NULL CHECK ( EntityType IN ('PC', 'NPC')),
                         Race TEXT NOT NULL,
                         SubRace TEXT,
-                        CharacterClass TEXT NOT NULL,
+                        EntityClass TEXT NOT NULL,
                         SubClass TEXT,
                         MaxHp INTEGER,
                         ArmorClass Integer
@@ -32,23 +32,25 @@ public class EntityRepository
         connection.Execute(query);
     }
     
-    public void InsertEntity(Character character)
+    public void InsertEntity(Entity entity)
     {
            using var connection = _db.CreateConnection();
            connection.Open();
 
            var characterEntity = new CharacterEntity
            {
-               Name = character.Name,
-               EntityType = character.EntityType,
-               Race = character.Race.ToString(),
-               SubRace = character.SubRace,
-               CharacterClass = character.CharacterClass.ToString(),
-               SubClass = character.SubClass
+               Name = entity.Name,
+               EntityType = entity.EntityType,
+               Race = entity.Race.ToString(),
+               SubRace = entity.SubRace,
+               EntityClass = entity.EntityClass.ToString(),
+               SubClass = entity.SubClass,
+               MaxHp = entity.MaxHp,
+               ArmorClass = entity.ArmorClass,
            };
 
-           var query = @"INSERT INTO Entities (Name, Race, EntityType, SubRace, CharacterClass, SubClass) 
-                         VALUES (@Name, @Race, @EntityType, @SubRace, @CharacterClass, @SubClass)";
+           var query = @"INSERT INTO Entities (Name, EntityType, Race, SubRace, EntityClass, SubClass, MaxHp, ArmorClass) 
+                         VALUES (@Name, @EntityType, @Race, @SubRace, @EntityClass, @SubClass, @MaxHp, @ArmorClass);";
            
            connection.Execute(query, characterEntity);
            

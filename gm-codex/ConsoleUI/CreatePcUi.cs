@@ -9,11 +9,11 @@ public static class CreatePcUi
         Console.WriteLine("Name: ");
         var name = Console.ReadLine();
         
+        Console.WriteLine("Entity type (PC or NPC): ");
+        string? entityType = Console.ReadLine().ToUpper();
+        
         Console.WriteLine("Race: ");
         var raceInput = Console.ReadLine();
-
-        Console.WriteLine("Entity type (PC or NPC): ");
-        string? entityType = Console.ReadLine();
         
         Console.WriteLine("Sub Race: ");
         string? subRace = Console.ReadLine();
