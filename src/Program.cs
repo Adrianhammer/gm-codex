@@ -4,9 +4,9 @@ using System.IO;
 using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 using gm_codex.Application.Services;
-using gm_codex.Application.Services.ConsoleUI;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories;
+using gm_codex.Views.ConsoleUI;
 
 
 var config = new ConfigurationBuilder()
@@ -31,7 +31,8 @@ ui.RenderStartScreen();
 var commands = new Dictionary<string, Action>()
 {
     ["create-character"] = () => characterService.CreateEntity(),
-    ["read-character"] = () => characterService.ReadEntity(),
+    ["read-entity"] = () => characterService.ReadEntity(),
+    ["list-pcs"] = () => characterService.ListPlayableCharacters(),
     ["help"] = () => AnsiConsole.MarkupLine("[yellow]Available commands: create-character, read-character, help, exit[/]"),
 };
 

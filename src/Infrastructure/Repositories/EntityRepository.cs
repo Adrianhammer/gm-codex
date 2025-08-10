@@ -57,7 +57,7 @@ public class EntityRepository
            
     }
 
-    public EntityRecord ReadEntity(string name)
+    public EntityRecord GetEntityByName(string name)
     {
         using var connection = _db.CreateConnection();
         connection.Open();
@@ -73,5 +73,15 @@ public class EntityRepository
             );
         
         return entity;
+    }
+
+    public IEnumerable<EntityRecord> GetAllPlayableCharacters()
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"SELECT * FROM Entities WHERE EntityType = 'pc'";
+        
+        return connection.Query<EntityRecord>(query).ToList();
     }
 }

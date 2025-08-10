@@ -21,7 +21,7 @@ public static class ReadPcUi
         return nameInput;
     }
 
-    public static void RenderEntityRead(EntityRecord entity)
+    public static void ViewSingleEntity(EntityRecord entity)
     {
         var table = new Table();
         table.Border(TableBorder.Rounded);
@@ -45,6 +45,31 @@ public static class ReadPcUi
             entity.MaxHp ?? "-",
             entity.ArmorClass ?? "-"
         );
+        AnsiConsole.Write(table);
+    }
+
+    public static void ViewPlayableCharacters(IEnumerable<EntityRecord> playableCharacters)
+    {
+        var table = new Table();
+        table.Border(TableBorder.Rounded);
+        
+        table.AddColumn(new TableColumn("Name"));
+        table.AddColumn(new TableColumn("Entity type"));
+        table.AddColumn(new TableColumn("Race"));
+        table.AddColumn(new TableColumn("Sub Race"));
+        table.AddColumn(new TableColumn("Class"));
+        table.AddColumn(new TableColumn("Sub Class"));
+
+        foreach (var character in playableCharacters)
+        {
+            table.AddRow(
+                character.Name,
+                character.EntityType,
+                character.Race,
+                character.SubRace ?? "-",
+                character.SubClass ?? "-"
+            );
+        }
         AnsiConsole.Write(table);
     }
 }

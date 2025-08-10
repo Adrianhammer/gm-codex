@@ -51,13 +51,26 @@ public class CharacterService
             return;
         }
 
-        var entity = _repository.ReadEntity(name);
+        var entity = _repository.GetEntityByName(name);
 
         if (entity == null)
         {
             AnsiConsole.MarkupLine("[red]ERROR[/]: Entity not found");
             return;
         }
-        ReadPcUi.RenderEntityRead(entity);
+        ReadPcUi.ViewSingleEntity(entity);
+    }
+
+    public void ListPlayableCharacters()
+    {
+        var playableCharacters = _repository.GetAllPlayableCharacters();
+
+        if (playableCharacters == null)
+        {
+            AnsiConsole.MarkupLine("[yellow]INFO[/]: No playable characters found");
+            return;
+        }
+        
+        ReadPcUi.ViewPlayableCharacters(playableCharacters);
     }
 }
