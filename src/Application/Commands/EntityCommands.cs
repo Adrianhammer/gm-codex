@@ -6,12 +6,14 @@ public class EntityCommands
 {
     public static string? ReadCharacterCommand()
     {
+        
         AnsiConsole.MarkupLine("Type in [bold]Name[/] to retrieve an entity [italic](not case sensitive, but needs to be accurate)[/]");
         var nameInput = Console.ReadLine();
-        
-        if (string.IsNullOrEmpty(nameInput))
+
+        while (string.IsNullOrEmpty(nameInput))
         {
-            Console.WriteLine("Name is empty");
+            Console.WriteLine("Please enter a name.");
+            nameInput = Console.ReadLine();
         }
         
         return nameInput;

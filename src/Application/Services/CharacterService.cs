@@ -66,7 +66,7 @@ public class CharacterService
     {
         var playableCharacters = _repository.GetAllPlayableCharacters();
 
-        if (playableCharacters == null)
+        if (!playableCharacters.Any())
         {
             AnsiConsole.MarkupLine("[yellow]INFO[/]: No playable characters found");
             return;
