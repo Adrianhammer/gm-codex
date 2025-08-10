@@ -1,4 +1,5 @@
 using System;
+using gm_codex.Application.Commands;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Views.ConsoleUI;
@@ -43,7 +44,7 @@ public class CharacterService
 
     public void ReadEntity()
     {
-        var name = ReadPcUi.ReadCharacterCommand();
+        var name = EntityCommands.ReadCharacterCommand();
         
         if (string.IsNullOrWhiteSpace(name))
         {

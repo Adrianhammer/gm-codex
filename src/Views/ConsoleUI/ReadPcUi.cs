@@ -8,19 +8,6 @@ namespace gm_codex.Views.ConsoleUI;
 public static class ReadPcUi
 {
 
-    public static string? ReadCharacterCommand()
-    {
-        AnsiConsole.MarkupLine("Type in [bold]Name[/] to retrieve an entity [italic](not case sensitive, but needs to be accurate)[/]");
-        var nameInput = Console.ReadLine();
-        
-        if (string.IsNullOrEmpty(nameInput))
-        {
-            Console.WriteLine("Name is empty");
-        }
-        
-        return nameInput;
-    }
-
     public static void ViewSingleEntity(EntityRecord entity)
     {
         var table = new Table();
