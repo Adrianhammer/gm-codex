@@ -1,6 +1,6 @@
 using System.IO;
 using Spectre.Console;
-namespace gm_codex.Application.Services.ConsoleUI;
+namespace gm_codex.Presentation.ConsoleUI;
 
 public class ConsoleUi
 {
@@ -33,9 +33,12 @@ public class ConsoleUi
 
         table.AddRow("help", "Get a list of available commands");
         table.AddRow("create-character", "Create a character");
+        table.AddRow("read-entity", "Read an entity");
+        table.AddRow("delete-entity", "Delete an entity");
+        table.AddRow("list-pcs", "List all stored characters");
         table.AddRow("exit", "Exits the application");
         
-        table.Border(TableBorder.Simple);
+        table.Border(TableBorder.Horizontal);
         table.Centered();
         
         AnsiConsole.Write(table);
