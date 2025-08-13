@@ -2,7 +2,7 @@ using System;
 using gm_codex.Application.Commands;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Repositories;
-using gm_codex.Views.ConsoleUI;
+using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
 
 namespace gm_codex.Application.Services;
@@ -60,6 +60,22 @@ public class CharacterService
             return;
         }
         ReadPcUi.ViewSingleEntity(entity);
+    }
+
+    public void DeleteEntity()
+    {
+        var name = EntityCommands.DeleteEntityCommand();
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity deletion aborted due to invalid input.");
+            return;
+        }
+
+        _repository.DeleteEntityByName(name);
+        
+        DeleteEntityUi.ViewDeleteEntity(name);
+        
     }
 
     public void ListPlayableCharacters()

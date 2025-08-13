@@ -1,7 +1,7 @@
 using System;
 using gm_codex.Domain.Enums;
 
-namespace gm_codex.Views.ConsoleUI;
+namespace gm_codex.Presentation.ConsoleUI;
 
 public static class CreatePcUi
 {

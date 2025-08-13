@@ -3,7 +3,7 @@ using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories;
 using Spectre.Console;
 
-namespace gm_codex.Views.ConsoleUI;
+namespace gm_codex.Presentation.ConsoleUI;
 
 public static class ReadPcUi
 {

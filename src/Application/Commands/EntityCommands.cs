@@ -18,4 +18,18 @@ public class EntityCommands
         
         return nameInput;
     }
+    
+    public static string DeleteEntityCommand()
+    {
+        AnsiConsole.MarkupLine("Which entity would you like to delete? Type in [bold]name[/] to delete an entity.");
+        var entity =  Console.ReadLine();
+
+        while (string.IsNullOrEmpty(entity))
+        {
+            Console.WriteLine("You need to enter the name of the entity you would like to delete.");
+            entity = Console.ReadLine();
+        }
+
+        return entity;
+    }
 }

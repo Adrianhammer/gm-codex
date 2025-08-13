@@ -75,6 +75,16 @@ public class EntityRepository
         return entity;
     }
 
+    public void DeleteEntityByName(string name)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"DELETE FROM Entities WHERE Name = @Name;";
+
+        connection.Execute(query, new { Name = name });
+    }
+
     public IEnumerable<EntityRecord> GetAllPlayableCharacters()
     {
         using var connection = _db.CreateConnection();
