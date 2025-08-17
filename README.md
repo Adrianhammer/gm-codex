@@ -14,7 +14,7 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
 1. Clone the repository:
     ```bash
     git clone https://github.com/krigrin/gm-codex.git
-    cd gm-codex/gm-codex
+    cd gm-codex/src
     ```
 
 2. Build the project:
