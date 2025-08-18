@@ -17,23 +17,47 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
     cd gm-codex/src
     ```
 
-2. Build the project:
+2. Pack the tool into a NuGet pakcage:
     ```bash
-    dotnet build
+    dotnet pack -c Relaese
+   ```
+   This will create a `.nupkg` file in the `./nupkg` folder.
+
+
+3. Install the tool globally from the local package:
+    ```bash
+    dotnet tool install --global --add-source ./nupkg gm-codex --version 1.0.0
     ```
 
-3. Run the tool:
+   > ⚠️ Note: The **package id** is `gm-codex`, but the installed **command** is `gm-codex` (set in the project file).  
+   > If you previously installed an older version, uninstall it first:
+   > ```bash
+   > dotnet tool uninstall --global gm-codex
+   > ```
+
+4. Verify installation:
     ```bash
-    dotnet run
+    dotnet tool list --global
     ```
 
 ## Usage 🚀
 
-After running the tool, use the available commands to manage your encounters. (See upcoming documentation for a full command list.)
+Once installed, you can run the tool from **anywhere** in your terminal:
 
-Example:
 ```bash
-create-character
+gm-codex list-pcs
+gm-codex create-character
+```
+### Updating after changes
+If you make changes to the code:
+```bash
+dotnet pack -c Release
+dotnet tool update --global --add-source ./nupkg gm-codex --version 1.0.1
+```
+
+### Uninstall
+```bash
+dotnet tool uninstall --global gm-codex
 ```
 
 ## Roadmap 🗺️
