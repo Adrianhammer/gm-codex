@@ -36,7 +36,6 @@ ui.RenderStartScreen();
 // ------------------
 // 2. Setup CLI
 // ------------------
-
 var app = new CommandApp();
 
 app.Configure(config =>
@@ -47,7 +46,11 @@ app.Configure(config =>
         list.AddCommand<ListPcsCommand>("pcs")
             .WithDescription("List all playable characters");
     });
+    
+    config.AddCommand<HelpCommand>("help")
+        .WithDescription("Show deatiled help with examples");
 });
+
 
 //Register services for dependency injection, uncomment later
 /*

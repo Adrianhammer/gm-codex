@@ -4,8 +4,12 @@ namespace gm_codex.Presentation.ConsoleUI;
 
 public class ConsoleUi
 {
-
     public void RenderStartScreen()
+    {
+        var rule = new Rule("[red]GM Codex[/]");
+    }
+    
+    public static void RenderHelpScreen()
     {
         var rule = new Rule("[red]TTRPG Console[/]");
         rule.Centered();
@@ -14,10 +18,10 @@ public class ConsoleUi
         var font = FigletFont.Load(Path.Combine("Resources/Fonts", "Delta Corps Priest 1.flf"));
             
         AnsiConsole.Write(
-            new FigletText(font, "TTRPG Console")
+            new FigletText(font, "GM Codex")
                 .Centered()
                 .Color(Color.IndianRed)
-            );
+        );
         AnsiConsole.WriteLine();
         
         AnsiConsole.Write(new Align(
@@ -31,18 +35,13 @@ public class ConsoleUi
         table.AddColumn("Commands");
         table.AddColumn(new TableColumn("Description").Centered());
 
-        table.AddRow("help", "Get a list of available commands");
-        table.AddRow("create-character", "Create a character");
-        table.AddRow("read-entity", "Read an entity");
-        table.AddRow("delete-entity", "Delete an entity");
-        table.AddRow("list-pcs", "List all stored characters");
-        table.AddRow("exit", "Exits the application");
+        table.AddRow("[yellow]gmctl help[/]", "Show this help screen");
+        table.AddRow("[yellow]gmctl list pcs[/]", "List all playable characters");
+        table.AddRow("[yellow]gmctl --help[/]", "Show built-in command help");
         
         table.Border(TableBorder.Horizontal);
         table.Centered();
         
         AnsiConsole.Write(table);
-        
     }
-    
 }
