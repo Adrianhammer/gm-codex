@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.CommandLine;
-using System.CommandLine.Parsing;
+using gm_codex.Application.Commands;
 using Microsoft.Extensions.Configuration;
 using Spectre.Console;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Presentation.ConsoleUI;
+using Spectre.Console.Cli;
+
 // --------------------
 // 1. Config & Services
 // --------------------
@@ -33,27 +34,33 @@ ConsoleUi ui = new ConsoleUi();
 ui.RenderStartScreen();
 
 // ------------------
-// 2. Define commands
+// 2. Setup CLI
 // ------------------
+var app = new CommandApp();
 
-var rootCommand = new RootCommand("gm-codex CLI - Manage your TTRPG encounters");
-
-//list-pcs
-var listPcsCommand = new Command("list-pcs", "list all playable characters");
-rootCommand.Add(listPcsCommand);
-
-//parse manually
-var parseResult = rootCommand.Parse(args);
-
-if (parseResult.Tokens.Count > 0 && parseResult.Tokens[0].Value == "list-pcs")
+app.Configure(config =>
 {
-    characterService.ListPlayableCharacters();
-    return 0;
-}
+    config.AddBranch("list", list =>
+    {
+        list.SetDescription("List various game entities");
+        list.AddCommand<ListPcsCommand>("pcs")
+            .WithDescription("List all playable characters");
+    });
+    
+    config.AddCommand<HelpCommand>("help")
+        .WithDescription("Show deatiled help with examples");
+});
 
-foreach (var error in parseResult.Errors)
+
+//Register services for dependency injection, uncomment later
+/*
+app.Configure(config =>
 {
-    Console.Error.WriteLine(error.Message);
-}
+    config.Settings.Registrar.Register(typeof(CharacterService), characterService);
+});
+*/
 
-return 1;
+//Temporary until we add Dependency injection
+ListPcsCommand.CharacterService = characterService;
+
+return app.Run(args);
