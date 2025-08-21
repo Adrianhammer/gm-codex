@@ -40,6 +40,11 @@ var app = new CommandApp();
 
 app.Configure(config =>
 {
+    //Help
+    config.AddCommand<HelpCommand>("help")
+        .WithDescription("Show deatiled help with examples");
+    
+    //List branch
     config.AddBranch("list", list =>
     {
         list.SetDescription("List various game entities");
@@ -47,8 +52,21 @@ app.Configure(config =>
             .WithDescription("List all playable characters");
     });
     
-    config.AddCommand<HelpCommand>("help")
-        .WithDescription("Show deatiled help with examples");
+    //Read branch
+    config.AddBranch("read", read =>
+    {
+        read.SetDescription("Read various game entities");
+        read.AddCommand<ReadCommand>("entity")
+            .WithDescription("Read one entity");
+    });
+    
+    //Delete branch
+    config.AddBranch("delete", delete =>
+    {
+        delete.SetDescription("Delete various game entities");
+        delete.AddCommand<DeleteCommand>("entity")
+            .WithDescription("Delete one entity");
+    });
 });
 
 
@@ -62,5 +80,7 @@ app.Configure(config =>
 
 //Temporary until we add Dependency injection
 ListPcsCommand.CharacterService = characterService;
+ReadCommand.CharacterService = characterService;
+DeleteCommand.CharacterService = characterService;
 
 return app.Run(args);
