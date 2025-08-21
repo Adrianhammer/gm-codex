@@ -42,23 +42,16 @@ public class CharacterService
         AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");
     }
 
-    public void ReadEntity()
+    public void ReadEntity(string name)
     {
-        var name = EntityCommands.ReadCharacterCommand();
-        
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity creation aborted due to invalid input.");
-            return;
-        }
-
         var entity = _repository.GetEntityByName(name);
 
         if (entity == null)
         {
-            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity not found");
+            AnsiConsole.MarkupLineInterpolated($"[red]ERROR[/]: Entity '{name}' not found");
             return;
         }
+        
         ReadPcUi.ViewSingleEntity(entity);
     }
 
