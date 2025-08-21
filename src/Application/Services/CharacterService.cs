@@ -55,19 +55,19 @@ public class CharacterService
         ReadPcUi.ViewSingleEntity(entity);
     }
 
-    public void DeleteEntity()
+    public void DeleteEntity(string name)
     {
-        var name = EntityCommands.DeleteEntityCommand();
+        var entity = name;
 
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(entity))
         {
             AnsiConsole.MarkupLine("[red]ERROR[/]: Entity deletion aborted due to invalid input.");
             return;
         }
 
-        _repository.DeleteEntityByName(name);
+        _repository.DeleteEntityByName(entity);
         
-        DeleteEntityUi.ViewDeleteEntity(name);
+        DeleteEntityUi.ViewDeleteEntity(entity);
         
     }
 
