@@ -6,27 +6,27 @@ namespace gm_codex.Application.Commands;
 
 public class CreateSettings : CommandSettings
 {
-    [CommandArgument(0, "<name>")]
+    [CommandOption("-n|--name <name>")]
     [Description("The name of the entity to be created")]
     public required string Name { get; set; }
     
-    [CommandArgument(1, "<type>")]
+    [CommandOption("-t|--type <entity>")]
     [Description("The type of the entity to be created")]
     public required EntityType EntityType { get; set; }
     
-    [CommandArgument(2, "<race>")]
+    [CommandOption("-r|--race <race>")]
     [Description("The race of the entity to be created")]
     public required Race Race { get; set; }
     
-    [CommandArgument(3, "<subrace>")]
+    [CommandOption("--subrace <subrace>")]
     [Description("The subrace of the entity to be created")]
     public string? SubRace { get; set; }
     
-    [CommandArgument(4, "<class>")]
+    [CommandOption("-c|--class <class>")]
     [Description("The class of the entity to be created")]
     public required Class EntityClass { get; set; }
     
-    [CommandArgument(5, "<subclass>")]
+    [CommandOption("--subclass <class>")]
     [Description("The subclass of the entity to be created")]
     public string? SubClass { get; set; }
     
