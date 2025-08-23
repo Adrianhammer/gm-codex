@@ -37,6 +37,8 @@ public class ConsoleUi
 
         table.AddRow("[yellow]gmctl help[/]", "Show this help screen");
         table.AddRow("[yellow]gmctl list pcs[/]", "List all playable characters");
+        table.AddRow("[yellow]gmctl delete[/]", "delete entity");
+        table.AddRow("[yellow]gmctl create pc[/]", "create entity");
         table.AddRow("[yellow]gmctl --help[/]", "Show built-in command help");
         
         table.Border(TableBorder.Horizontal);
