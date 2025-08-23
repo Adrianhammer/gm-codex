@@ -43,7 +43,7 @@ app.Configure(config =>
     //Help
     config.AddCommand<HelpCommand>("help")
         .WithDescription("Show deatiled help with examples");
-    
+
     //List branch
     config.AddBranch("list", list =>
     {
@@ -51,7 +51,7 @@ app.Configure(config =>
         list.AddCommand<ListPcsCommand>("pcs")
             .WithDescription("List all playable characters");
     });
-    
+
     //Read branch
     config.AddBranch("read", read =>
     {
@@ -59,7 +59,7 @@ app.Configure(config =>
         read.AddCommand<ReadCommand>("entity")
             .WithDescription("Read one entity");
     });
-    
+
     //Delete branch
     config.AddBranch("delete", delete =>
     {
@@ -67,6 +67,15 @@ app.Configure(config =>
         delete.AddCommand<DeleteCommand>("entity")
             .WithDescription("Delete one entity");
     });
+
+    //Create branch
+    config.AddBranch("create", create =>
+    {
+        create.SetDescription("Create various game entities");
+        create.AddCommand<CreateCommand>("pc")
+            .WithDescription("Create one entity");
+    });
+    
 });
 
 
@@ -82,5 +91,6 @@ app.Configure(config =>
 ListPcsCommand.CharacterService = characterService;
 ReadCommand.CharacterService = characterService;
 DeleteCommand.CharacterService = characterService;
+CreateCommand.CharacterService = characterService;
 
 return app.Run(args);

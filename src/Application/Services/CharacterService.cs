@@ -1,5 +1,6 @@
 using System;
 using gm_codex.Application.Commands;
+using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Presentation.ConsoleUI;
@@ -16,16 +17,18 @@ public class CharacterService
         _repository = repository;
     }
     
-    public void CreateEntity()
+    public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass)
     {
+        /*
         var entityData = CreatePcUi.CreateCharacterCommand();
         if (entityData == null)
         {
             AnsiConsole.MarkupLine("[red]ERROR[/]: Entity creation aborted due to invalid input.");
             return;
         }
-
-        var (name, race, entityType, subRace, characterClass, subClass) = entityData.Value;
+        */
+        
+        //var (name, race, entityType, subRace, characterClass, subClass) = entityData.Value;
         
         var character = new Entity
         {

@@ -54,6 +54,7 @@ public static class ReadPcUi
                 character.EntityType,
                 character.Race,
                 character.SubRace ?? "-",
+                character.EntityClass,
                 character.SubClass ?? "-"
             );
         }
