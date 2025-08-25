@@ -94,4 +94,14 @@ public class EntityRepository
         
         return connection.Query<EntityRecord>(query).ToList();
     }
+    
+    public IEnumerable<EntityRecord> GetAllNonPlayableCharacters()
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"SELECT * FROM Entities WHERE EntityType = 'npc'";
+        
+        return connection.Query<EntityRecord>(query).ToList();
+    }
 }
