@@ -1,10 +1,11 @@
 using gm_codex.Application.Services;
+using gm_codex.Domain.Enums;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace gm_codex.Application.Commands;
 
-public class CreateCommand : Command<CreateSettings>
+public class CreateNpcCommand : Command<CreateSettings>
 {
     public static CharacterService? CharacterService { get; set; }
 
@@ -15,8 +16,10 @@ public class CreateCommand : Command<CreateSettings>
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
             return -1;
         }
-
-        CharacterService?.CreateEntity(settings.Name, settings.EntityType, settings.Race, settings.SubRace, settings.EntityClass, settings.SubClass);
+        
+        settings.EntityType = context.Name == "npc" ? EntityType.npc : EntityType.pc;
+        
+        CharacterService?.CreateEntity(settings.Name, settings.EntityType, settings.Race, settings.SubRace, settings.EntityClass, settings.SubClass, settings.MaxHp, settings.ArmorClass);
         return 0;
     }
 }

@@ -9,7 +9,7 @@ public class CreateSettings : CommandSettings
     [CommandOption("-n|--name <name>")]
     [Description("The name of the entity to be created")]
     public required string Name { get; set; }
-    
+
     [CommandOption("-t|--type <entity>")]
     [Description("The type of the entity to be created")]
     public required EntityType EntityType { get; set; }
@@ -29,5 +29,13 @@ public class CreateSettings : CommandSettings
     [CommandOption("--subclass <class>")]
     [Description("The subclass of the entity to be created")]
     public string? SubClass { get; set; }
+    
+    [CommandOption("-h|--health <health>")]
+    [Description("The health of the entity to be created")]
+    public string? MaxHp { get; set; }
+    
+    [CommandOption("-a|--armor <armor>")]
+    [Description("The armor of the entity to be created")]
+    public string? ArmorClass  { get; set; }
     
 }

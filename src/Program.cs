@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using gm_codex.Application.Commands;
+﻿using gm_codex.Application.Commands;
 using Microsoft.Extensions.Configuration;
-using Spectre.Console;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories;
@@ -38,14 +34,14 @@ ui.RenderStartScreen();
 // ------------------
 var app = new CommandApp();
 
-app.Configure(config =>
+app.Configure(configuration =>
 {
     //Help
-    config.AddCommand<HelpCommand>("help")
+    configuration.AddCommand<HelpCommand>("help")
         .WithDescription("Show deatiled help with examples");
 
     //List branch
-    config.AddBranch("list", list =>
+    configuration.AddBranch("list", list =>
     {
         list.SetDescription("List various game entities");
         list.AddCommand<ListPcsCommand>("pcs")
@@ -53,7 +49,7 @@ app.Configure(config =>
     });
 
     //Read branch
-    config.AddBranch("read", read =>
+    configuration.AddBranch("read", read =>
     {
         read.SetDescription("Read various game entities");
         read.AddCommand<ReadCommand>("entity")
@@ -61,7 +57,7 @@ app.Configure(config =>
     });
 
     //Delete branch
-    config.AddBranch("delete", delete =>
+    configuration.AddBranch("delete", delete =>
     {
         delete.SetDescription("Delete various game entities");
         delete.AddCommand<DeleteCommand>("entity")
@@ -69,14 +65,17 @@ app.Configure(config =>
     });
 
     //Create branch
-    config.AddBranch("create", create =>
+    configuration.AddBranch("create", create =>
     {
         create.SetDescription("Create various game entities");
-        create.AddCommand<CreateCommand>("pc")
-            .WithDescription("Create one entity");
+        create.AddCommand<CreatePcCommand>("pc")
+            .WithDescription("Create one playable character");
+        create.AddCommand<CreateNpcCommand>("npc")
+            .WithDescription("Create one non playable character");
     });
     
 });
+
 
 
 //Register services for dependency injection, uncomment later
@@ -91,6 +90,7 @@ app.Configure(config =>
 ListPcsCommand.CharacterService = characterService;
 ReadCommand.CharacterService = characterService;
 DeleteCommand.CharacterService = characterService;
-CreateCommand.CharacterService = characterService;
+CreatePcCommand.CharacterService = characterService;
+CreateNpcCommand.CharacterService = characterService;
 
 return app.Run(args);

@@ -17,7 +17,7 @@ public class CharacterService
         _repository = repository;
     }
     
-    public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass)
+    public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
         /*
         var entityData = CreatePcUi.CreateCharacterCommand();
@@ -30,6 +30,8 @@ public class CharacterService
         
         //var (name, race, entityType, subRace, characterClass, subClass) = entityData.Value;
         
+        
+        
         var character = new Entity
         {
             Name = name,
@@ -37,11 +39,12 @@ public class CharacterService
             EntityType = entityType,
             SubRace = subRace,
             EntityClass = characterClass,
-            SubClass = subClass
+            SubClass = subClass,
+            MaxHp = maxHp,
+            ArmorClass = armorClass
         };
         
         _repository.InsertEntity(character);
-        Console.WriteLine("Entity created");
         AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");
     }
 
