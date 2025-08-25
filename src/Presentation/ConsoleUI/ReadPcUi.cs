@@ -60,4 +60,28 @@ public static class ReadPcUi
         }
         AnsiConsole.Write(table);
     }
+    
+    public static void ViewNonPlayableCharacters(IEnumerable<EntityRecord> nonPlayableCharacters)
+    {
+        var table = new Table();
+        table.Border(TableBorder.Rounded);
+        
+        table.AddColumn(new TableColumn("Name"));
+        table.AddColumn(new TableColumn("Entity type"));
+        table.AddColumn(new TableColumn("Race"));
+        table.AddColumn(new TableColumn("Max HP"));
+        table.AddColumn(new TableColumn("Armor Class"));
+
+        foreach (var character in nonPlayableCharacters)
+        {
+            table.AddRow(
+                character.Name,
+                character.EntityType,
+                character.Race,
+                character.MaxHp ?? "-",
+                character.ArmorClass ?? "-"
+            );
+        }
+        AnsiConsole.Write(table);
+    }
 }

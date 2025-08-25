@@ -19,18 +19,6 @@ public class CharacterService
     
     public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
-        /*
-        var entityData = CreatePcUi.CreateCharacterCommand();
-        if (entityData == null)
-        {
-            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity creation aborted due to invalid input.");
-            return;
-        }
-        */
-        
-        //var (name, race, entityType, subRace, characterClass, subClass) = entityData.Value;
-        
-        
         
         var character = new Entity
         {
@@ -88,5 +76,17 @@ public class CharacterService
         }
         
         ReadPcUi.ViewPlayableCharacters(playableCharacters);
+    }
+
+    public void ListNonPlayableCharacters()
+    {
+        var nonPlayableCharacters = _repository.GetAllNonPlayableCharacters();
+
+        if (!nonPlayableCharacters.Any())
+        {
+            AnsiConsole.MarkupLine("[yellow]INFO[/]: No NPC´s found");
+            return;
+        }
+        ReadPcUi.ViewNonPlayableCharacters(nonPlayableCharacters);
     }
 }

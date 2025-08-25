@@ -44,8 +44,10 @@ app.Configure(configuration =>
     configuration.AddBranch("list", list =>
     {
         list.SetDescription("List various game entities");
-        list.AddCommand<ListPcsCommand>("pcs")
+        list.AddCommand<ListPcCommand>("pc")
             .WithDescription("List all playable characters");
+        list.AddCommand<ListNpcCommand>("npc")
+            .WithDescription("List all non playable characters");
     });
 
     //Read branch
@@ -87,7 +89,8 @@ app.Configure(config =>
 */
 
 //Temporary until we add Dependency injection
-ListPcsCommand.CharacterService = characterService;
+ListPcCommand.CharacterService = characterService;
+ListNpcCommand.CharacterService = characterService;
 ReadCommand.CharacterService = characterService;
 DeleteCommand.CharacterService = characterService;
 CreatePcCommand.CharacterService = characterService;
