@@ -4,12 +4,14 @@ namespace gm_codex.Application.Commands;
 
 public class ListPcCommand : Command
 {
-    //private readonly CharacterService _characterService;
-    public static CharacterService? CharacterService { get; set; }
-
+    private readonly CharacterService _characterService;
+    public ListPcCommand(CharacterService characterService)
+    {
+        _characterService = characterService;
+    }
     public override int Execute(CommandContext context)
     {
-        CharacterService?.ListPlayableCharacters();
+        _characterService.ListPlayableCharacters();
         return 0;
     }
 }
