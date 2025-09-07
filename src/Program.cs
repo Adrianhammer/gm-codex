@@ -38,7 +38,7 @@ services.AddSingleton<ConsoleUi>();
 
 // ---------------------------
 // 3. Initialize Database & UI
-// ---------------------------
+// ----------------------------
 
 var serviceProvider = services.BuildServiceProvider();
 
