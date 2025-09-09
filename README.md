@@ -29,7 +29,7 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
     dotnet tool install --global --add-source ./nupkg gm-codex --version 1.0.0
     ```
 
-   > ⚠️ Note: The **package id** is `gm-codex`, but the installed **command** is `gm-codex` (set in the project file).  
+   > ⚠️ Note: The **package id** is `gm-codex`, but the installed **command** is `gmctl` (set in the project file).  
    > If you previously installed an older version, uninstall it first:
    > ```bash
    > dotnet tool uninstall --global gm-codex
@@ -45,8 +45,8 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
 Once installed, you can run the tool from **anywhere** in your terminal:
 
 ```bash
-gm-codex list-pcs
-gm-codex create-character
+gmctl list pc
+gmctl create pc
 ```
 ### Updating after changes
 If you make changes to the code:
@@ -59,15 +59,6 @@ dotnet tool update --global --add-source ./nupkg gm-codex --version 1.0.1
 ```bash
 dotnet tool uninstall --global gm-codex
 ```
-
-## Roadmap 🗺️
-
-- Finalize commands
-- Add initiative tracking
-- Add typical monsters to database
-- Expand documentation and usage examples
-- Land on a name
-- Start planning implementation of nice to have features
 
 ## Naming Ideas 💡
 
