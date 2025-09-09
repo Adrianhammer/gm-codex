@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
+using gm_codex.Infrastructure.DependencyInjection;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Presentation.ConsoleUI;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,20 +19,19 @@ var config = new ConfigurationBuilder()
 // ------------------------
 // 2. Services registration
 // ------------------------
-
 var services = new ServiceCollection();
 
 // Register configuration
 services.AddSingleton<IConfiguration>(config);
 
 // Register infrastructure
-services.AddSingleton<DbConnector>();
-services.AddSingleton<EntityRepository>();
-services.AddSingleton<EncounterRepository>();
-services.AddSingleton<EncounterParticipantsRepository>();
+services.AddScoped<DbConnector>();
+services.AddScoped<EntityRepository>();
+services.AddScoped<EncounterRepository>();
+services.AddScoped<EncounterParticipantsRepository>();
 
-// Register services
-services.AddSingleton<CharacterService>();
+// Register services (scoped per command execution)
+services.AddScoped<CharacterService>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
@@ -39,30 +39,27 @@ services.AddSingleton<ConsoleUi>();
 // ---------------------------
 // 3. Initialize Database & UI
 // ----------------------------
+// Create one temp scope to run on startup tasks (tables + start screen)
+using (var provider = services.BuildServiceProvider())
+using (var scope = provider.CreateScope())
+{
+    var entityRepo = scope.ServiceProvider.GetRequiredService<EntityRepository>();
+    var encounterRepo = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
+    var encounterParticipantsRepository = scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
+    
+    entityRepo.CreateTable();
+    encounterParticipantsRepository.CreateTable();
+    encounterRepo.CreateTable();
+    
+    var ui = scope.ServiceProvider.GetRequiredService<ConsoleUi>();
+    ui.RenderStartScreen();
+}
 
-var serviceProvider = services.BuildServiceProvider();
-
-var dbConnector = new DbConnector(config);
-var entityRepository = new EntityRepository(dbConnector);
-var encounterRepository = new EncounterRepository(dbConnector);
-var encounterParticipantRepository = new EncounterParticipantsRepository(dbConnector);
-
-var characterService = new CharacterService(entityRepository);
-
-var entityRepository = serviceProvider.
-
-// Ensure tables exist and render start screen
-//entityRepository.CreateTable();
-encounterRepository.CreateTable();
-encounterParticipantRepository.CreateTable();
-
-ConsoleUi ui = new ConsoleUi();
-ui.RenderStartScreen();
-
-// ------------------
-// 2. Setup CLI
-// ------------------
-var app = new CommandApp();
+// --------------------
+// 4. Setup CLI with DI
+// --------------------
+var registrar = new TypeRegistrar(services);
+var app = new CommandApp(registrar);
 
 app.Configure(configuration =>
 {
@@ -107,23 +104,5 @@ app.Configure(configuration =>
     });
     
 });
-
-
-
-//Register services for dependency injection, uncomment later
-/*
-app.Configure(config =>
-{
-    config.Settings.Registrar.Register(typeof(CharacterService), characterService);
-});
-*/
-
-//Temporary until we add Dependency injection
-ListPcCommand.CharacterService = characterService;
-ListNpcCommand.CharacterService = characterService;
-ReadCommand.CharacterService = characterService;
-DeleteCommand.CharacterService = characterService;
-CreatePcCommand.CharacterService = characterService;
-CreateNpcCommand.CharacterService = characterService;
 
 return app.Run(args);
