@@ -1,5 +1,3 @@
-using System;
-using gm_codex.Application.Commands;
 using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Repositories;
@@ -8,39 +6,48 @@ using Spectre.Console;
 
 namespace gm_codex.Application.Services;
 
-public class CharacterService
+public class CharacterService (EntityRepository repository)
 {
-    private readonly EntityRepository _repository;
-
-    public CharacterService(EntityRepository repository)
-    {
-        _repository = repository;
-    }
-    
     public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
         
         var character = new Entity
         {
-            Name = name,
+            Name = name.ToLower(),
             Race = race,
             EntityType = entityType,
-            SubRace = subRace,
+            SubRace = subRace?.ToLower(),
             EntityClass = characterClass,
-            SubClass = subClass,
+            SubClass = subClass?.ToLower(),
             MaxHp = maxHp,
             ArmorClass = armorClass
         };
-        
-        _repository.InsertEntity(character);
-        AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");
+
+        try
+        {
+            var rows = repository.InsertEntity(character);
+            
+            if (rows == 1)
+            {
+                AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");       
+            }
+            else
+            {
+                AnsiConsole.MarkupLine("[yellow]Warning[/] Insert did not affect anny rows. :warning:[/]");
+            }
+        }
+        catch (Exception e)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: Failed to insert entity to database: {e.Message}");
+            throw;
+        }
     }
 
     public void ReadEntity(string name)
     {
-        var entity = _repository.GetEntityByName(name);
+        var entity = repository.GetEntityByName(name);
 
-        if (entity == null)
+        if (entity is null)
         {
             AnsiConsole.MarkupLineInterpolated($"[red]ERROR[/]: Entity '{name}' not found");
             return;
@@ -59,7 +66,7 @@ public class CharacterService
             return;
         }
 
-        _repository.DeleteEntityByName(entity);
+        repository.DeleteEntityByName(entity);
         
         DeleteEntityUi.ViewDeleteEntity(entity);
         
@@ -67,7 +74,7 @@ public class CharacterService
 
     public void ListPlayableCharacters()
     {
-        var playableCharacters = _repository.GetAllPlayableCharacters();
+        var playableCharacters = repository.GetAllPlayableCharacters().ToList();
 
         if (!playableCharacters.Any())
         {
@@ -80,7 +87,7 @@ public class CharacterService
 
     public void ListNonPlayableCharacters()
     {
-        var nonPlayableCharacters = _repository.GetAllNonPlayableCharacters();
+        var nonPlayableCharacters = repository.GetAllNonPlayableCharacters().ToList();
 
         if (!nonPlayableCharacters.Any())
         {

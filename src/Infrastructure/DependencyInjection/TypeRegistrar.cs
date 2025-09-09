@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
@@ -42,8 +43,12 @@ public sealed class TypeRegistrar : ITypeRegistrar, IDisposable
         private readonly IServiceProvider _provider;
         public TypeResolver(IServiceProvider provider) => _provider = provider;
 
-        public object? Resolve(Type type) => _provider.GetService(type);
+        public object? Resolve(Type? type)
+        {
+            return type is null ? null : _provider.GetService(type);
+        }
 
+        [UsedImplicitly]
         public void Dispose()
         {
             if (_provider is IDisposable disposable)

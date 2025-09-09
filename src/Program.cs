@@ -51,8 +51,6 @@ using (var scope = provider.CreateScope())
     encounterParticipantsRepository.CreateTable();
     encounterRepo.CreateTable();
     
-    var ui = scope.ServiceProvider.GetRequiredService<ConsoleUi>();
-    ui.RenderStartScreen();
 }
 
 // --------------------
