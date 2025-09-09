@@ -19,7 +19,7 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
 
 2. Pack the tool into a NuGet pakcage:
     ```bash
-    dotnet pack -c Relaese
+    dotnet pack -c Release
    ```
    This will create a `.nupkg` file in the `./nupkg` folder.
 

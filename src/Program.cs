@@ -2,37 +2,64 @@
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
+using gm_codex.Infrastructure.DependencyInjection;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Presentation.ConsoleUI;
+using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
 // --------------------
-// 1. Config & Services
+// 1. Config setup
 // --------------------
 var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
 
-var dbConnector = new DbConnector(config);
-var entityRepository = new EntityRepository(dbConnector);
-var encounterRepository = new EncounterRepository(dbConnector);
-var encounterParticipantRepository = new EncounterParticipantsRepository(dbConnector);
+// ------------------------
+// 2. Services registration
+// ------------------------
+var services = new ServiceCollection();
 
-var characterService = new CharacterService(entityRepository);
+// Register configuration
+services.AddSingleton<IConfiguration>(config);
 
-// Ensure tables exist and render start screen
-entityRepository.CreateTable();
-encounterRepository.CreateTable();
-encounterParticipantRepository.CreateTable();
+// Register infrastructure
+services.AddScoped<DbConnector>();
+services.AddScoped<EntityRepository>();
+services.AddScoped<EncounterRepository>();
+services.AddScoped<EncounterParticipantsRepository>();
 
-ConsoleUi ui = new ConsoleUi();
-ui.RenderStartScreen();
+// Register services (scoped per command execution)
+services.AddScoped<CharacterService>();
 
-// ------------------
-// 2. Setup CLI
-// ------------------
-var app = new CommandApp();
+// Register UI
+services.AddSingleton<ConsoleUi>();
+
+// ---------------------------
+// 3. Initialize Database & UI
+// ----------------------------
+// Create one temp scope to run on startup tasks (tables + start screen)
+using (var provider = services.BuildServiceProvider())
+using (var scope = provider.CreateScope())
+{
+    var entityRepo = scope.ServiceProvider.GetRequiredService<EntityRepository>();
+    var encounterRepo = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
+    var encounterParticipantsRepository = scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
+    
+    entityRepo.CreateTable();
+    encounterParticipantsRepository.CreateTable();
+    encounterRepo.CreateTable();
+    
+    var ui = scope.ServiceProvider.GetRequiredService<ConsoleUi>();
+    ui.RenderStartScreen();
+}
+
+// --------------------
+// 4. Setup CLI with DI
+// --------------------
+var registrar = new TypeRegistrar(services);
+var app = new CommandApp(registrar);
 
 app.Configure(configuration =>
 {
@@ -77,23 +104,5 @@ app.Configure(configuration =>
     });
     
 });
-
-
-
-//Register services for dependency injection, uncomment later
-/*
-app.Configure(config =>
-{
-    config.Settings.Registrar.Register(typeof(CharacterService), characterService);
-});
-*/
-
-//Temporary until we add Dependency injection
-ListPcCommand.CharacterService = characterService;
-ListNpcCommand.CharacterService = characterService;
-ReadCommand.CharacterService = characterService;
-DeleteCommand.CharacterService = characterService;
-CreatePcCommand.CharacterService = characterService;
-CreateNpcCommand.CharacterService = characterService;
 
 return app.Run(args);

@@ -2,7 +2,7 @@ using System.ComponentModel;
 using gm_codex.Domain.Enums;
 using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands;
+namespace gm_codex.Application.Commands.Settings;
 
 public class CreateSettings : CommandSettings
 {

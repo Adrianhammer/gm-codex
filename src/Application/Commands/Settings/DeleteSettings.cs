@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands;
+namespace gm_codex.Application.Commands.Settings;
 
 public class DeleteSettings : CommandSettings
 {
