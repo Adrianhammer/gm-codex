@@ -1,6 +1,4 @@
-using gm_codex.Domain.Enums;
 using gm_codex.Infrastructure.Data;
-using gm_codex.Infrastructure.Repositories;
 using Spectre.Console;
 
 namespace gm_codex.Presentation.ConsoleUI;

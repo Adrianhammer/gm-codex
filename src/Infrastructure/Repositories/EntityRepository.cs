@@ -33,7 +33,7 @@ public class EntityRepository
         connection.Execute(query);
     }
     
-    public void InsertEntity(Entity entity)
+    public int InsertEntity(Entity entity)
     {
            using var connection = _db.CreateConnection();
            connection.Open();
@@ -53,11 +53,11 @@ public class EntityRepository
            var query = @"INSERT INTO Entities (Name, EntityType, Race, SubRace, EntityClass, SubClass, MaxHp, ArmorClass) 
                          VALUES (@Name, @EntityType, @Race, @SubRace, @EntityClass, @SubClass, @MaxHp, @ArmorClass);";
            
-           connection.Execute(query, characterEntity);
+           return connection.Execute(query, characterEntity);
            
     }
 
-    public EntityRecord GetEntityByName(string name)
+    public EntityRecord? GetEntityByName(string name)
     {
         using var connection = _db.CreateConnection();
         connection.Open();
@@ -66,13 +66,10 @@ public class EntityRepository
         
         var entity = connection.QuerySingleOrDefault<EntityRecord>(
             query,
-            new
-            {
-                Name = name
-            }
+            new { Name = name }
             );
         
-        return entity;
+        return entity; 
     }
 
     public void DeleteEntityByName(string name)

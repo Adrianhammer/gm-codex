@@ -1,5 +1,4 @@
-﻿using gm_codex.Application.Services;
-using Spectre.Console;
+﻿using Spectre.Console;
 
 namespace gm_codex.Presentation.ConsoleUI;
 

@@ -1,14 +1,8 @@
-using System.IO;
 using Spectre.Console;
 namespace gm_codex.Presentation.ConsoleUI;
 
 public class ConsoleUi
 {
-    public void RenderStartScreen()
-    {
-        var rule = new Rule("[red]GM Codex[/]");
-    }
-    
     public static void RenderHelpScreen()
     {
         var rule = new Rule("[red]TTRPG Console[/]");

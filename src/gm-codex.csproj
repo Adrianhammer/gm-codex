@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <PackageReference Include="Dapper" Version="2.1.66" />
+      <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.7" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
       <PackageReference Include="Spectre.Console" Version="0.50.0" />
