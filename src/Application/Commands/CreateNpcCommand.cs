@@ -1,3 +1,4 @@
+using gm_codex.Application.Commands.Settings;
 using gm_codex.Application.Services;
 using gm_codex.Domain.Enums;
 using Spectre.Console;
@@ -7,7 +8,9 @@ namespace gm_codex.Application.Commands;
 
 public class CreateNpcCommand : Command<CreateSettings>
 {
-    public static CharacterService? CharacterService { get; set; }
+    private readonly CharacterService _characterService;
+
+    public CreateNpcCommand(CharacterService characterService) => _characterService = characterService;
 
     public override int Execute(CommandContext context, CreateSettings settings)
     {
@@ -19,7 +22,7 @@ public class CreateNpcCommand : Command<CreateSettings>
         
         settings.EntityType = context.Name == "npc" ? EntityType.npc : EntityType.pc;
         
-        CharacterService?.CreateEntity(settings.Name, settings.EntityType, settings.Race, settings.SubRace, settings.EntityClass, settings.SubClass, settings.MaxHp, settings.ArmorClass);
+        _characterService.CreateEntity(settings.Name, settings.EntityType, settings.Race, settings.SubRace, settings.EntityClass, settings.SubClass, settings.MaxHp, settings.ArmorClass);
         return 0;
     }
 }

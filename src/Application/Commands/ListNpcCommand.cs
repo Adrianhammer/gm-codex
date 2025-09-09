@@ -4,11 +4,13 @@ namespace gm_codex.Application.Commands;
 
 public class ListNpcCommand : Command
 {
-    public static CharacterService? CharacterService { get; set; }
+    private readonly CharacterService _characterService;
+    
+    public ListNpcCommand(CharacterService characterService) => _characterService = characterService;
 
     public override int Execute(CommandContext context)
-    {
-        CharacterService?.ListNonPlayableCharacters();
+    { 
+        _characterService.ListNonPlayableCharacters();
         return 0;
     }
 }

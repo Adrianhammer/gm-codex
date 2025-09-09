@@ -3,7 +3,7 @@ using gm_codex.Domain.Enums;
 using JetBrains.Annotations;
 using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands;
+namespace gm_codex.Application.Commands.Settings;
 
 public class CreateSettings : CommandSettings
 {
