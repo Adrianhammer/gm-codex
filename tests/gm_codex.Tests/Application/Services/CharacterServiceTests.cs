@@ -3,9 +3,12 @@ using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories.Interface;
+
+using Moq;
 using Xunit;
 
-namespace gm_codex.Tests;
+namespace gm_codex.Tests.Application.Services;
+
 
 public class CharacterServiceTests
 {
@@ -43,21 +46,32 @@ public class CharacterServiceTests
     public void CreateEntity_Should_Call_Insert_And_Pass_Correct_Data()
     {
         //arrange
-        var fakeRepo = new FakeEntityRepository();
-        var service = new CharacterService(fakeRepo);
+
+        var mockRepo = new Mock<IEntityRepository>();
+        
+        //Setup default behavior: InsertEntity always "succeeds"
+        mockRepo.Setup(r => r.InsertEntity(It.IsAny<Entity>()))
+            .Returns(1);
+        
+        var service = new CharacterService(mockRepo.Object);
+
         
         //act
         service.CreateEntity("aragorn", EntityType.pc, Race.human, null, Class.ranger, null, "20", "15");
         
         //assert
-        Assert.True(fakeRepo.InsertWasCalled); //did create call insert?
-        Assert.NotNull(fakeRepo.InsertedEntity); //did we capture the entity?
-        Assert.Equal("aragorn", fakeRepo.InsertedEntity!.Name.ToLower());
-        Assert.Equal(EntityType.pc, fakeRepo.InsertedEntity!.EntityType);
-        Assert.Equal(Race.human, fakeRepo.InsertedEntity!.Race);
-        Assert.Equal(Class.ranger, fakeRepo.InsertedEntity!.EntityClass);
-        Assert.Equal("20", fakeRepo.InsertedEntity!.MaxHp);
-        Assert.Equal("15", fakeRepo.InsertedEntity!.ArmorClass);
+        //verify InsertEntity was called exactly once with an Entity matching these expectations
+        mockRepo.Verify(r =>
+                r.InsertEntity(It.Is<Entity>(e =>
+                    e.Name == "aragorn" &&
+                    e.EntityType == EntityType.pc &&
+                    e.Race == Race.human &&
+                    e.EntityClass == Class.ranger &&
+                    e.MaxHp == "20" &&
+                    e.ArmorClass == "15"
+                )),
+            Times.Once);
+
     }
 
     [Fact]
