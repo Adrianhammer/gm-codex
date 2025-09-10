@@ -49,4 +49,15 @@ public class CharacterServiceTests
         Assert.Equal("20", fakeRepo.InsertedEntity!.MaxHp);
         Assert.Equal("15", fakeRepo.InsertedEntity!.ArmorClass);
     }
+
+    [Fact]
+    public void DeleteEntity_Should_Not_Call_Repo_When_Name_Is_Empty()
+    {
+        var fakeRepo = new FakeEntityRepository();
+        var service = new CharacterService(fakeRepo);
+        
+        service.DeleteEntity("");
+        
+        Assert.False(fakeRepo.InsertWasCalled);
+    }
 }
