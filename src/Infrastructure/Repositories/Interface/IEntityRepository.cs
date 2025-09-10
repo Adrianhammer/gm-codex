@@ -1,0 +1,13 @@
+using gm_codex.Domain.Models;
+using gm_codex.Infrastructure.Data;
+
+namespace gm_codex.Infrastructure.Repositories.Interface;
+
+public interface IEntityRepository
+{
+    int InsertEntity(Entity entity);
+    EntityRecord? GetEntityByName(string name);
+    void DeleteEntityByName(string name);
+    IEnumerable<EntityRecord> GetAllPlayableCharacters();
+    IEnumerable<EntityRecord> GetAllNonPlayableCharacters();
+}
