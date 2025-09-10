@@ -3,10 +3,12 @@ using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories.Interface;
+
 using Moq;
 using Xunit;
 
 namespace gm_codex.Tests.Application.Services;
+
 
 public class CharacterServiceTests
 {
@@ -44,6 +46,7 @@ public class CharacterServiceTests
     public void CreateEntity_Should_Call_Insert_And_Pass_Correct_Data()
     {
         //arrange
+
         var mockRepo = new Mock<IEntityRepository>();
         
         //Setup default behavior: InsertEntity always "succeeds"
@@ -51,6 +54,7 @@ public class CharacterServiceTests
             .Returns(1);
         
         var service = new CharacterService(mockRepo.Object);
+
         
         //act
         service.CreateEntity("aragorn", EntityType.pc, Race.human, null, Class.ranger, null, "20", "15");
@@ -67,6 +71,7 @@ public class CharacterServiceTests
                     e.ArmorClass == "15"
                 )),
             Times.Once);
+
     }
 
     [Fact]
