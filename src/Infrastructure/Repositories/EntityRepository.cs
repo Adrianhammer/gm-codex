@@ -1,10 +1,11 @@
 using Dapper;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
+using gm_codex.Infrastructure.Repositories.Interface;
 
 namespace gm_codex.Infrastructure.Repositories;
 
-public class EntityRepository
+public class EntityRepository : IEntityRepository
 {
     private readonly DbConnector _db;
 

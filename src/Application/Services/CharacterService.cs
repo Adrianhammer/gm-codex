@@ -1,13 +1,18 @@
 using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Repositories;
+using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
 
 namespace gm_codex.Application.Services;
 
-public class CharacterService (EntityRepository repository)
+public class CharacterService
 {
+    private readonly IEntityRepository _repository;
+    public CharacterService(IEntityRepository repository) => _repository = repository;
+    
+    
     public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
         
@@ -25,7 +30,7 @@ public class CharacterService (EntityRepository repository)
 
         try
         {
-            var rows = repository.InsertEntity(character);
+            var rows = _repository.InsertEntity(character);
             
             if (rows == 1)
             {
@@ -45,7 +50,7 @@ public class CharacterService (EntityRepository repository)
 
     public void ReadEntity(string name)
     {
-        var entity = repository.GetEntityByName(name);
+        var entity = _repository.GetEntityByName(name);
 
         if (entity is null)
         {
@@ -66,7 +71,7 @@ public class CharacterService (EntityRepository repository)
             return;
         }
 
-        repository.DeleteEntityByName(entity);
+        _repository.DeleteEntityByName(entity);
         
         DeleteEntityUi.ViewDeleteEntity(entity);
         
@@ -74,7 +79,7 @@ public class CharacterService (EntityRepository repository)
 
     public void ListPlayableCharacters()
     {
-        var playableCharacters = repository.GetAllPlayableCharacters().ToList();
+        var playableCharacters = _repository.GetAllPlayableCharacters().ToList();
 
         if (!playableCharacters.Any())
         {
@@ -87,7 +92,7 @@ public class CharacterService (EntityRepository repository)
 
     public void ListNonPlayableCharacters()
     {
-        var nonPlayableCharacters = repository.GetAllNonPlayableCharacters().ToList();
+        var nonPlayableCharacters = _repository.GetAllNonPlayableCharacters().ToList();
 
         if (!nonPlayableCharacters.Any())
         {
