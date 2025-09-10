@@ -15,6 +15,7 @@ public class CharacterService
     
     public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
         
         var character = new Entity
         {
