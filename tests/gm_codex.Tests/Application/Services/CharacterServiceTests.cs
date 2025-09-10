@@ -30,6 +30,16 @@ public class CharacterServiceTests
     }
 
     [Fact]
+    public void CreateEntity_Should_Throw_When_Name_Is_Empty()
+    {
+        var fakeRepo = new FakeEntityRepository();
+        var service = new CharacterService(fakeRepo);
+
+        Assert.Throws<ArgumentException>(() =>
+            service.CreateEntity("", EntityType.pc, Race.human, null, Class.ranger, null, "20", "15"));
+    }
+    
+    [Fact]
     public void CreateEntity_Should_Call_Insert_And_Pass_Correct_Data()
     {
         //arrange
