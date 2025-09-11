@@ -55,7 +55,39 @@ public class EntityRepository : IEntityRepository
                          VALUES (@Name, @EntityType, @Race, @SubRace, @EntityClass, @SubClass, @MaxHp, @ArmorClass);";
            
            return connection.Execute(query, characterEntity);
-           
+    }
+
+    public int UpdateEntity(Entity entity)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+
+        var characterEntity = new EntityRecord()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            EntityType = entity.EntityType.ToString(),
+            Race = entity.Race.ToString(),
+            SubRace = entity.SubRace,
+            EntityClass = entity.EntityClass.ToString(),
+            SubClass = entity.SubClass,
+            MaxHp = entity.MaxHp,
+            ArmorClass = entity.ArmorClass,
+        };
+
+        var query = @"
+            UPDATE Entities
+            SET Name = @Name,
+                EntityType = @EntityType,
+                Race = @Race,
+                SubRace = @SubRace,
+                EntityClass = @EntityClass,
+                SubClass = @SubClass,
+                MaxHp = @MaxHp,
+                ArmorClass = @ArmorClass
+                WHERE Id = @Id;";
+        
+        return connection.Execute(query, characterEntity);
     }
 
     public EntityRecord? GetEntityByName(string name)
