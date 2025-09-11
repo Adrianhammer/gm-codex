@@ -4,6 +4,7 @@ using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.DependencyInjection;
 using gm_codex.Infrastructure.Repositories;
+using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
@@ -33,6 +34,9 @@ services.AddScoped<EncounterParticipantsRepository>();
 // Register services (scoped per command execution)
 services.AddScoped<CharacterService>();
 
+// Register Interface
+services.AddScoped<IEntityRepository, EntityRepository>();
+
 // Register UI
 services.AddSingleton<ConsoleUi>();
 
@@ -61,11 +65,11 @@ var app = new CommandApp(registrar);
 
 app.Configure(configuration =>
 {
-    //Help
+    // Help
     configuration.AddCommand<HelpCommand>("help")
         .WithDescription("Show deatiled help with examples");
 
-    //List branch
+    // List branch
     configuration.AddBranch("list", list =>
     {
         list.SetDescription("List various game entities");
@@ -75,7 +79,7 @@ app.Configure(configuration =>
             .WithDescription("List all non playable characters");
     });
 
-    //Read branch
+    // Read branch
     configuration.AddBranch("read", read =>
     {
         read.SetDescription("Read various game entities");
@@ -83,7 +87,7 @@ app.Configure(configuration =>
             .WithDescription("Read one entity");
     });
 
-    //Delete branch
+    // Delete branch
     configuration.AddBranch("delete", delete =>
     {
         delete.SetDescription("Delete various game entities");
@@ -91,7 +95,7 @@ app.Configure(configuration =>
             .WithDescription("Delete one entity");
     });
 
-    //Create branch
+    // Create branch
     configuration.AddBranch("create", create =>
     {
         create.SetDescription("Create various game entities");
@@ -101,6 +105,15 @@ app.Configure(configuration =>
             .WithDescription("Create one non playable character");
     });
     
+    // Update branch
+    configuration.AddBranch("update", update =>
+    {
+        update.SetDescription("Update various game entities");
+        update.AddCommand<UpdatePcCommand>("pc")
+            .WithDescription("Update one entity");
+        update.AddCommand<UpdateNpcCommand>("npc")
+            .WithDescription("Update one non playable character");
+    });
 });
 
 return app.Run(args);
