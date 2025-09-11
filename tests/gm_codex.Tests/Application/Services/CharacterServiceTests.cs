@@ -25,6 +25,13 @@ public class CharacterServiceTests
             return 1;
         }
 
+        public int UpdateEntity(Entity entity)
+        {
+            InsertWasCalled = true;
+            InsertedEntity = entity;
+            return 1;
+        }
+
         public EntityRecord? GetEntityByName(string name) => null;
         public void DeleteEntityByName(string name) { }
         public IEnumerable<EntityRecord> GetAllPlayableCharacters() => Enumerable.Empty<EntityRecord>();
@@ -72,6 +79,16 @@ public class CharacterServiceTests
                 )),
             Times.Once);
 
+    }
+
+    [Fact]
+    public void UpdateEntity_Should_Throw_When_Name_Is_Empty()
+    {
+        var fakeRepo = new FakeEntityRepository();
+        var service = new CharacterService(fakeRepo);
+        
+        Assert.Throws<ArgumentException>(() =>
+            service.UpdateEntity("", EntityType.pc, Race.human, null, Class.ranger, null, "20", "15"));
     }
 
     [Fact]
