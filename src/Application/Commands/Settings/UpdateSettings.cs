@@ -19,7 +19,7 @@ public class UpdateSettings : CommandSettings
     [CommandOption("-r|--race <race>")]
     [Description("The race of the entity to be created")]
     [UsedImplicitly]
-    public required Race Race { get; set; }
+    public Race? Race { get; set; }
     
     [CommandOption("--subrace <subrace>")]
     [Description("The subrace of the entity to be created")]
@@ -29,7 +29,7 @@ public class UpdateSettings : CommandSettings
     [CommandOption("-c|--class <class>")]
     [Description("The class of the entity to be created")]
     [UsedImplicitly]
-    public required Class EntityClass { get; set; }
+    public Class? EntityClass { get; set; }
     
     [CommandOption("--subclass <class>")]
     [Description("The subclass of the entity to be created")]

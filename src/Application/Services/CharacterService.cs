@@ -33,15 +33,11 @@ public class CharacterService
         try
         {
             var rows = _repository.InsertEntity(character);
-            
-            if (rows == 1)
-            {
-                AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");       
-            }
-            else
-            {
-                AnsiConsole.MarkupLine("[yellow]Warning[/] Update did not affect anny rows. :warning:[/]");
-            }
+            AnsiConsole.MarkupLine(
+                rows == 1
+                    ? "[green]Success[/] Entity created :check_mark_button:"
+                    : "[yellow]Warning[/] Insert did not affect anny rows. :warning:"
+            );
         }
         catch (Exception e)
         {
@@ -61,7 +57,6 @@ public class CharacterService
             if (existingEntity is not null)
             {
                 var entity = EntityMapper.ToDomain(existingEntity);
-                if (entityType is not null) entity.EntityType = entityType.Value;
                 if (race is not null) entity.Race = race.Value;
                 if (subRace is not null) entity.SubRace = subRace;
                 if (characterClass is not null) entity.EntityClass = characterClass.Value;
@@ -72,15 +67,11 @@ public class CharacterService
                 try
                 {
                     var rows = _repository.UpdateEntity(entity);
-                    
-                    if (rows == 1)
-                    {
-                        AnsiConsole.MarkupLine("[green]Success[/] Entity Updated :check_mark_button:");      
-                    }
-                    else
-                    {
-                        AnsiConsole.MarkupLine("[yellow]Warning[/] Update did not affect anny rows. :warning:");
-                    }
+                    AnsiConsole.MarkupLine(
+                        rows == 1
+                            ? "[green]Success[/] Entity Updated :check_mark_button:"
+                            : "[yellow]Warning[/] Update did not affect anny rows. :warning:"
+                    );
                 }
                 catch (Exception e)
                 {
