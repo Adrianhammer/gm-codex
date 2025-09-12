@@ -1,11 +1,20 @@
-﻿using Spectre.Console;
+﻿using gm_codex.Application.Common;
+using Spectre.Console;
 
 namespace gm_codex.Presentation.ConsoleUI;
 
 public class DeleteEntityUi
 {
-    public static void ViewDeleteEntity(string entityName)
+    public static void ViewDeleteEntity(Result<int> result,  string name)
     {
-        AnsiConsole.MarkupLine($"[bold]{entityName}[/] is now deleted from the database.");
+
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[yellow]Warning[/]: {result.Error} '{name}'");
+            return;
+        }
+        
+        AnsiConsole.MarkupLine($"[green]Success[/]: Entity '{name}' has been deleted.");
+        
     }
 }

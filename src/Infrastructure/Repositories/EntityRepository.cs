@@ -100,14 +100,14 @@ public class EntityRepository : IEntityRepository
         return connection.QuerySingleOrDefault<EntityRecord>(query, new { Name = name });
     }
 
-    public void DeleteEntityByName(string name)
+    public int DeleteEntityByName(string name)
     {
         using var connection = _db.CreateConnection();
         connection.Open();
         
         var query = @"DELETE FROM Entities WHERE Name = @Name;";
 
-        connection.Execute(query, new { Name = name });
+        return connection.Execute(query, new { Name = name });
     }
 
     public IEnumerable<EntityRecord> GetAllPlayableCharacters()

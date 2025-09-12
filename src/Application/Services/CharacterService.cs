@@ -109,21 +109,31 @@ public class CharacterService
         }
     }
 
-    public void DeleteEntity(string name)
+    public Result<int> DeleteEntity(string name)
     {
-        var entity = name;
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
-        if (string.IsNullOrWhiteSpace(entity))
+        try
         {
-            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity deletion aborted due to invalid input.");
-            return;
-        }
+            var existingEntity = _repository.GetEntityByName(name);
 
-        _repository.DeleteEntityByName(entity);
-        
-        DeleteEntityUi.ViewDeleteEntity(entity);
-        
+            if (existingEntity is not null)
+            {
+                var rows = _repository.DeleteEntityByName(name);
+
+                if (rows == 1)
+                {
+                    return Result<int>.Ok(rows);
+                }
+            }
+            return Result<int>.Fail("Could not find entity with the name:");
+        }
+        catch (Exception e)
+        { 
+            return Result<int>.Fail($"Failed to delete entity: {e.Message}");
+        }
     }
+    
 
     public Result<List<EntityRecord>> ListPlayableCharacters()
     {

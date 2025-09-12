@@ -8,7 +8,7 @@ public interface IEntityRepository
     int InsertEntity(Entity entity);
     int UpdateEntity(Entity entity);
     EntityRecord? GetEntityByName(string name);
-    void DeleteEntityByName(string name);
+    int DeleteEntityByName(string name);
     IEnumerable<EntityRecord> GetAllPlayableCharacters();
     IEnumerable<EntityRecord> GetAllNonPlayableCharacters();
 }
