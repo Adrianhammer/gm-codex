@@ -41,19 +41,25 @@ public static class ReadPcUi
         AnsiConsole.Write(table);
     }
 
-    public static void ViewPlayableCharacters(IEnumerable<EntityRecord> playableCharacters)
+    public static void ViewPlayableCharacters(Result<List<EntityRecord>> result)
     {
-        var table = new Table();
-        table.Border(TableBorder.Rounded);
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+            return;
+        }
         
-        table.AddColumn(new TableColumn("Name"));
-        table.AddColumn(new TableColumn("Entity type"));
-        table.AddColumn(new TableColumn("Race"));
-        table.AddColumn(new TableColumn("Sub Race"));
-        table.AddColumn(new TableColumn("Class"));
-        table.AddColumn(new TableColumn("Sub Class"));
+        var table = new Table().RoundedBorder();
 
-        foreach (var character in playableCharacters)
+        table
+            .AddColumn("Name")
+            .AddColumn("Entity type")
+            .AddColumn("Race")
+            .AddColumn("Sub Race")
+            .AddColumn("Class")
+            .AddColumn("Sub Class");
+
+        foreach (var character in result.Value!)
         {
             table.AddRow(
                 character.Name,

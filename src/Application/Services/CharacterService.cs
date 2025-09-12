@@ -125,17 +125,22 @@ public class CharacterService
         
     }
 
-    public void ListPlayableCharacters()
+    public Result<List<EntityRecord>> ListPlayableCharacters()
     {
-        var playableCharacters = _repository.GetAllPlayableCharacters().ToList();
-
-        if (!playableCharacters.Any())
+        try
         {
-            AnsiConsole.MarkupLine("[yellow]INFO[/]: No playable characters found");
-            return;
+            var rows = _repository.GetAllPlayableCharacters().ToList();
+            
+            if (rows.Count > 0)
+            {
+                return Result<List<EntityRecord>>.Ok(rows!);
+            }
+            return Result<List<EntityRecord>>.Fail("No playable characters found");
         }
-        
-        ReadPcUi.ViewPlayableCharacters(playableCharacters);
+        catch (Exception e)
+        {
+            return Result<List<EntityRecord>>.Fail($"Failed to get playable characters: {e.Message}");
+        }
     }
 
     public void ListNonPlayableCharacters()

@@ -116,7 +116,7 @@ public class EntityRepository : IEntityRepository
         connection.Open();
         
         var query = @"SELECT * FROM Entities WHERE EntityType = 'pc'";
-        
+
         return connection.Query<EntityRecord>(query).ToList();
     }
     
