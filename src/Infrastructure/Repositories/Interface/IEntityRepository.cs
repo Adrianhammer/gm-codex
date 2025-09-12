@@ -6,6 +6,7 @@ namespace gm_codex.Infrastructure.Repositories.Interface;
 public interface IEntityRepository
 {
     int InsertEntity(Entity entity);
+    int UpdateEntity(Entity entity);
     EntityRecord? GetEntityByName(string name);
     void DeleteEntityByName(string name);
     IEnumerable<EntityRecord> GetAllPlayableCharacters();

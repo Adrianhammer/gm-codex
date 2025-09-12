@@ -25,6 +25,13 @@ public class CharacterServiceTests
             return 1;
         }
 
+        public int UpdateEntity(Entity entity)
+        {
+            InsertWasCalled = true;
+            InsertedEntity = entity;
+            return 1;
+        }
+
         public EntityRecord? GetEntityByName(string name) => null;
         public void DeleteEntityByName(string name) { }
         public IEnumerable<EntityRecord> GetAllPlayableCharacters() => Enumerable.Empty<EntityRecord>();
@@ -72,6 +79,49 @@ public class CharacterServiceTests
                 )),
             Times.Once);
 
+    }
+
+    [Fact]
+    public void UpdateEntity_Should_Throw_When_Name_Is_Empty()
+    {
+        var fakeRepo = new FakeEntityRepository();
+        var service = new CharacterService(fakeRepo);
+        
+        Assert.Throws<ArgumentException>(() =>
+            service.UpdateEntity("", EntityType.pc, Race.human, null, Class.ranger, null, "20", "15"));
+    }
+
+    [Fact]
+    public void UpdateEntity_Should_Call_Update_And_Pass_Correct_Data()
+    {
+        var mockRepo = new Mock<IEntityRepository>();
+        
+        mockRepo.Setup(r => r.GetEntityByName("aragorn"))
+            .Returns(new EntityRecord
+            {
+                Id = 1,
+                Name = "aragorn",
+                EntityType = "pc",
+                Race = "human",
+                EntityClass = "ranger",
+                MaxHp = "15",
+                ArmorClass = "15"
+            });
+        
+        var service = new CharacterService(mockRepo.Object);
+        
+        service.UpdateEntity("aragorn", EntityType.pc, Race.human, null, Class.ranger, null, "20", "20");
+        
+        mockRepo.Verify(r =>
+                r.UpdateEntity(It.Is<Entity>(e =>
+                    e.Name == "aragorn" &&
+                    e.EntityType == EntityType.pc &&
+                    e.Race == Race.human &&
+                    e.EntityClass == Class.ranger &&
+                    e.MaxHp == "20" &&
+                    e.ArmorClass == "20"
+                )),
+            Times.Once);
     }
 
     [Fact]

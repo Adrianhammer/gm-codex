@@ -15,7 +15,7 @@ public class DeleteCommand : Command<DeleteSettings>
     {
         if (string.IsNullOrWhiteSpace(settings.Name))
         {
-            AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
+            AnsiConsole.MarkupLine("[red]ERROR:[/] Name is required.");
             return -1;
         }
         
