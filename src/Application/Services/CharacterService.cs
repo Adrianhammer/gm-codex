@@ -14,7 +14,7 @@ public class CharacterService
     private readonly IEntityRepository _repository;
     public CharacterService(IEntityRepository repository) => _repository = repository;
     
-    public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
+    public Result<int> CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         
@@ -33,16 +33,15 @@ public class CharacterService
         try
         {
             var rows = _repository.InsertEntity(character);
-            AnsiConsole.MarkupLine(
-                rows == 1
-                    ? "[green]Success[/] Entity created :check_mark_button:"
-                    : "[yellow]Warning[/] Insert did not affect anny rows. :warning:"
-            );
+            if (rows == 1)
+            {
+                return Result<int>.Ok(rows);
+            }
+            return Result<int>.Fail("Failed to insert character");
         }
         catch (Exception e)
         {
-            AnsiConsole.MarkupLine($"[red]ERROR[/]: Failed to insert entity to database: {e.Message}");
-            throw;
+            return Result<int>.Fail(e.Message);
         }
     }
 

@@ -7,6 +7,16 @@ namespace gm_codex.Presentation.ConsoleUI;
 public static class ReadPcUi
 {
 
+    public static void ViewConfirmation(Result<int> result)
+    {
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+            return;
+        }
+        
+        AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");
+    }
     public static void ViewSingleEntity(Result<EntityRecord> result)
     {
         if (!result.Success)
