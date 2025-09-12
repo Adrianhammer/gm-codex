@@ -1,8 +1,8 @@
+using gm_codex.Application.Common;
 using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Data.Mappers;
-using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
@@ -91,17 +91,22 @@ public class CharacterService
         }
     }
 
-    public void ReadEntity(string name)
+    public Result<EntityRecord> ReadEntity(string name)
     {
-        var entity = _repository.GetEntityByName(name);
-
-        if (entity is null)
+        try
         {
-            AnsiConsole.MarkupLineInterpolated($"[red]ERROR[/]: Entity '{name}' not found");
-            return;
+            var rows = _repository.GetEntityByName(name);
+
+            if (rows is not null)
+            {
+                return Result<EntityRecord>.Ok(rows); 
+            }
+            return Result<EntityRecord>.Fail("Entity not found");
         }
-        
-        ReadPcUi.ViewSingleEntity(entity);
+        catch (Exception e)
+        {
+            return Result<EntityRecord>.Fail($"Failed to get entity: {e.Message}");
+        }
     }
 
     public void DeleteEntity(string name)

@@ -1,3 +1,4 @@
+using gm_codex.Application.Common;
 using gm_codex.Infrastructure.Data;
 using Spectre.Console;
 
@@ -6,19 +7,26 @@ namespace gm_codex.Presentation.ConsoleUI;
 public static class ReadPcUi
 {
 
-    public static void ViewSingleEntity(EntityRecord entity)
+    public static void ViewSingleEntity(Result<EntityRecord> result)
     {
-        var table = new Table();
-        table.Border(TableBorder.Rounded);
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+            return;
+        }
+
+        var entity = result.Value!;
+        var table = new Table().RoundedBorder();
         
-        table.AddColumn(new TableColumn("Name"));
-        table.AddColumn(new TableColumn("Entity type"));
-        table.AddColumn(new TableColumn("Race"));
-        table.AddColumn(new TableColumn("Sub Race"));
-        table.AddColumn(new TableColumn("Class"));
-        table.AddColumn(new TableColumn("Sub Class"));
-        table.AddColumn(new TableColumn("Max HP"));
-        table.AddColumn(new TableColumn("Armor Class"));
+        table
+            .AddColumn("Name")
+            .AddColumn("Entity type")
+            .AddColumn("Race")
+            .AddColumn("Sub Race")
+            .AddColumn("Class")
+            .AddColumn("Sub Class")
+            .AddColumn("Max HP")
+            .AddColumn("Armor Class");
 
         table.AddRow(
             entity.Name,

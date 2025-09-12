@@ -97,12 +97,7 @@ public class EntityRepository : IEntityRepository
         
         var query = @"SELECT * FROM Entities WHERE Name = @Name;";
         
-        var entity = connection.QuerySingleOrDefault<EntityRecord>(
-            query,
-            new { Name = name }
-            );
-        
-        return entity; 
+        return connection.QuerySingleOrDefault<EntityRecord>(query, new { Name = name });
     }
 
     public void DeleteEntityByName(string name)
