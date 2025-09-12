@@ -11,7 +11,7 @@ public class ListPcCommand : Command
     public override int Execute(CommandContext context)
     {
         var result = _characterService.ListPlayableCharacters();
-        ReadPcUi.ViewPlayableCharacters(result);
+        ReadPcUi.ViewEntitiesByType(result);
         
         return result.Success ? 0 : -1;
     }

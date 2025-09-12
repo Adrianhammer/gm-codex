@@ -41,7 +41,7 @@ public static class ReadPcUi
         AnsiConsole.Write(table);
     }
 
-    public static void ViewPlayableCharacters(Result<List<EntityRecord>> result)
+    public static void ViewEntitiesByType(Result<List<EntityRecord>> result)
     {
         if (!result.Success)
         {
@@ -57,7 +57,9 @@ public static class ReadPcUi
             .AddColumn("Race")
             .AddColumn("Sub Race")
             .AddColumn("Class")
-            .AddColumn("Sub Class");
+            .AddColumn("Sub Class")
+            .AddColumn("Max HP")
+            .AddColumn("Armor Class");
 
         foreach (var character in result.Value!)
         {
@@ -67,29 +69,7 @@ public static class ReadPcUi
                 character.Race,
                 character.SubRace ?? "-",
                 character.EntityClass,
-                character.SubClass ?? "-"
-            );
-        }
-        AnsiConsole.Write(table);
-    }
-    
-    public static void ViewNonPlayableCharacters(IEnumerable<EntityRecord> nonPlayableCharacters)
-    {
-        var table = new Table();
-        table.Border(TableBorder.Rounded);
-        
-        table.AddColumn(new TableColumn("Name"));
-        table.AddColumn(new TableColumn("Entity type"));
-        table.AddColumn(new TableColumn("Race"));
-        table.AddColumn(new TableColumn("Max HP"));
-        table.AddColumn(new TableColumn("Armor Class"));
-
-        foreach (var character in nonPlayableCharacters)
-        {
-            table.AddRow(
-                character.Name,
-                character.EntityType,
-                character.Race,
+                character.SubClass ?? "-",
                 character.MaxHp ?? "-",
                 character.ArmorClass ?? "-"
             );

@@ -143,15 +143,23 @@ public class CharacterService
         }
     }
 
-    public void ListNonPlayableCharacters()
+    public Result<List<EntityRecord>> ListNonPlayableCharacters()
     {
-        var nonPlayableCharacters = _repository.GetAllNonPlayableCharacters().ToList();
-
-        if (!nonPlayableCharacters.Any())
+        try
         {
-            AnsiConsole.MarkupLine("[yellow]INFO[/]: No NPC´s found");
-            return;
+            var rows = _repository.GetAllNonPlayableCharacters().ToList();
+
+            if (rows.Count > 0)
+            {
+                return Result<List<EntityRecord>>.Ok(rows!);
+            }
+            return Result<List<EntityRecord>>.Fail("No npc`s found");
+
         }
-        ReadPcUi.ViewNonPlayableCharacters(nonPlayableCharacters);
+        catch (Exception e)
+        {
+            return Result<List<EntityRecord>>.Fail($"Failed to get non-playable characters: {e.Message}");
+        }
+        
     }
 }
