@@ -1,3 +1,4 @@
+using gm_codex.Application.Common;
 using gm_codex.Application.Services;
 using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
@@ -33,7 +34,7 @@ public class CharacterServiceTests
         }
 
         public EntityRecord? GetEntityByName(string name) => null;
-        public void DeleteEntityByName(string name) { }
+        public int DeleteEntityByName(string name) => 1; 
         public IEnumerable<EntityRecord> GetAllPlayableCharacters() => Enumerable.Empty<EntityRecord>();
         public IEnumerable<EntityRecord> GetAllNonPlayableCharacters() => Enumerable.Empty<EntityRecord>();
         
