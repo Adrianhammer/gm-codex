@@ -1,6 +1,7 @@
 using gm_codex.Application.Commands.Settings;
 using gm_codex.Application.Services;
 using gm_codex.Domain.Enums;
+using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -22,7 +23,8 @@ public class CreatePcCommand : Command<CreateSettings>
 
         settings.EntityType = context.Name == "pc" ? EntityType.pc : EntityType.npc;
         
-        _characterService.CreateEntity(settings.Name, settings.EntityType, settings.Race, settings.SubRace, settings.EntityClass, settings.SubClass, settings.MaxHp, settings.ArmorClass);
-        return 0;
+        var result = _characterService.CreateEntity(settings.Name, settings.EntityType, settings.Race, settings.SubRace, settings.EntityClass, settings.SubClass, settings.MaxHp, settings.ArmorClass);
+        ReadPcUi.ViewConfirmation(result);
+        return result.Success ? 0 : -1;
     }
 }

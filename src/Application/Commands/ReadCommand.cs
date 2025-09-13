@@ -1,5 +1,6 @@
 using gm_codex.Application.Commands.Settings;
 using gm_codex.Application.Services;
+using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -19,7 +20,9 @@ public class ReadCommand : Command<ReadSettings>
             return -1;
         }
 
-        _characterService.ReadEntity(settings.Name);
-        return 0;
+        var result = _characterService.ReadEntity(settings.Name);
+        ReadPcUi.ViewSingleEntity(result);
+        
+        return result.Success ? 0 : -1;
     }
 }

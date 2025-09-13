@@ -1,5 +1,7 @@
 ﻿using Spectre.Console.Cli;
 using gm_codex.Application.Services;
+using gm_codex.Presentation.ConsoleUI;
+
 namespace gm_codex.Application.Commands;
 
 public class ListPcCommand : Command
@@ -8,7 +10,9 @@ public class ListPcCommand : Command
     public ListPcCommand(CharacterService characterService) => _characterService = characterService;
     public override int Execute(CommandContext context)
     {
-        _characterService.ListPlayableCharacters();
-        return 0;
+        var result = _characterService.ListPlayableCharacters();
+        ReadPcUi.ViewEntitiesByType(result);
+        
+        return result.Success ? 0 : -1;
     }
 }

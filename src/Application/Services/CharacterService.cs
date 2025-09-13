@@ -1,8 +1,8 @@
+using gm_codex.Application.Common;
 using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Data.Mappers;
-using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
@@ -14,7 +14,7 @@ public class CharacterService
     private readonly IEntityRepository _repository;
     public CharacterService(IEntityRepository repository) => _repository = repository;
     
-    public void CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
+    public Result<int> CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         
@@ -33,30 +33,32 @@ public class CharacterService
         try
         {
             var rows = _repository.InsertEntity(character);
-            AnsiConsole.MarkupLine(
-                rows == 1
-                    ? "[green]Success[/] Entity created :check_mark_button:"
-                    : "[yellow]Warning[/] Insert did not affect anny rows. :warning:"
-            );
+            if (rows == 1)
+            {
+                return Result<int>.Ok(rows);
+            }
+            return Result<int>.Fail("Failed to insert character");
         }
         catch (Exception e)
         {
-            AnsiConsole.MarkupLine($"[red]ERROR[/]: Failed to insert entity to database: {e.Message}");
-            throw;
+            return Result<int>.Fail(e.Message);
         }
     }
 
-    public void UpdateEntity(string name, EntityType? entityType, Race? race, string? subRace, Class? characterClass, string? subClass, string? maxHp, string? armorClass)
+    public Result<int> UpdateEntity(string name, EntityType? entityType, Race? race, string? subRace, Class? characterClass, string? subClass, string? maxHp, string? armorClass)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         
         try
         {
             var existingEntity = _repository.GetEntityByName(name);
-            
-            if (existingEntity is not null)
+
+            if (existingEntity is null)
             {
-                var entity = EntityMapper.ToDomain(existingEntity);
+                return Result<int>.Fail("Entity not found");
+            }
+
+            var entity = EntityMapper.ToDomain(existingEntity);
                 if (race is not null) entity.Race = race.Value;
                 if (subRace is not null) entity.SubRace = subRace;
                 if (characterClass is not null) entity.EntityClass = characterClass.Value;
@@ -67,81 +69,100 @@ public class CharacterService
                 try
                 {
                     var rows = _repository.UpdateEntity(entity);
-                    AnsiConsole.MarkupLine(
-                        rows == 1
-                            ? "[green]Success[/] Entity Updated :check_mark_button:"
-                            : "[yellow]Warning[/] Update did not affect anny rows. :warning:"
-                    );
+
+                    return rows == 1 ? Result<int>.Ok(rows) : Result<int>.Fail("Failed to update character");
+
                 }
                 catch (Exception e)
                 {
-                    AnsiConsole.MarkupLine($"[red]ERROR[/]: Failed to update entity: {e.Message}");
-                    throw;
+                    return Result<int>.Fail($"WHAT " + e.Message);
                 }
-            }
-            else
-            {
-                AnsiConsole.MarkupLine($"[yellow]Warning[/] Entity not found: {name}");
-            }
         }
         catch (Exception e)
         {
-            AnsiConsole.MarkupLine($"[red]ERROR[/] Failed to map entity: {e.Message}");
-            throw;
+            return Result<int>.Fail($"HERE " + e.Message);
         }
     }
 
-    public void ReadEntity(string name)
+    public Result<EntityRecord> ReadEntity(string name)
     {
-        var entity = _repository.GetEntityByName(name);
-
-        if (entity is null)
+        try
         {
-            AnsiConsole.MarkupLineInterpolated($"[red]ERROR[/]: Entity '{name}' not found");
-            return;
+            var rows = _repository.GetEntityByName(name);
+
+            if (rows is not null)
+            {
+                return Result<EntityRecord>.Ok(rows); 
+            }
+            return Result<EntityRecord>.Fail("Entity not found");
         }
-        
-        ReadPcUi.ViewSingleEntity(entity);
+        catch (Exception e)
+        {
+            return Result<EntityRecord>.Fail($"Failed to get entity: {e.Message}");
+        }
     }
 
-    public void DeleteEntity(string name)
+    public Result<int> DeleteEntity(string name)
     {
-        var entity = name;
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
-        if (string.IsNullOrWhiteSpace(entity))
+        try
         {
-            AnsiConsole.MarkupLine("[red]ERROR[/]: Entity deletion aborted due to invalid input.");
-            return;
-        }
+            var existingEntity = _repository.GetEntityByName(name);
 
-        _repository.DeleteEntityByName(entity);
-        
-        DeleteEntityUi.ViewDeleteEntity(entity);
-        
+            if (existingEntity is not null)
+            {
+                var rows = _repository.DeleteEntityByName(name);
+
+                if (rows == 1)
+                {
+                    return Result<int>.Ok(rows);
+                }
+            }
+            return Result<int>.Fail("Could not find entity with the name:");
+        }
+        catch (Exception e)
+        { 
+            return Result<int>.Fail($"Failed to delete entity: {e.Message}");
+        }
+    }
+    
+
+    public Result<List<EntityRecord>> ListPlayableCharacters()
+    {
+        try
+        {
+            var rows = _repository.GetAllPlayableCharacters().ToList();
+            
+            if (rows.Count > 0)
+            {
+                return Result<List<EntityRecord>>.Ok(rows!);
+            }
+            return Result<List<EntityRecord>>.Fail("No playable characters found");
+        }
+        catch (Exception e)
+        {
+            return Result<List<EntityRecord>>.Fail($"Failed to get playable characters: {e.Message}");
+        }
     }
 
-    public void ListPlayableCharacters()
+    public Result<List<EntityRecord>> ListNonPlayableCharacters()
     {
-        var playableCharacters = _repository.GetAllPlayableCharacters().ToList();
-
-        if (!playableCharacters.Any())
+        try
         {
-            AnsiConsole.MarkupLine("[yellow]INFO[/]: No playable characters found");
-            return;
+            var rows = _repository.GetAllNonPlayableCharacters().ToList();
+
+            if (rows.Count > 0)
+            {
+                return Result<List<EntityRecord>>.Ok(rows!);
+            }
+            return Result<List<EntityRecord>>.Fail("No npc`s found");
+
+        }
+        catch (Exception e)
+        {
+            return Result<List<EntityRecord>>.Fail($"Failed to get non-playable characters: {e.Message}");
         }
         
-        ReadPcUi.ViewPlayableCharacters(playableCharacters);
-    }
-
-    public void ListNonPlayableCharacters()
-    {
-        var nonPlayableCharacters = _repository.GetAllNonPlayableCharacters().ToList();
-
-        if (!nonPlayableCharacters.Any())
-        {
-            AnsiConsole.MarkupLine("[yellow]INFO[/]: No NPC´s found");
-            return;
-        }
-        ReadPcUi.ViewNonPlayableCharacters(nonPlayableCharacters);
     }
 }

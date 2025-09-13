@@ -1,5 +1,6 @@
 using gm_codex.Application.Commands.Settings;
 using gm_codex.Application.Services;
+using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -19,7 +20,8 @@ public class DeleteCommand : Command<DeleteSettings>
             return -1;
         }
         
-        _characterService.DeleteEntity(settings.Name);
-        return 0;
+        var result = _characterService.DeleteEntity(settings.Name);
+        DeleteEntityUi.ViewDeleteEntity(result, settings.Name);
+        return result.Success ? 0 : -1;
     }
 }

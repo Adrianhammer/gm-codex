@@ -97,22 +97,17 @@ public class EntityRepository : IEntityRepository
         
         var query = @"SELECT * FROM Entities WHERE Name = @Name;";
         
-        var entity = connection.QuerySingleOrDefault<EntityRecord>(
-            query,
-            new { Name = name }
-            );
-        
-        return entity; 
+        return connection.QuerySingleOrDefault<EntityRecord>(query, new { Name = name });
     }
 
-    public void DeleteEntityByName(string name)
+    public int DeleteEntityByName(string name)
     {
         using var connection = _db.CreateConnection();
         connection.Open();
         
         var query = @"DELETE FROM Entities WHERE Name = @Name;";
 
-        connection.Execute(query, new { Name = name });
+        return connection.Execute(query, new { Name = name });
     }
 
     public IEnumerable<EntityRecord> GetAllPlayableCharacters()
@@ -121,7 +116,7 @@ public class EntityRepository : IEntityRepository
         connection.Open();
         
         var query = @"SELECT * FROM Entities WHERE EntityType = 'pc'";
-        
+
         return connection.Query<EntityRecord>(query).ToList();
     }
     

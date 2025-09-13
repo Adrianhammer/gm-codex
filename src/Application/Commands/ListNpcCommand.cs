@@ -1,5 +1,7 @@
 using Spectre.Console.Cli;
 using gm_codex.Application.Services;
+using gm_codex.Presentation.ConsoleUI;
+
 namespace gm_codex.Application.Commands;
 
 public class ListNpcCommand : Command
@@ -10,7 +12,8 @@ public class ListNpcCommand : Command
 
     public override int Execute(CommandContext context)
     { 
-        _characterService.ListNonPlayableCharacters();
+        var result = _characterService.ListNonPlayableCharacters();
+        ReadPcUi.ViewEntitiesByType(result);
         return 0;
     }
 }

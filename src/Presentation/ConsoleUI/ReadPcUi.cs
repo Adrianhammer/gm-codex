@@ -1,3 +1,4 @@
+using gm_codex.Application.Common;
 using gm_codex.Infrastructure.Data;
 using Spectre.Console;
 
@@ -6,19 +7,36 @@ namespace gm_codex.Presentation.ConsoleUI;
 public static class ReadPcUi
 {
 
-    public static void ViewSingleEntity(EntityRecord entity)
+    public static void ViewConfirmation(Result<int> result)
     {
-        var table = new Table();
-        table.Border(TableBorder.Rounded);
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+            return;
+        }
         
-        table.AddColumn(new TableColumn("Name"));
-        table.AddColumn(new TableColumn("Entity type"));
-        table.AddColumn(new TableColumn("Race"));
-        table.AddColumn(new TableColumn("Sub Race"));
-        table.AddColumn(new TableColumn("Class"));
-        table.AddColumn(new TableColumn("Sub Class"));
-        table.AddColumn(new TableColumn("Max HP"));
-        table.AddColumn(new TableColumn("Armor Class"));
+        AnsiConsole.MarkupLine("[green]Success[/] Changes Saved! :check_mark_button:");
+    }
+    public static void ViewSingleEntity(Result<EntityRecord> result)
+    {
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+            return;
+        }
+
+        var entity = result.Value!;
+        var table = new Table().RoundedBorder();
+        
+        table
+            .AddColumn("Name")
+            .AddColumn("Entity type")
+            .AddColumn("Race")
+            .AddColumn("Sub Race")
+            .AddColumn("Class")
+            .AddColumn("Sub Class")
+            .AddColumn("Max HP")
+            .AddColumn("Armor Class");
 
         table.AddRow(
             entity.Name,
@@ -33,19 +51,27 @@ public static class ReadPcUi
         AnsiConsole.Write(table);
     }
 
-    public static void ViewPlayableCharacters(IEnumerable<EntityRecord> playableCharacters)
+    public static void ViewEntitiesByType(Result<List<EntityRecord>> result)
     {
-        var table = new Table();
-        table.Border(TableBorder.Rounded);
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+            return;
+        }
         
-        table.AddColumn(new TableColumn("Name"));
-        table.AddColumn(new TableColumn("Entity type"));
-        table.AddColumn(new TableColumn("Race"));
-        table.AddColumn(new TableColumn("Sub Race"));
-        table.AddColumn(new TableColumn("Class"));
-        table.AddColumn(new TableColumn("Sub Class"));
+        var table = new Table().RoundedBorder();
 
-        foreach (var character in playableCharacters)
+        table
+            .AddColumn("Name")
+            .AddColumn("Entity type")
+            .AddColumn("Race")
+            .AddColumn("Sub Race")
+            .AddColumn("Class")
+            .AddColumn("Sub Class")
+            .AddColumn("Max HP")
+            .AddColumn("Armor Class");
+
+        foreach (var character in result.Value!)
         {
             table.AddRow(
                 character.Name,
@@ -53,29 +79,7 @@ public static class ReadPcUi
                 character.Race,
                 character.SubRace ?? "-",
                 character.EntityClass,
-                character.SubClass ?? "-"
-            );
-        }
-        AnsiConsole.Write(table);
-    }
-    
-    public static void ViewNonPlayableCharacters(IEnumerable<EntityRecord> nonPlayableCharacters)
-    {
-        var table = new Table();
-        table.Border(TableBorder.Rounded);
-        
-        table.AddColumn(new TableColumn("Name"));
-        table.AddColumn(new TableColumn("Entity type"));
-        table.AddColumn(new TableColumn("Race"));
-        table.AddColumn(new TableColumn("Max HP"));
-        table.AddColumn(new TableColumn("Armor Class"));
-
-        foreach (var character in nonPlayableCharacters)
-        {
-            table.AddRow(
-                character.Name,
-                character.EntityType,
-                character.Race,
+                character.SubClass ?? "-",
                 character.MaxHp ?? "-",
                 character.ArmorClass ?? "-"
             );
