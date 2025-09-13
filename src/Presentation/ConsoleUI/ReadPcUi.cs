@@ -15,7 +15,7 @@ public static class ReadPcUi
             return;
         }
         
-        AnsiConsole.MarkupLine("[green]Success[/] Entity created :check_mark_button:");
+        AnsiConsole.MarkupLine("[green]Success[/] Changes Saved! :check_mark_button:");
     }
     public static void ViewSingleEntity(Result<EntityRecord> result)
     {
