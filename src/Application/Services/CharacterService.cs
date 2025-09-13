@@ -45,17 +45,20 @@ public class CharacterService
         }
     }
 
-    public void UpdateEntity(string name, EntityType? entityType, Race? race, string? subRace, Class? characterClass, string? subClass, string? maxHp, string? armorClass)
+    public Result<int> UpdateEntity(string name, EntityType? entityType, Race? race, string? subRace, Class? characterClass, string? subClass, string? maxHp, string? armorClass)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         
         try
         {
             var existingEntity = _repository.GetEntityByName(name);
-            
-            if (existingEntity is not null)
+
+            if (existingEntity is null)
             {
-                var entity = EntityMapper.ToDomain(existingEntity);
+                return Result<int>.Fail("Entity not found");
+            }
+
+            var entity = EntityMapper.ToDomain(existingEntity);
                 if (race is not null) entity.Race = race.Value;
                 if (subRace is not null) entity.SubRace = subRace;
                 if (characterClass is not null) entity.EntityClass = characterClass.Value;
@@ -66,27 +69,18 @@ public class CharacterService
                 try
                 {
                     var rows = _repository.UpdateEntity(entity);
-                    AnsiConsole.MarkupLine(
-                        rows == 1
-                            ? "[green]Success[/] Entity Updated :check_mark_button:"
-                            : "[yellow]Warning[/] Update did not affect anny rows. :warning:"
-                    );
+
+                    return rows == 1 ? Result<int>.Ok(rows) : Result<int>.Fail("Failed to update character");
+
                 }
                 catch (Exception e)
                 {
-                    AnsiConsole.MarkupLine($"[red]ERROR[/]: Failed to update entity: {e.Message}");
-                    throw;
+                    return Result<int>.Fail($"WHAT " + e.Message);
                 }
-            }
-            else
-            {
-                AnsiConsole.MarkupLine($"[yellow]Warning[/] Entity not found: {name}");
-            }
         }
         catch (Exception e)
         {
-            AnsiConsole.MarkupLine($"[red]ERROR[/] Failed to map entity: {e.Message}");
-            throw;
+            return Result<int>.Fail($"HERE " + e.Message);
         }
     }
 
