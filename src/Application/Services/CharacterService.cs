@@ -4,8 +4,6 @@ using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Data.Mappers;
 using gm_codex.Infrastructure.Repositories.Interface;
-using gm_codex.Presentation.ConsoleUI;
-using Spectre.Console;
 
 namespace gm_codex.Application.Services;
 
@@ -51,7 +49,7 @@ public class CharacterService
         
         try
         {
-            var existingEntity = _repository.GetEntityByName(name);
+            var existingEntity = _repository.GetEntityByName(name, entityType!.Value);
 
             if (existingEntity is null)
             {
@@ -59,6 +57,7 @@ public class CharacterService
             }
 
             var entity = EntityMapper.ToDomain(existingEntity);
+                entity.EntityType = entityType!.Value;
                 if (race is not null) entity.Race = race.Value;
                 if (subRace is not null) entity.SubRace = subRace;
                 if (characterClass is not null) entity.EntityClass = characterClass.Value;
@@ -84,11 +83,11 @@ public class CharacterService
         }
     }
 
-    public Result<EntityRecord> ReadEntity(string name)
+    public Result<EntityRecord> ReadEntity(string name, EntityType? entityType)
     {
         try
         {
-            var rows = _repository.GetEntityByName(name);
+            var rows = _repository.GetEntityByName(name, entityType!.Value);
 
             if (rows is not null)
             {
@@ -102,17 +101,17 @@ public class CharacterService
         }
     }
 
-    public Result<int> DeleteEntity(string name)
+    public Result<int> DeleteEntity(string name,  EntityType? entityType)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         try
         {
-            var existingEntity = _repository.GetEntityByName(name);
+            var existingEntity = _repository.GetEntityByName(name, entityType!.Value);
 
             if (existingEntity is not null)
             {
-                var rows = _repository.DeleteEntityByName(name);
+                var rows = _repository.DeleteEntityByName(existingEntity.Name, entityType!.Value);
 
                 if (rows == 1)
                 {

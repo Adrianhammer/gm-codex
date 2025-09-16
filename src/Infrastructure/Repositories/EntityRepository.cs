@@ -1,4 +1,5 @@
 using Dapper;
+using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories.Interface;
@@ -78,36 +79,48 @@ public class EntityRepository : IEntityRepository
         var query = @"
             UPDATE Entities
             SET Name = @Name,
-                EntityType = @EntityType,
                 Race = @Race,
                 SubRace = @SubRace,
                 EntityClass = @EntityClass,
                 SubClass = @SubClass,
                 MaxHp = @MaxHp,
                 ArmorClass = @ArmorClass
-                WHERE Id = @Id;";
+                WHERE Id = @Id
+                AND EntityType = @EntityType;";
         
         return connection.Execute(query, characterEntity);
     }
 
-    public EntityRecord? GetEntityByName(string name)
+    public EntityRecord? GetEntityByName(string name, EntityType entityType)
     {
         using var connection = _db.CreateConnection();
         connection.Open();
+
+        var query = @"
+            SELECT Id, Name, EntityType, Race, SubRace, EntityClass, SubClass, MaxHp, ArmorClass
+            FROM Entities
+            WHERE EntityType = @EntityType
+                AND Name = @Name;";
         
-        var query = @"SELECT * FROM Entities WHERE Name = @Name;";
-        
-        return connection.QuerySingleOrDefault<EntityRecord>(query, new { Name = name });
+        return connection.QuerySingleOrDefault<EntityRecord>(query, new
+        {
+            Name = name,
+            EntityType = entityType.ToString().ToLower()
+        });
     }
 
-    public int DeleteEntityByName(string name)
+    public int DeleteEntityByName(string name, EntityType entityType)
     {
         using var connection = _db.CreateConnection();
         connection.Open();
         
-        var query = @"DELETE FROM Entities WHERE Name = @Name;";
+        var query = @"DELETE FROM Entities WHERE EntityType = @EntityType AND Name = @Name;";
 
-        return connection.Execute(query, new { Name = name });
+        return connection.Execute(query, new
+        {
+            Name = name,
+            EntityType = entityType.ToString().ToLower()
+        });
     }
 
     public IEnumerable<EntityRecord> GetAllPlayableCharacters()

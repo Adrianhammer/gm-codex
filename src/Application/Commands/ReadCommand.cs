@@ -19,8 +19,8 @@ public class ReadCommand : Command<ReadSettings>
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
             return -1;
         }
-
-        var result = _characterService.ReadEntity(settings.Name);
+        
+        var result = _characterService.ReadEntity(settings.Name, settings.EntityType );
         ReadPcUi.ViewSingleEntity(result);
         
         return result.Success ? 0 : -1;

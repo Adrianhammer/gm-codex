@@ -22,7 +22,7 @@ public class UpdateNpcCommand : Command<UpdateSettings>
         }
         
         settings.EntityType = context.Name == "npc" ? EntityType.npc : EntityType.pc;
-        
+
         var result = _characterService.UpdateEntity(settings.Name, settings.EntityType, settings.Race, settings.SubRace, settings.EntityClass, settings.SubClass, settings.MaxHp, settings.ArmorClass);
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
