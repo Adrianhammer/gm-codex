@@ -3,9 +3,9 @@ using gm_codex.Domain.Enums;
 using JetBrains.Annotations;
 using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands.Settings;
+namespace gm_codex.Application.Commands.Settings.Entities;
 
-public class DeleteSettings : CommandSettings
+public class DeleteEntitySettings : CommandSettings
 {
     [CommandArgument(0, "<name>")]
     [Description("The name of the entity to delete")]

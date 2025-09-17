@@ -1,26 +1,26 @@
-using gm_codex.Application.Commands.Settings;
+using gm_codex.Application.Commands.Settings.Entities;
 using gm_codex.Application.Services;
 using gm_codex.Presentation.ConsoleUI;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands;
+namespace gm_codex.Application.Commands.Entities;
 
-public class ReadCommand : Command<ReadSettings>
+public class ReadCommand : Command<ReadEntitySettings>
 {
     private readonly CharacterService _characterService;
 
     public ReadCommand(CharacterService characterService) => _characterService = characterService;
 
-    public override int Execute(CommandContext context, ReadSettings settings)
+    public override int Execute(CommandContext context, ReadEntitySettings entitySettings)
     {
-        if (string.IsNullOrWhiteSpace(settings.Name))
+        if (string.IsNullOrWhiteSpace(entitySettings.Name))
         {
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
             return -1;
         }
         
-        var result = _characterService.ReadEntity(settings.Name, settings.EntityType );
+        var result = _characterService.ReadEntity(entitySettings.Name, entitySettings.EntityType );
         ReadPcUi.ViewSingleEntity(result);
         
         return result.Success ? 0 : -1;

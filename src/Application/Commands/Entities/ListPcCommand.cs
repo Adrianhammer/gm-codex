@@ -1,8 +1,8 @@
-﻿using Spectre.Console.Cli;
-using gm_codex.Application.Services;
+﻿using gm_codex.Application.Services;
 using gm_codex.Presentation.ConsoleUI;
+using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands;
+namespace gm_codex.Application.Commands.Entities;
 
 public class ListPcCommand : Command
 {

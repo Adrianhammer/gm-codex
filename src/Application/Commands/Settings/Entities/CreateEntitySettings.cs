@@ -3,15 +3,15 @@ using gm_codex.Domain.Enums;
 using JetBrains.Annotations;
 using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands.Settings;
+namespace gm_codex.Application.Commands.Settings.Entities;
 
-public class UpdateSettings : CommandSettings
+public class CreateEntitySettings : CommandSettings
 {
     [CommandOption("-n|--name <name>")]
     [Description("The name of the entity to be created")]
     [UsedImplicitly]
     public required string Name { get; set; }
-    
+
     [CommandOption("-t|--type <entity>")]
     [Description("The type of the entity to be created")]
     public required EntityType EntityType { get; set; }
@@ -19,7 +19,7 @@ public class UpdateSettings : CommandSettings
     [CommandOption("-r|--race <race>")]
     [Description("The race of the entity to be created")]
     [UsedImplicitly]
-    public Race? Race { get; set; }
+    public required Race Race { get; set; }
     
     [CommandOption("--subrace <subrace>")]
     [Description("The subrace of the entity to be created")]
@@ -29,7 +29,7 @@ public class UpdateSettings : CommandSettings
     [CommandOption("-c|--class <class>")]
     [Description("The class of the entity to be created")]
     [UsedImplicitly]
-    public Class? EntityClass { get; set; }
+    public required Class EntityClass { get; set; }
     
     [CommandOption("--subclass <class>")]
     [Description("The subclass of the entity to be created")]
@@ -45,4 +45,5 @@ public class UpdateSettings : CommandSettings
     [Description("The armor of the entity to be created")]
     [UsedImplicitly]
     public string? ArmorClass  { get; set; }
+    
 }
