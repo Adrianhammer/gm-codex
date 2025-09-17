@@ -1,4 +1,6 @@
 ﻿using gm_codex.Application.Commands;
+using gm_codex.Application.Commands.Encounters;
+using gm_codex.Application.Commands.Entities;
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
@@ -100,11 +102,15 @@ app.Configure(configuration =>
     // Create branch
     configuration.AddBranch("create", create =>
     {
-        create.SetDescription("Create various game entities");
+        create.SetDescription("Create game entities and encounters");
         create.AddCommand<CreatePcCommand>("pc")
             .WithDescription("Create one playable character");
         create.AddCommand<CreateNpcCommand>("npc")
             .WithDescription("Create one non playable character");
+        
+        
+        create.AddCommand<CreateEncounterCommand>("encounter")
+            .WithDescription("Create one encounter");
     });
     
     // Update branch
