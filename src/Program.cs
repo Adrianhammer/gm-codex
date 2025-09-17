@@ -35,6 +35,7 @@ services.AddScoped<EncounterParticipantsRepository>();
 
 // Register services (scoped per command execution)
 services.AddScoped<CharacterService>();
+services.AddScoped<EncounterService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
