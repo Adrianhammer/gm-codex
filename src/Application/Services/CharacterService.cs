@@ -154,7 +154,7 @@ public class CharacterService
             
             if (rows.Count > 0)
             {
-                return Result<List<EntityRecord>>.Ok(rows!);
+                return Result<List<EntityRecord>>.Ok(rows);
             }
             return Result<List<EntityRecord>>.Fail("No playable characters found");
         }
@@ -172,7 +172,7 @@ public class CharacterService
 
             if (rows.Count > 0)
             {
-                return Result<List<EntityRecord>>.Ok(rows!);
+                return Result<List<EntityRecord>>.Ok(rows);
             }
             return Result<List<EntityRecord>>.Fail("No npc`s found");
 
