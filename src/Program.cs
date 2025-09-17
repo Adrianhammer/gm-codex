@@ -29,8 +29,6 @@ services.AddSingleton<IConfiguration>(config);
 
 // Register infrastructure
 services.AddScoped<DbConnector>();
-services.AddScoped<EntityRepository>();
-services.AddScoped<EncounterRepository>();
 services.AddScoped<EncounterParticipantsRepository>();
 
 // Register services (scoped per command execution)
@@ -71,7 +69,7 @@ app.Configure(configuration =>
 {
     // Help
     configuration.AddCommand<HelpCommand>("help")
-        .WithDescription("Show deatiled help with examples");
+        .WithDescription("Show detailed help with examples");
 
     // List branch
     configuration.AddBranch("list", list =>
