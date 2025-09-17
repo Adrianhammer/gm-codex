@@ -11,7 +11,7 @@ public class ListNpcCommand : Command
     public ListNpcCommand(CharacterService characterService) => _characterService = characterService;
 
     public override int Execute(CommandContext context)
-    { 
+    {
         var result = _characterService.ListNonPlayableCharacters();
         ReadPcUi.ViewEntitiesByType(result);
         return 0;

@@ -33,8 +33,8 @@ public class CharacterServiceTests
             return 1;
         }
 
-        public EntityRecord? GetEntityByName(string name) => null;
-        public int DeleteEntityByName(string name) => 1; 
+        public EntityRecord? GetEntityByName(string name, EntityType entityType) => null;
+        public int DeleteEntityByName(string name, EntityType entityType) => 1; 
         public IEnumerable<EntityRecord> GetAllPlayableCharacters() => Enumerable.Empty<EntityRecord>();
         public IEnumerable<EntityRecord> GetAllNonPlayableCharacters() => Enumerable.Empty<EntityRecord>();
         
@@ -97,7 +97,7 @@ public class CharacterServiceTests
     {
         var mockRepo = new Mock<IEntityRepository>();
         
-        mockRepo.Setup(r => r.GetEntityByName("aragorn"))
+        mockRepo.Setup(r => r.GetEntityByName("aragorn", EntityType.pc))
             .Returns(new EntityRecord
             {
                 Id = 1,
@@ -131,7 +131,7 @@ public class CharacterServiceTests
         var fakeRepo = new FakeEntityRepository();
         var service = new CharacterService(fakeRepo);
         
-        service.DeleteEntity("");
+        service.DeleteEntity("", EntityType.pc);
         
         Assert.False(fakeRepo.InsertWasCalled);
     }

@@ -91,8 +91,10 @@ app.Configure(configuration =>
     configuration.AddBranch("delete", delete =>
     {
         delete.SetDescription("Delete various game entities");
-        delete.AddCommand<DeleteCommand>("entity")
-            .WithDescription("Delete one entity");
+        delete.AddCommand<DeletePcCommand>("pc")
+            .WithDescription("Delete one playable character");
+        delete.AddCommand<DeleteNpcCommand>("npc")
+            .WithDescription("Delete one non-playable character");
     });
 
     // Create branch
