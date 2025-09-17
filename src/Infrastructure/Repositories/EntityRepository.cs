@@ -29,8 +29,9 @@ public class EntityRepository : IEntityRepository
                         EntityClass TEXT NOT NULL,
                         SubClass TEXT,
                         MaxHp INTEGER,
-                        ArmorClass Integer
-                    )";
+                        ArmorClass INTEGER,
+                        UNIQUE(Name, EntityType)
+                    );";
         
         connection.Execute(query);
     }

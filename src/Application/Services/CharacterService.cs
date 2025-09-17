@@ -57,11 +57,8 @@ public class CharacterService
         {
             return Result<int>.Fail(e.Message);
         }
-        
-        
-
-        
     }
+    
 
     public Result<int> UpdateEntity(string name, EntityType entityType, Race? race, string? subRace, Class? characterClass, string? subClass, string? maxHp, string? armorClass)
     {
