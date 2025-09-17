@@ -39,6 +39,7 @@ services.AddScoped<EncounterService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
+services.AddScoped<IEncounterRepository, EncounterRepository>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
