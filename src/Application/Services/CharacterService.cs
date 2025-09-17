@@ -91,20 +91,22 @@ public class CharacterService
                 }
                 catch (Exception e)
                 {
-                    return Result<int>.Fail($"WHAT " + e.Message);
+                    return Result<int>.Fail($"Update failed: {e.Message}");
                 }
         }
         catch (Exception e)
         {
-            return Result<int>.Fail($"HERE " + e.Message);
+            return Result<int>.Fail($"Update failed: {e.Message}");
         }
     }
 
-    public Result<EntityRecord> ReadEntity(string name, EntityType? entityType)
+    public Result<EntityRecord> ReadEntity(string name, EntityType entityType)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        
         try
         {
-            var rows = _repository.GetEntityByName(name, entityType!.Value);
+            var rows = _repository.GetEntityByName(name, entityType);
 
             if (rows is not null)
             {
@@ -118,24 +120,24 @@ public class CharacterService
         }
     }
 
-    public Result<int> DeleteEntity(string name,  EntityType? entityType)
+    public Result<int> DeleteEntity(string name,  EntityType entityType)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         try
         {
-            var existingEntity = _repository.GetEntityByName(name, entityType!.Value);
+            var existingEntity = _repository.GetEntityByName(name, entityType);
 
             if (existingEntity is not null)
             {
-                var rows = _repository.DeleteEntityByName(existingEntity.Name, entityType!.Value);
+                var rows = _repository.DeleteEntityByName(existingEntity.Name, entityType);
 
                 if (rows == 1)
                 {
                     return Result<int>.Ok(rows);
                 }
             }
-            return Result<int>.Fail("Could not find entity with the name:");
+            return Result<int>.Fail($"Could not find entity with name '{name}' of type '{entityType}'");
         }
         catch (Exception e)
         { 
