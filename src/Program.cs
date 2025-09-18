@@ -30,6 +30,8 @@ services.AddSingleton<IConfiguration>(config);
 // Register infrastructure
 services.AddScoped<DbConnector>();
 services.AddScoped<EncounterParticipantsRepository>();
+services.AddScoped<EntityRepository>();
+services.AddScoped<EncounterRepository>();
 
 // Register services (scoped per command execution)
 services.AddScoped<CharacterService>();
@@ -79,14 +81,20 @@ app.Configure(configuration =>
             .WithDescription("List all playable characters");
         list.AddCommand<ListNpcCommand>("npc")
             .WithDescription("List all non playable characters");
+        
+        
     });
 
     // Read branch
     configuration.AddBranch("read", read =>
     {
-        read.SetDescription("Read various game entities");
-        read.AddCommand<ReadCommand>("entity")
+        read.SetDescription("Read game entities, encounters and encounter participants");
+        // Entities
+        read.AddCommand<ReadEntityCommand>("entity")
             .WithDescription("Read one entity");
+        // Encounters
+        read.AddCommand<ReadEncounterCommand>("encounter")
+            .WithDescription("Get info on one encounter");
     });
 
     // Delete branch
@@ -103,12 +111,12 @@ app.Configure(configuration =>
     configuration.AddBranch("create", create =>
     {
         create.SetDescription("Create game entities and encounters");
+        // Entities
         create.AddCommand<CreatePcCommand>("pc")
             .WithDescription("Create one playable character");
         create.AddCommand<CreateNpcCommand>("npc")
             .WithDescription("Create one non playable character");
-        
-        
+        // Encounters
         create.AddCommand<CreateEncounterCommand>("encounter")
             .WithDescription("Create one encounter");
     });
