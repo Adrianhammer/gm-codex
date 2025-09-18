@@ -51,7 +51,7 @@ public class EncounterRepository : IEncounterRepository
         using var connection = _db.CreateConnection();
         connection.Open();
         
-        var query = @"SELECT Id FROM Encounters WHERE Name = @Name";
+        var query = @"SELECT * FROM Encounters WHERE Name = @Name";
         
         return connection.QuerySingleOrDefault<EncounterRecord>(query, new EncounterRecord { Name = name });
         

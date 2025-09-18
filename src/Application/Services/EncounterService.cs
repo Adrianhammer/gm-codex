@@ -1,5 +1,6 @@
 using gm_codex.Application.Common;
 using gm_codex.Domain.Models;
+using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories.Interface;
 
 namespace gm_codex.Application.Services;
@@ -40,6 +41,25 @@ public class EncounterService
         catch (Exception e)
         {
             return Result<int>.Fail($"Create encounter failed: {e.Message}");
+        }
+    }
+
+    public Result<EncounterRecord> ReadEncounter(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        try
+        {
+            var encounter = _repository.GetEncounter(name);
+            if (encounter is null)
+            {
+                return Result<EncounterRecord>.Fail($"Encounter '{name}' not found");
+            }
+            return Result<EncounterRecord>.Ok(encounter);
+        }
+        catch (Exception e)
+        {
+            return Result<EncounterRecord>.Fail($"Read encounter failed: {e.Message}");
         }
     }
 }
