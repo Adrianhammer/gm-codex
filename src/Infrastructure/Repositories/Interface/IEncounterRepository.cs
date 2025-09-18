@@ -8,4 +8,5 @@ public interface IEncounterRepository
     void CreateTable();
     int InsertEncounter(Encounter encounter);
     EncounterRecord? GetEncounter(string name);
+    IEnumerable<EncounterRecord> GetAllEncounters();
 }

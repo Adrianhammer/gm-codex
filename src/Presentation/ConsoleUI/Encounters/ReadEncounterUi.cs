@@ -6,7 +6,6 @@ namespace gm_codex.Presentation.ConsoleUI.Encounters;
 
 public class ReadEncounterUi
 {
-
     public static void ViewEncounter(Result<EncounterRecord> result)
     {
         if (!result.Success)
@@ -26,6 +25,31 @@ public class ReadEncounterUi
                 encounter!.Name,
                 encounter.Description ?? "-"
             );
+        
+        AnsiConsole.Write(table);
+    }
+
+    public static void ViewAllEncounters(Result<List<EncounterRecord>> result)
+    {
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+            return;
+        }
+        
+        var encounters = result.Value;
+        var table = new Table().RoundedBorder();
+        
+        table
+            .AddColumn("Name")
+            .AddColumn("Description");
+
+        foreach (var encounter in encounters!)
+        {
+            table.AddRow(
+                encounter.Name,
+                encounter.Description ?? "-");
+        }
         
         AnsiConsole.Write(table);
     }

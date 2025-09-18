@@ -77,10 +77,14 @@ app.Configure(configuration =>
     configuration.AddBranch("list", list =>
     {
         list.SetDescription("List various game entities");
+        // Entities
         list.AddCommand<ListPcCommand>("pc")
             .WithDescription("List all playable characters");
         list.AddCommand<ListNpcCommand>("npc")
             .WithDescription("List all non playable characters");
+        // Encounters
+        list.AddCommand<ListEncounterCommand>("encounter")
+            .WithDescription("List all encounters");
         
         
     });

@@ -54,6 +54,15 @@ public class EncounterRepository : IEncounterRepository
         var query = @"SELECT * FROM Encounters WHERE Name = @Name";
         
         return connection.QuerySingleOrDefault<EncounterRecord>(query, new EncounterRecord { Name = name });
+    }
+
+    public IEnumerable<EncounterRecord> GetAllEncounters()
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
         
+        var query = @"SELECT * FROM Encounters";
+        
+        return connection.Query<EncounterRecord>(query);
     }
 }

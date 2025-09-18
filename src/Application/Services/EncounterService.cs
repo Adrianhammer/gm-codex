@@ -62,4 +62,21 @@ public class EncounterService
             return Result<EncounterRecord>.Fail($"Read encounter failed: {e.Message}");
         }
     }
+
+    public Result<List<EncounterRecord>> ListAllEncounters()
+    {
+        try
+        {
+            var encounters = _repository.GetAllEncounters().ToList();
+            if (encounters.Count > 0)
+            {
+                return Result<List<EncounterRecord>>.Ok(encounters);
+            }
+            return Result<List<EncounterRecord>>.Fail("Encounters not found");
+        }
+        catch (Exception e)
+        {
+            return Result<List<EncounterRecord>>.Fail($"List encounters failed: {e.Message}");
+        }
+    }
 }
