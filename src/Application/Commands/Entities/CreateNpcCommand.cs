@@ -1,7 +1,7 @@
 using gm_codex.Application.Commands.Settings.Entities;
 using gm_codex.Application.Services;
 using gm_codex.Domain.Enums;
-using gm_codex.Presentation.ConsoleUI;
+using gm_codex.Presentation.ConsoleUI.Entities;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
