@@ -79,4 +79,29 @@ public class EncounterService
             return Result<List<EncounterRecord>>.Fail($"List encounters failed: {e.Message}");
         }
     }
+
+    public Result<int> DeleteEncounter(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        try
+        {
+            var existingEncounter = _repository.GetEncounter(name);
+            
+            if (existingEncounter is not null)
+            {
+                var rows = _repository.DeleteEncounter(name);
+                if (rows == 1)
+                {
+                    return Result<int>.Ok(rows);
+                }
+            }
+            return Result<int>.Fail($"Encounter '{name}' not found");
+            
+        }
+        catch (Exception e)
+        {
+            return Result<int>.Fail($"Delete encounter failed: {e.Message}");
+        }
+    }
 }

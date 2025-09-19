@@ -9,4 +9,5 @@ public interface IEncounterRepository
     int InsertEncounter(Encounter encounter);
     EncounterRecord? GetEncounter(string name);
     IEnumerable<EncounterRecord> GetAllEncounters();
+    int DeleteEncounter(string name);
 }

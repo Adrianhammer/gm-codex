@@ -65,4 +65,13 @@ public class EncounterRepository : IEncounterRepository
         
         return connection.Query<EncounterRecord>(query);
     }
+
+    public int DeleteEncounter(string name)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"DELETE FROM Encounters WHERE Name = @Name";
+        return connection.Execute(query, new EncounterRecord { Name = name });
+    }
 }

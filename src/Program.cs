@@ -85,8 +85,6 @@ app.Configure(configuration =>
         // Encounters
         list.AddCommand<ListEncounterCommand>("encounter")
             .WithDescription("List all encounters");
-        
-        
     });
 
     // Read branch
@@ -105,10 +103,14 @@ app.Configure(configuration =>
     configuration.AddBranch("delete", delete =>
     {
         delete.SetDescription("Delete various game entities");
+        // Entities
         delete.AddCommand<DeletePcCommand>("pc")
             .WithDescription("Delete one playable character");
         delete.AddCommand<DeleteNpcCommand>("npc")
             .WithDescription("Delete one non-playable character");
+        // Encounters
+        delete.AddCommand<DeleteEncounterCommand>("encounter")
+            .WithDescription("Delete one encounter");
     });
 
     // Create branch
