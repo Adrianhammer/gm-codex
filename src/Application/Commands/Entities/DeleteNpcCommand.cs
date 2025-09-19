@@ -9,9 +9,9 @@ namespace gm_codex.Application.Commands.Entities;
 
 public class DeleteNpcCommand : Command<DeleteEntitySettings>
 {
-    private readonly CharacterService _characterService;
+    private readonly EntityService _entityService;
 
-    public DeleteNpcCommand(CharacterService characterService) => _characterService = characterService;
+    public DeleteNpcCommand(EntityService entityService) => _entityService = entityService;
 
     public override int Execute(CommandContext context, DeleteEntitySettings entitySettings)
     {
@@ -23,7 +23,7 @@ public class DeleteNpcCommand : Command<DeleteEntitySettings>
         
         entitySettings.EntityType = context.Name == "npc" ? EntityType.npc : EntityType.pc;
         
-        var result = _characterService.DeleteEntity(entitySettings.Name, entitySettings.EntityType);
+        var result = _entityService.DeleteEntity(entitySettings.Name, entitySettings.EntityType);
         DeleteEntityUi.ViewDeleteEntity(result, entitySettings.Name);
         return result.Success ? 0 : -1;
     }

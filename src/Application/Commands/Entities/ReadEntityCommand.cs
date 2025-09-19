@@ -8,9 +8,9 @@ namespace gm_codex.Application.Commands.Entities;
 
 public class ReadEntityCommand : Command<ReadEntitySettings>
 {
-    private readonly CharacterService _characterService;
+    private readonly EntityService _entityService;
 
-    public ReadEntityCommand(CharacterService characterService) => _characterService = characterService;
+    public ReadEntityCommand(EntityService entityService) => _entityService = entityService;
 
     public override int Execute(CommandContext context, ReadEntitySettings entitySettings)
     {
@@ -20,7 +20,7 @@ public class ReadEntityCommand : Command<ReadEntitySettings>
             return -1;
         }
         
-        var result = _characterService.ReadEntity(entitySettings.Name, entitySettings.EntityType );
+        var result = _entityService.ReadEntity(entitySettings.Name, entitySettings.EntityType);
         ReadPcUi.ViewSingleEntity(result);
         return result.Success ? 0 : -1;
     }

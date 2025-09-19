@@ -9,9 +9,9 @@ namespace gm_codex.Application.Commands.Entities;
 
 public class CreatePcCommand : Command<CreateEntitySettings>
 {
-    private readonly CharacterService _characterService;
+    private readonly EntityService _entityService;
 
-    public CreatePcCommand(CharacterService characterService) => _characterService = characterService;
+    public CreatePcCommand(EntityService entityService) => _entityService = entityService;
 
     public override int Execute(CommandContext context, CreateEntitySettings entitySettings)
     {
@@ -23,7 +23,7 @@ public class CreatePcCommand : Command<CreateEntitySettings>
 
         entitySettings.EntityType = context.Name == "pc" ? EntityType.pc : EntityType.npc;
         
-        var result = _characterService.CreateEntity(entitySettings.Name, entitySettings.EntityType, entitySettings.Race, entitySettings.SubRace, entitySettings.EntityClass, entitySettings.SubClass, entitySettings.MaxHp, entitySettings.ArmorClass);
+        var result = _entityService.CreateEntity(entitySettings.Name, entitySettings.EntityType, entitySettings.Race, entitySettings.SubRace, entitySettings.EntityClass, entitySettings.SubClass, entitySettings.MaxHp, entitySettings.ArmorClass);
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }

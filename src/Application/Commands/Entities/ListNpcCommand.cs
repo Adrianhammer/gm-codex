@@ -6,13 +6,13 @@ namespace gm_codex.Application.Commands.Entities;
 
 public class ListNpcCommand : Command
 {
-    private readonly CharacterService _characterService;
+    private readonly EntityService _entityService;
     
-    public ListNpcCommand(CharacterService characterService) => _characterService = characterService;
+    public ListNpcCommand(EntityService entityService) => _entityService = entityService;
 
     public override int Execute(CommandContext context)
     {
-        var result = _characterService.ListNonPlayableCharacters();
+        var result = _entityService.ListNonPlayableCharacters();
         ReadPcUi.ViewEntitiesByType(result);
         return 0;
     }

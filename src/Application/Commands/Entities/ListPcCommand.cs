@@ -6,11 +6,11 @@ namespace gm_codex.Application.Commands.Entities;
 
 public class ListPcCommand : Command
 {
-    private readonly CharacterService _characterService;
-    public ListPcCommand(CharacterService characterService) => _characterService = characterService;
+    private readonly EntityService _entityService;
+    public ListPcCommand(EntityService entityService) => _entityService = entityService;
     public override int Execute(CommandContext context)
     {
-        var result = _characterService.ListPlayableCharacters();
+        var result = _entityService.ListPlayableCharacters();
         ReadPcUi.ViewEntitiesByType(result);
         
         return result.Success ? 0 : -1;

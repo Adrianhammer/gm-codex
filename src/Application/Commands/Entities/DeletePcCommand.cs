@@ -9,9 +9,9 @@ namespace gm_codex.Application.Commands.Entities;
 
 public class DeletePcCommand : Command<DeleteEntitySettings>
 {
-    private readonly CharacterService _characterService;
+    private readonly EntityService _entityService;
 
-    public DeletePcCommand(CharacterService characterService) => _characterService = characterService;
+    public DeletePcCommand(EntityService entityService) => _entityService = entityService;
 
     public override int Execute(CommandContext context, DeleteEntitySettings entitySettings)
     {
@@ -23,7 +23,7 @@ public class DeletePcCommand : Command<DeleteEntitySettings>
         
         entitySettings.EntityType = context.Name == "pc" ? EntityType.pc : EntityType.npc;
         
-        var result = _characterService.DeleteEntity(entitySettings.Name, entitySettings.EntityType);
+        var result = _entityService.DeleteEntity(entitySettings.Name, entitySettings.EntityType);
         DeleteEntityUi.ViewDeleteEntity(result, entitySettings.Name);
         return result.Success ? 0 : -1;
     }
