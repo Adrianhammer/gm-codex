@@ -1,6 +1,7 @@
 using gm_codex.Application.Common;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
+using gm_codex.Infrastructure.Data.Mappers;
 using gm_codex.Infrastructure.Repositories.Interface;
 
 namespace gm_codex.Application.Services;
@@ -41,6 +42,41 @@ public class EncounterService
         catch (Exception e)
         {
             return Result<int>.Fail($"Create encounter failed: {e.Message}");
+        }
+    }
+
+    public Result<int> UpdateEncounter(string name, string? description)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        try
+        {
+            var existingEncounter = _repository.GetEncounter(name);
+            
+            if (existingEncounter is null)
+            {
+                return Result<int>.Fail($"Encounter '{name}' does not exist");
+            }
+            
+            var encounter = EncounterMapper.ToDomain(existingEncounter);
+            if(name != encounter.Name) encounter.Name = name;
+            if (description != encounter.Description) encounter.Description = description;
+
+            try
+            {
+                var rows = _repository.UpdateEncounter(encounter);
+                return rows == 1 ? Result<int>.Ok(rows) : Result<int>.Fail($"Failed to update encounter '{name}'"); 
+            }
+            catch (Exception e)
+            {
+                return Result<int>.Fail($"Failed to update encounter '{name}': {e.Message}");
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 

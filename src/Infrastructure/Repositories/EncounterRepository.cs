@@ -1,5 +1,4 @@
 using Dapper;
-using gm_codex.Application.Common;
 using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories.Interface;
@@ -43,7 +42,24 @@ public class EncounterRepository : IEncounterRepository
         var query = @"INSERT INTO Encounters (Name, Description) VALUES (@Name, @Description)";
         
         return connection.Execute(query, encounterRecord);
+    }
+
+    public int UpdateEncounter(Encounter encounter)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+
+        var encounterRecord = new EncounterRecord
+        {
+            Id = encounter.Id,
+            Name = encounter.Name,
+            Description = encounter.Description,
+        };
+
+        var query = @"UPDATE Encounters SET Name = @Name, Description = @Description WHERE Id = @Id";
         
+        return connection.Execute(query, encounterRecord);
+
     }
 
     public EncounterRecord? GetEncounter(string name)

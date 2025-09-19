@@ -98,7 +98,7 @@ public class EntityRepository : IEntityRepository
         connection.Open();
 
         var query = @"
-            SELECT Id, Name, EntityType, Race, SubRace, EntityClass, SubClass, MaxHp, ArmorClass
+            SELECT *
             FROM Entities
             WHERE EntityType = @EntityType
                 AND Name = @Name;";

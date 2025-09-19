@@ -34,7 +34,7 @@ services.AddScoped<EntityRepository>();
 services.AddScoped<EncounterRepository>();
 
 // Register services (scoped per command execution)
-services.AddScoped<CharacterService>();
+services.AddScoped<EntityService>();
 services.AddScoped<EncounterService>();
 
 // Register Interface
@@ -131,10 +131,14 @@ app.Configure(configuration =>
     configuration.AddBranch("update", update =>
     {
         update.SetDescription("Update various game entities");
+        // Entities
         update.AddCommand<UpdatePcCommand>("pc")
             .WithDescription("Update one entity");
         update.AddCommand<UpdateNpcCommand>("npc")
             .WithDescription("Update one non playable character");
+        // Encounters
+        update.AddCommand<UpdateEncounterCommand>("encounter")
+            .WithDescription("Update one encounter");
     });
 });
 
