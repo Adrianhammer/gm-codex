@@ -11,7 +11,7 @@ using Xunit;
 namespace gm_codex.Tests.Application.Services;
 
 
-public class CharacterServiceTests
+public class EntityServiceTests
 {
     //fake repo
     private class FakeEntityRepository : IEntityRepository
@@ -44,7 +44,7 @@ public class CharacterServiceTests
     public void CreateEntity_Should_Throw_When_Name_Is_Empty()
     {
         var fakeRepo = new FakeEntityRepository();
-        var service = new CharacterService(fakeRepo);
+        var service = new EntityService(fakeRepo);
 
         Assert.Throws<ArgumentException>(() =>
             service.CreateEntity("", EntityType.pc, Race.human, null, Class.ranger, null, "20", "15"));
@@ -61,7 +61,7 @@ public class CharacterServiceTests
         mockRepo.Setup(r => r.InsertEntity(It.IsAny<Entity>()))
             .Returns(1);
         
-        var service = new CharacterService(mockRepo.Object);
+        var service = new EntityService(mockRepo.Object);
 
         
         //act
@@ -86,7 +86,7 @@ public class CharacterServiceTests
     public void UpdateEntity_Should_Throw_When_Name_Is_Empty()
     {
         var fakeRepo = new FakeEntityRepository();
-        var service = new CharacterService(fakeRepo);
+        var service = new EntityService(fakeRepo);
         
         Assert.Throws<ArgumentException>(() =>
             service.UpdateEntity("", EntityType.pc, Race.human, null, Class.ranger, null, "20", "15"));
@@ -109,7 +109,7 @@ public class CharacterServiceTests
                 ArmorClass = "15"
             });
         
-        var service = new CharacterService(mockRepo.Object);
+        var service = new EntityService(mockRepo.Object);
         
         service.UpdateEntity("aragorn", EntityType.pc, Race.human, null, Class.ranger, null, "20", "20");
         
@@ -129,7 +129,7 @@ public class CharacterServiceTests
     public void DeleteEntity_Should_Not_Call_Repo_When_Name_Is_Empty()
     {
         var fakeRepo = new FakeEntityRepository();
-        var service = new CharacterService(fakeRepo);
+        var service = new EntityService(fakeRepo);
         
         service.DeleteEntity("", EntityType.pc);
         
