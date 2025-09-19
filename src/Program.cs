@@ -1,4 +1,6 @@
 ﻿using gm_codex.Application.Commands;
+using gm_codex.Application.Commands.Encounters;
+using gm_codex.Application.Commands.Entities;
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
@@ -27,15 +29,17 @@ services.AddSingleton<IConfiguration>(config);
 
 // Register infrastructure
 services.AddScoped<DbConnector>();
+services.AddScoped<EncounterParticipantsRepository>();
 services.AddScoped<EntityRepository>();
 services.AddScoped<EncounterRepository>();
-services.AddScoped<EncounterParticipantsRepository>();
 
 // Register services (scoped per command execution)
-services.AddScoped<CharacterService>();
+services.AddScoped<EntityService>();
+services.AddScoped<EncounterService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
+services.AddScoped<IEncounterRepository, EncounterRepository>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
@@ -67,54 +71,74 @@ app.Configure(configuration =>
 {
     // Help
     configuration.AddCommand<HelpCommand>("help")
-        .WithDescription("Show deatiled help with examples");
+        .WithDescription("Show detailed help with examples");
 
     // List branch
     configuration.AddBranch("list", list =>
     {
         list.SetDescription("List various game entities");
+        // Entities
         list.AddCommand<ListPcCommand>("pc")
             .WithDescription("List all playable characters");
         list.AddCommand<ListNpcCommand>("npc")
             .WithDescription("List all non playable characters");
+        // Encounters
+        list.AddCommand<ListEncounterCommand>("encounter")
+            .WithDescription("List all encounters");
     });
 
     // Read branch
     configuration.AddBranch("read", read =>
     {
-        read.SetDescription("Read various game entities");
-        read.AddCommand<ReadCommand>("entity")
+        read.SetDescription("Read game entities, encounters and encounter participants");
+        // Entities
+        read.AddCommand<ReadEntityCommand>("entity")
             .WithDescription("Read one entity");
+        // Encounters
+        read.AddCommand<ReadEncounterCommand>("encounter")
+            .WithDescription("Get info on one encounter");
     });
 
     // Delete branch
     configuration.AddBranch("delete", delete =>
     {
         delete.SetDescription("Delete various game entities");
+        // Entities
         delete.AddCommand<DeletePcCommand>("pc")
             .WithDescription("Delete one playable character");
         delete.AddCommand<DeleteNpcCommand>("npc")
             .WithDescription("Delete one non-playable character");
+        // Encounters
+        delete.AddCommand<DeleteEncounterCommand>("encounter")
+            .WithDescription("Delete one encounter");
     });
 
     // Create branch
     configuration.AddBranch("create", create =>
     {
-        create.SetDescription("Create various game entities");
+        create.SetDescription("Create game entities and encounters");
+        // Entities
         create.AddCommand<CreatePcCommand>("pc")
             .WithDescription("Create one playable character");
         create.AddCommand<CreateNpcCommand>("npc")
             .WithDescription("Create one non playable character");
+        // Encounters
+        create.AddCommand<CreateEncounterCommand>("encounter")
+            .WithDescription("Create one encounter");
     });
     
     // Update branch
     configuration.AddBranch("update", update =>
     {
         update.SetDescription("Update various game entities");
+        // Entities
         update.AddCommand<UpdatePcCommand>("pc")
             .WithDescription("Update one entity");
         update.AddCommand<UpdateNpcCommand>("npc")
             .WithDescription("Update one non playable character");
+        // Encounters
+        update.AddCommand<UpdateEncounterCommand>("encounter")
+            .WithDescription("Update one encounter");
     });
 });
 

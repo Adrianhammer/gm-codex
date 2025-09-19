@@ -2,11 +2,10 @@ using gm_codex.Application.Common;
 using gm_codex.Infrastructure.Data;
 using Spectre.Console;
 
-namespace gm_codex.Presentation.ConsoleUI;
+namespace gm_codex.Presentation.ConsoleUI.Entities;
 
 public static class ReadPcUi
 {
-
     public static void ViewConfirmation(Result<int> result)
     {
         if (!result.Success)

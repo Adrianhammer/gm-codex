@@ -3,9 +3,9 @@ using gm_codex.Domain.Enums;
 using JetBrains.Annotations;
 using Spectre.Console.Cli;
 
-namespace gm_codex.Application.Commands.Settings;
+namespace gm_codex.Application.Commands.Settings.Entities;
 
-public class ReadSettings : CommandSettings
+public class ReadEntitySettings : CommandSettings
 {
     [CommandArgument(0, "<name>")]
     [Description("The name of the entity to read")]

@@ -1,7 +1,7 @@
 ﻿using gm_codex.Application.Common;
 using Spectre.Console;
 
-namespace gm_codex.Presentation.ConsoleUI;
+namespace gm_codex.Presentation.ConsoleUI.Entities;
 
 public class DeleteEntityUi
 {

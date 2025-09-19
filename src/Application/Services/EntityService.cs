@@ -7,10 +7,10 @@ using gm_codex.Infrastructure.Repositories.Interface;
 
 namespace gm_codex.Application.Services;
 
-public class CharacterService
+public class EntityService
 {
     private readonly IEntityRepository _repository;
-    public CharacterService(IEntityRepository repository) => _repository = repository;
+    public EntityService(IEntityRepository repository) => _repository = repository;
     
     public Result<int> CreateEntity(string name, EntityType entityType, Race race, string? subRace, Class characterClass, string? subClass, string? maxHp, string? armorClass)
     {
@@ -74,6 +74,7 @@ public class CharacterService
             }
 
             var entity = EntityMapper.ToDomain(existingEntity);
+            
                 entity.EntityType = entityType;
                 if (race is not null) entity.Race = race.Value;
                 if (subRace is not null) entity.SubRace = subRace;
@@ -154,7 +155,7 @@ public class CharacterService
             
             if (rows.Count > 0)
             {
-                return Result<List<EntityRecord>>.Ok(rows!);
+                return Result<List<EntityRecord>>.Ok(rows);
             }
             return Result<List<EntityRecord>>.Fail("No playable characters found");
         }
@@ -172,7 +173,7 @@ public class CharacterService
 
             if (rows.Count > 0)
             {
-                return Result<List<EntityRecord>>.Ok(rows!);
+                return Result<List<EntityRecord>>.Ok(rows);
             }
             return Result<List<EntityRecord>>.Fail("No npc`s found");
 
