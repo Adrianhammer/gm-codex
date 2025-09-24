@@ -51,7 +51,7 @@ public class EncounterParticipantService
 
                 for (int i = 0; i < count; i++)
                 {
-                    var participant = BuildParticipant(existingEncounter.Id, domainEntity, existingCount + i);
+                    var participant = BuildParticipant(existingEncounter.Id, domainEntity, existingCount + i + 1);
                     insertedCount += _participantRepository.InsertParticipant(participant);
                 }
             }

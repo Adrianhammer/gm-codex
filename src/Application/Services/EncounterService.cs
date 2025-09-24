@@ -9,8 +9,13 @@ namespace gm_codex.Application.Services;
 public class EncounterService
 {
     private readonly IEncounterRepository _repository;
-    
-    public EncounterService(IEncounterRepository repository) => _repository = repository;
+    private readonly IEncounterParticipantRepository _participantRepository;
+
+    public EncounterService(IEncounterRepository repository, IEncounterParticipantRepository participantRepository)
+    {
+        _repository = repository;
+        _participantRepository = participantRepository;
+    } 
     
     public Result<int> CreateEncounter(string name, string? description)
     {
@@ -91,6 +96,10 @@ public class EncounterService
             {
                 return Result<EncounterRecord>.Fail($"Encounter '{name}' not found");
             }
+
+            var participants = _participantRepository.GetEncounterById(encounter.Id);
+            encounter.Participants = participants.ToList();
+            
             return Result<EncounterRecord>.Ok(encounter);
         }
         catch (Exception e)

@@ -16,15 +16,41 @@ public class ReadEncounterUi
         
         var encounter = result.Value;
         var table = new Table().RoundedBorder();
-
+        
+        AnsiConsole.Write(
+            new Panel(string.IsNullOrEmpty(encounter?.Description) ? "No Description" : encounter.Description)
+                .Header($"[bold yellow]{encounter?.Name}[/]")
+                .Border(BoxBorder.Rounded)
+                .BorderStyle(new Style(Color.Grey))
+        );
+        
         table
-            .AddColumn("Name")
-            .AddColumn("Description");
+            .BorderColor(Color.Grey)
+            .AddColumn("[yellow]Name[/]")
+            .AddColumn("[green]Description[/]")
+            .AddColumn("[red]HP[/]")
+            .AddColumn("[blue]Initiative[/]")
+            .AddColumn("[purple]Conditions[/]");
 
-        table.AddRow(
-                encounter!.Name,
-                encounter.Description ?? "-"
-            );
+        if (encounter?.Participants.Count == 0)
+        {
+            table.AddRow("-", "-", "-", "-", "-");
+        }
+        else
+        {
+            int index = 1;
+            foreach (var p in encounter!.Participants)
+            {
+                table.AddRow(
+                    index.ToString(),
+                    p.DisplayName ?? "-",
+                    p.CurrentHp.ToString(),
+                    p.Initiative.ToString(),
+                    p.Conditions ?? "-"
+                );
+                index++;
+            }
+        }
         
         AnsiConsole.Write(table);
     }

@@ -45,6 +45,16 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
         return enc;
     }
 
+    public IEnumerable<EncounterParticipantRecord> GetEncounterById(int encounterId)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"SELECT * FROM EncounterParticipants WHERE EncounterId = @EncounterId";
+        
+        return connection.Query<EncounterParticipantRecord>(query, new EncounterParticipantRecord { EncounterId = encounterId });
+    }
+
     public int GetParticipantCount(int encounterId, int entityId)
     {
         using var connection = _db.CreateConnection();
