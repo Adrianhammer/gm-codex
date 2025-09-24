@@ -85,6 +85,9 @@ app.Configure(configuration =>
         // Encounters
         list.AddCommand<ListEncounterCommand>("encounter")
             .WithDescription("List all encounters");
+        // All
+        list.AddCommand<ListAllCommand>("all")
+            .WithDescription("List everything");
     });
 
     // Read branch

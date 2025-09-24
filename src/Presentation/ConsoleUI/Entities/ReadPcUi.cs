@@ -57,8 +57,8 @@ public static class ReadPcUi
             AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
             return;
         }
-        
-        var table = new Table().RoundedBorder();
+
+        var table = new Table().RoundedBorder().Title(result.Value!.FirstOrDefault()?.EntityType == "pc" ? "[blue]Playable characters[/]" : "[red]Non-Playable characters[/]");
 
         table
             .AddColumn("Name")
