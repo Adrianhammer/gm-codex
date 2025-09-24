@@ -14,6 +14,7 @@ public enum Race
     erina,
     gearforged,
     gnome,
+    goblinoid,
     halfelf,
     halforc,
     halfling,
