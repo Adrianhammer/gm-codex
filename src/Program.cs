@@ -9,6 +9,7 @@ using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Spectre.Console.Cli;
 
 // --------------------
@@ -32,14 +33,17 @@ services.AddScoped<DbConnector>();
 services.AddScoped<EncounterParticipantsRepository>();
 services.AddScoped<EntityRepository>();
 services.AddScoped<EncounterRepository>();
+services.AddScoped<EncounterParticipantsRepository>();
 
 // Register services (scoped per command execution)
 services.AddScoped<EntityService>();
 services.AddScoped<EncounterService>();
+services.AddScoped<EncounterParticipantService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
 services.AddScoped<IEncounterRepository, EncounterRepository>();
+services.AddScoped<IEncounterParticipantRepository, EncounterParticipantsRepository>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
@@ -143,6 +147,10 @@ app.Configure(configuration =>
         update.AddCommand<UpdateEncounterCommand>("encounter")
             .WithDescription("Update one encounter");
     });
+    
+    // Encounter participant section
+    configuration.AddCommand<EncounterParticipantCommand>("add")
+        .WithDescription("Add entities to encounter");
 });
 
 return app.Run(args);

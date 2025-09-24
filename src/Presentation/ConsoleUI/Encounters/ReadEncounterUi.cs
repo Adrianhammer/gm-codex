@@ -38,7 +38,7 @@ public class ReadEncounterUi
         }
         
         var encounters = result.Value;
-        var table = new Table().RoundedBorder().Title("[yellow]Encounters[/]").Centered();
+        var table = new Table().RoundedBorder().Title("[yellow]Encounters[/]");
         
         table
             .AddColumn("Name")
