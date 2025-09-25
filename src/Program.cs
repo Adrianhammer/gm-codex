@@ -34,6 +34,7 @@ services.AddScoped<EncounterParticipantsRepository>();
 services.AddScoped<EntityRepository>();
 services.AddScoped<EncounterRepository>();
 services.AddScoped<EncounterParticipantsRepository>();
+services.AddScoped<PartyRepository>();
 
 // Register services (scoped per command execution)
 services.AddScoped<EntityService>();
@@ -44,6 +45,7 @@ services.AddScoped<EncounterParticipantService>();
 services.AddScoped<IEntityRepository, EntityRepository>();
 services.AddScoped<IEncounterRepository, EncounterRepository>();
 services.AddScoped<IEncounterParticipantRepository, EncounterParticipantsRepository>();
+services.AddScoped<IPartyRepository, PartyRepository>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
@@ -55,13 +57,15 @@ services.AddSingleton<ConsoleUi>();
 using (var provider = services.BuildServiceProvider())
 using (var scope = provider.CreateScope())
 {
-    var entityRepo = scope.ServiceProvider.GetRequiredService<EntityRepository>();
-    var encounterRepo = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
+    var entityRepository = scope.ServiceProvider.GetRequiredService<EntityRepository>();
+    var encounterRepository = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
     var encounterParticipantsRepository = scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
+    var partyRepository = scope.ServiceProvider.GetRequiredService<PartyRepository>();
     
-    entityRepo.CreateTable();
+    entityRepository.CreateTable();
     encounterParticipantsRepository.CreateTable();
-    encounterRepo.CreateTable();
+    encounterRepository.CreateTable();
+    partyRepository.CreateTable();
     
 }
 
