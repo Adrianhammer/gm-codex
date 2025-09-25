@@ -1,6 +1,7 @@
 ﻿using gm_codex.Application.Commands;
 using gm_codex.Application.Commands.Encounters;
 using gm_codex.Application.Commands.Entities;
+using gm_codex.Application.Commands.Party;
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
@@ -9,7 +10,6 @@ using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Spectre.Console.Cli;
 
 // --------------------
@@ -41,6 +41,7 @@ services.AddScoped<PartyMemberRepository>();
 services.AddScoped<EntityService>();
 services.AddScoped<EncounterService>();
 services.AddScoped<EncounterParticipantService>();
+services.AddScoped<PartyService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
@@ -140,6 +141,9 @@ app.Configure(configuration =>
         // Encounters
         create.AddCommand<CreateEncounterCommand>("encounter")
             .WithDescription("Create one encounter");
+        // Party
+        create.AddCommand<CreatePartyCommand>("party")
+            .WithDescription("Create a party");
     });
     
     // Update branch
@@ -159,6 +163,14 @@ app.Configure(configuration =>
     // Encounter participant section
     configuration.AddCommand<EncounterParticipantCommand>("add")
         .WithDescription("Add entities to encounter");
+    
+    // Party section
+    configuration.AddBranch("party", party =>
+    {
+        party.SetDescription("Create a party or add, remove, update party members");
+        party.AddCommand<CreatePartyCommand>("create")
+            .WithDescription("Create a party");
+    });
 });
 
 return app.Run(args);
