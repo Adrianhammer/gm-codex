@@ -55,4 +55,25 @@ public class PartyService
             return Result<List<PartyRecord>>.Fail($"Something went wrong. {e.Message}");
         }
     }
+
+    public Result<int> AddPcToParty(CreatePartySettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(settings);
+
+        try
+        {
+            var existingParty = _repository.GetParty(settings.Name);
+            if (existingParty is null)
+            {
+                return Result<int>.Fail($"Party with name '{settings.Name}' does not exist.");
+            }
+            
+            // Continue further
+            return Result<int>.Ok(1);
+        }
+        catch (Exception e)
+        {
+            return Result<int>.Fail(e.Message);
+        }
+    }
 }
