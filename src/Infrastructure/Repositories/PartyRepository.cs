@@ -46,8 +46,13 @@ public class PartyRepository : IPartyRepository
         return connection.QuerySingleOrDefault<PartyRecord>(query, new { Name = name });
     }
 
-    public IEnumerable<PartyRecord?> GetParties()
+    public IEnumerable<PartyRecord> GetParties()
     {
-        throw new NotImplementedException();
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"SELECT * FROM Parties";
+        
+        return connection.Query<PartyRecord>(query).ToList();
     }
 }

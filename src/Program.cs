@@ -98,6 +98,9 @@ app.Configure(configuration =>
         // Encounters
         list.AddCommand<ListEncounterCommand>("encounter")
             .WithDescription("List all encounters");
+        // Party
+        list.AddCommand<ListPartyCommand>("parties")
+            .WithDescription("List all parties");
         // All
         list.AddCommand<ListAllCommand>("all")
             .WithDescription("List everything");

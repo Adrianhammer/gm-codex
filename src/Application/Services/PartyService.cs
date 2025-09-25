@@ -1,5 +1,6 @@
 using gm_codex.Application.Commands.Settings.Party;
 using gm_codex.Application.Common;
+using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Data.Mappers;
 using gm_codex.Infrastructure.Repositories.Interface;
 
@@ -35,6 +36,23 @@ public class PartyService
         catch (Exception e)
         {
             return Result<int>.Fail(e.Message);
+        }
+    }
+
+    public Result<List<PartyRecord>> ListAllParties()
+    {
+        try
+        {
+            var rows = _repository.GetParties().ToList();
+
+        return rows.Count == 0
+                ? Result<List<PartyRecord>>.Fail("No parties found.")
+                : Result<List<PartyRecord>>.Ok(rows);
+        
+        }
+        catch (Exception e)
+        {
+            return Result<List<PartyRecord>>.Fail($"Something went wrong. {e.Message}");
         }
     }
 }

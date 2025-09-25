@@ -9,8 +9,8 @@ public class PartyMapper
     {
         return new Party
         {
-            Name = settings.Name,
-            Description = settings.Description,
+            Name = settings.Name.ToLower(),
+            Description = settings.Description?.ToLower(),
         };
     }
 
@@ -19,8 +19,8 @@ public class PartyMapper
         return new PartyRecord
         {
             Id = party.Id,
-            Name = party.Name,
-            Description = party.Description,
+            Name = party.Name.ToLower(),
+            Description = party.Description?.ToLower(),
         };
     }
 }

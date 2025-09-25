@@ -7,5 +7,5 @@ public interface IPartyRepository
 {
     int InsertParty(Party party);
     PartyRecord? GetParty(String name);
-    IEnumerable<PartyRecord?> GetParties();
+    IEnumerable<PartyRecord> GetParties();
 }
