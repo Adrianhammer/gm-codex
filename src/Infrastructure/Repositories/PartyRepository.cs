@@ -23,4 +23,19 @@ public class PartyRepository : IPartyRepository
         
         connection.Execute(query);
     }
+
+    public int InsertParty(String name, String description)
+    {
+        throw new NotImplementedException();
+    }
+
+    public PartyRecord GetParty(String name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<PartyRecord?> GetParties()
+    {
+        throw new NotImplementedException();
+    }
 }
