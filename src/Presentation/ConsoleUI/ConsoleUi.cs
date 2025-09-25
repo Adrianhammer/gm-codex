@@ -47,13 +47,13 @@ public class ConsoleUi
         // ───────────────────────
         var encounter = new Table().HideHeaders().Border(TableBorder.None).AddColumns("Command", "Description");
         encounter.AddRow("[gold1]gmctl create encounter[/]",
-            "⚔️ Create a new encounter\n   Syntax: gmctl create encounter -n <name> -d <description>\n");
-        encounter.AddRow("[gold1]gmctl list encounters[/]", "⚔️ List all encounters");
+            "🗡️ Create a new encounter\n Syntax: gmctl create encounter -n <name> -d <description> \n");
+        encounter.AddRow("[gold1]gmctl list encounters[/]", "🗡️ List all encounters");
         encounter.AddRow("[gold1]gmctl add -npc goblin:3 troll:1 -e <encounter>[/]",
-            "⚔️ Add NPCs to an encounter\n   Syntax: gmctl add -n goblin:3 -n troll:1 -e Goblin_Ambush");
+            "🗡️ Add NPCs to an encounter\n Syntax: gmctl add -n goblin:3 -n troll:1 -e Goblin_Ambush");
 
         AnsiConsole.Write(new Panel(encounter)
-            .Header("[bold yellow]⚔️ Encounter Management[/]")
+            .Header("[bold yellow]🗡️ Encounter Management[/]")
             .Border(BoxBorder.Rounded)
             .Expand());
 
