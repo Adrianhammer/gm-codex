@@ -9,6 +9,7 @@ using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Spectre.Console.Cli;
 
 // --------------------
@@ -32,14 +33,21 @@ services.AddScoped<DbConnector>();
 services.AddScoped<EncounterParticipantsRepository>();
 services.AddScoped<EntityRepository>();
 services.AddScoped<EncounterRepository>();
+services.AddScoped<EncounterParticipantsRepository>();
+services.AddScoped<PartyRepository>();
+services.AddScoped<PartyMemberRepository>();
 
 // Register services (scoped per command execution)
 services.AddScoped<EntityService>();
 services.AddScoped<EncounterService>();
+services.AddScoped<EncounterParticipantService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
 services.AddScoped<IEncounterRepository, EncounterRepository>();
+services.AddScoped<IEncounterParticipantRepository, EncounterParticipantsRepository>();
+services.AddScoped<IPartyRepository, PartyRepository>();
+services.AddScoped<IPartyMemberRepository, PartyMemberRepository>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
@@ -51,13 +59,17 @@ services.AddSingleton<ConsoleUi>();
 using (var provider = services.BuildServiceProvider())
 using (var scope = provider.CreateScope())
 {
-    var entityRepo = scope.ServiceProvider.GetRequiredService<EntityRepository>();
-    var encounterRepo = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
+    var entityRepository = scope.ServiceProvider.GetRequiredService<EntityRepository>();
+    var encounterRepository = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
     var encounterParticipantsRepository = scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
+    var partyRepository = scope.ServiceProvider.GetRequiredService<PartyRepository>();
+    var partyMemberRepository = scope.ServiceProvider.GetRequiredService<PartyMemberRepository>();
     
-    entityRepo.CreateTable();
+    entityRepository.CreateTable();
     encounterParticipantsRepository.CreateTable();
-    encounterRepo.CreateTable();
+    encounterRepository.CreateTable();
+    partyRepository.CreateTable();
+    partyMemberRepository.CreateTable();
     
 }
 
@@ -143,6 +155,10 @@ app.Configure(configuration =>
         update.AddCommand<UpdateEncounterCommand>("encounter")
             .WithDescription("Update one encounter");
     });
+    
+    // Encounter participant section
+    configuration.AddCommand<EncounterParticipantCommand>("add")
+        .WithDescription("Add entities to encounter");
 });
 
 return app.Run(args);
