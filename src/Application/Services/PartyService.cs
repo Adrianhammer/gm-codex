@@ -56,7 +56,7 @@ public class PartyService
         }
     }
 
-    public Result<int> AddPcToParty(CreatePartySettings settings)
+    public Result<int> AddPcToParty(AddPartyMemberSettings settings)
     {
         ArgumentNullException.ThrowIfNull(settings);
 

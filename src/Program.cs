@@ -170,9 +170,9 @@ app.Configure(configuration =>
     // Party section
     configuration.AddBranch("party", party =>
     {
-        party.SetDescription("Create a party or add, remove, update party members");
-        party.AddCommand<CreatePartyCommand>("create")
-            .WithDescription("Create a party");
+        party.SetDescription("Party commands");
+        party.AddCommand<AddPartyMemberCommand>("add")
+            .WithDescription("Add party member");
     });
 });
 
