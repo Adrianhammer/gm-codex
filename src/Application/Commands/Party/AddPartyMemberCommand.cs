@@ -14,7 +14,7 @@ public class AddPartyMemberCommand : Command<AddPartyMemberSettings>
 
     public override int Execute(CommandContext context, AddPartyMemberSettings settings)
     {
-        if (string.IsNullOrWhiteSpace(settings.Name))
+        if (string.IsNullOrWhiteSpace(settings.Name) && string.IsNullOrWhiteSpace(settings.Party))
         {
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
             return -1;

@@ -1,5 +1,6 @@
 using gm_codex.Application.Commands.Settings.Party;
 using gm_codex.Application.Common;
+using gm_codex.Domain.Enums;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Data.Mappers;
 using gm_codex.Infrastructure.Repositories.Interface;
@@ -8,9 +9,14 @@ namespace gm_codex.Application.Services;
 
 public class PartyService
 {
-    private readonly IPartyRepository  _repository;
-    
-    public PartyService(IPartyRepository repository) => _repository = repository;
+    private readonly IPartyRepository  _partyRepository;
+    private readonly IEntityRepository _entityRepository;
+
+    public PartyService(IPartyRepository partyRepository, IEntityRepository entityRepository)
+    {
+        _partyRepository = partyRepository;
+        _entityRepository = entityRepository;
+    } 
 
     public Result<int> CreateParty(CreatePartySettings settings)
     {
@@ -20,13 +26,13 @@ public class PartyService
         {
             var party = PartyMapper.ToDomain(settings);
 
-            var existingParty = _repository.GetParty(party.Name);
+            var existingParty = _partyRepository.GetParty(party.Name);
             if (existingParty is not null)
             {
                 return Result<int>.Fail($"Party with name '{party.Name}' already exists.");
             }
             
-            var rows = _repository.InsertParty(party);
+            var rows = _partyRepository.InsertParty(party);
 
             return rows != 1 
                 ? Result<int>.Fail("Something went wrong.") 
@@ -43,7 +49,7 @@ public class PartyService
     {
         try
         {
-            var rows = _repository.GetParties().ToList();
+            var rows = _partyRepository.GetParties().ToList();
 
         return rows.Count == 0
                 ? Result<List<PartyRecord>>.Fail("No parties found.")
@@ -62,14 +68,25 @@ public class PartyService
 
         try
         {
-            var existingParty = _repository.GetParty(settings.Name);
+            var existingParty = _partyRepository.GetParty(settings.Party);
             if (existingParty is null)
             {
-                return Result<int>.Fail($"Party with name '{settings.Name}' does not exist.");
+                return Result<int>.Fail($"Party with name '{settings.Party}' does not exist.");
             }
+
+            var existingPc = _entityRepository.GetEntityByName(settings.Name, EntityType.pc);
             
-            // Continue further
-            return Result<int>.Ok(1);
+            if (existingPc is null)
+            {
+                return Result<int>.Fail($"Character with name '{settings.Name}' does not exist.");
+            }
+
+            var rows = _partyRepository.InsertEntityToParty(existingParty.Id, existingPc.Id);
+
+            return rows != 1
+                ? Result<int>.Fail("Something went wrong.")
+                : Result<int>.Ok(rows);
+
         }
         catch (Exception e)
         {
