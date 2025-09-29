@@ -116,6 +116,9 @@ app.Configure(configuration =>
         // Encounters
         read.AddCommand<ReadEncounterCommand>("encounter")
             .WithDescription("Get info on one encounter");
+        // Party
+        read.AddCommand<ReadPartyCommand>("party")
+            .WithDescription("Get info on one party");
     });
 
     // Delete branch

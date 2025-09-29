@@ -6,5 +6,5 @@ public interface IPartyMemberRepository
 {
     int InsertMember(int partyId, int entityId);
     int RemoveMember(int partyId, int entityId);
-    PartyMemberRecord GetMemberByPartyId(int partyId);
+    IEnumerable<PartyMemberRecord>? GetMemberByPartyId(int partyId);
 }

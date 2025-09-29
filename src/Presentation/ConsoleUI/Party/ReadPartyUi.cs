@@ -49,4 +49,60 @@ public class ReadPartyUi
             AnsiConsole.WriteLine();
         }
     }
+
+    public static void ViewSingleParty(Result<Domain.Models.Party> result)
+    {
+        if (!result.Success)
+        {
+            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+        }
+        
+        var rule = new Rule("Party").LeftJustified();
+        rule.Style = Style.Parse("white dim");
+        AnsiConsole.Write(rule);
+
+        var partyTable = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn("[grey]ID[/]")
+            .AddColumn("[yellow]Name[/]")
+            .AddColumn("Description");
+        
+        partyTable.AddRow(
+            result.Value!.Id.ToString(), 
+            result.Value!.Name, 
+            string.IsNullOrWhiteSpace(result.Value!.Description) ? "-" : result.Value!.Description);
+
+        var memberTable = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn("[grey]Id[/]")
+            .AddColumn("[yellow]Members[/]")
+            .AddColumn("Race")
+            .AddColumn("Sub Race")
+            .AddColumn("Class")
+            .AddColumn("Sub Class");
+            
+
+        foreach (var member in result.Value!.Members)
+        {
+            memberTable.AddRow(
+                member.Id.ToString(), 
+                member.Name,
+                member.Race,
+                member.SubRace ?? "-",
+                member.EntityClass,
+                member.SubClass ?? "-"
+                );
+        }
+        
+        AnsiConsole.Write(new Panel(partyTable)
+            .Header($"{result.Value.Name}")
+            .Border(BoxBorder.None)
+            .Expand());
+        
+        AnsiConsole.Write(new Panel(memberTable)
+            .Header("Members")
+            .Border(BoxBorder.None)
+        .Expand());
+        
+    }
 }

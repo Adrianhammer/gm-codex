@@ -20,7 +20,7 @@ public class AddPartyMemberCommand : Command<AddPartyMemberSettings>
             return -1;
         }
         
-        var result = _partyService.AddEntityToParty(settings);
+        var result = _partyService.AddEntityToParty(settings.Party, settings.Name);
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }

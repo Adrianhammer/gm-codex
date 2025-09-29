@@ -46,6 +46,14 @@ public class PartyMemberRepository : IPartyMemberRepository
         
         return connection.Execute(query, new { PartyId = partyId, EntityId = entityId });
     }
-    
-    public PartyMemberRecord GetMemberByPartyId(int partyId) => throw new NotImplementedException();
+
+    public IEnumerable<PartyMemberRecord>? GetMemberByPartyId(int partyId)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"SELECT * FROM PartyMember WHERE PartyId = @PartyId";
+        
+        return connection.Query<PartyMemberRecord>(query, new { PartyId = partyId });
+    }
 }

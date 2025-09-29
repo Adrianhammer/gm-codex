@@ -1,6 +1,7 @@
 using gm_codex.Application.Commands.Settings.Party;
 using gm_codex.Application.Common;
 using gm_codex.Domain.Enums;
+using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Data.Mappers;
 using gm_codex.Infrastructure.Repositories.Interface;
@@ -47,6 +48,46 @@ public class PartyService
         }
     }
 
+    public Result<Party> GetPartyWithMembers(string partyName)
+    {
+        ArgumentNullException.ThrowIfNull(partyName);
+
+        try
+        {
+            var party = _partyRepository.GetParty(partyName);
+            if (party is null)
+            {
+                return Result<Party>.Fail($"Party with name '{partyName}' does not exist.");
+            }
+            
+            var members = _partyMemberRepository.GetMemberByPartyId(party.Id);
+            if (members is null)
+            {
+                return Result<Party>.Fail($"Party '{partyName}' has no members.");
+            }
+            
+            var entityIds = members.Select(m => m.EntityId);
+            var entities = _entityRepository.GetEntitiesById(entityIds);
+            if (entities is null) return Result<Party>.Fail($"Party '{partyName}' has no members.");
+            
+            
+            var domainParty = new Party
+            {
+                Id = party.Id,
+                Name = party.Name,
+                Description = party.Description,
+                Members = entities.ToList()
+            };
+
+            return Result<Party>.Ok(domainParty);
+
+        }
+        catch (Exception e)
+        {
+            return Result<Party>.Fail(e.Message);
+        }
+    }
+
     public Result<List<PartyRecord>> ListAllParties()
     {
         try
@@ -64,23 +105,26 @@ public class PartyService
         }
     }
 
-    public Result<int> AddEntityToParty(AddPartyMemberSettings settings)
+    public Result<int> AddEntityToParty(string partyName, string entityName)
     {
-        ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(partyName);
+        ArgumentNullException.ThrowIfNull(entityName);
+
 
         try
         {
-            var existingParty = _partyRepository.GetParty(settings.Party);
+            var existingParty = _partyRepository.GetParty(partyName);
             if (existingParty is null)
             {
-                return Result<int>.Fail($"Party with name '{settings.Party}' does not exist.");
+                return Result<int>.Fail($"Party with name '{partyName}' does not exist.");
             }
 
-            var existingPc = _entityRepository.GetEntityByName(settings.Name, EntityType.pc);
+
+            var existingPc = _entityRepository.GetEntityByName(entityName, EntityType.pc);
             
             if (existingPc is null)
             {
-                return Result<int>.Fail($"Character with name '{settings.Name}' does not exist.");
+                return Result<int>.Fail($"Character with name '{existingPc}' does not exist.");
             }
 
             var rows = _partyMemberRepository.InsertMember(existingParty.Id, existingPc.Id);
@@ -96,23 +140,24 @@ public class PartyService
         }
     }
     
-    public Result<int> RemoveMemberFromParty(RemovePartyMemberSettings settings)
+    public Result<int> RemoveMemberFromParty(string partyName, string entityName)
     {
-        ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(partyName);
+        ArgumentNullException.ThrowIfNull(entityName);
 
         try
         {
-            var existingParty = _partyRepository.GetParty(settings.Party);
+            var existingParty = _partyRepository.GetParty(partyName);
             if (existingParty is null)
             {
-                return Result<int>.Fail($"Party with name '{settings.Party}' does not exist.");
+                return Result<int>.Fail($"Party with name '{partyName}' does not exist.");
             }
 
-            var existingPc = _entityRepository.GetEntityByName(settings.Name, EntityType.pc);
+            var existingPc = _entityRepository.GetEntityByName(entityName, EntityType.pc);
             
             if (existingPc is null)
             {
-                return Result<int>.Fail($"Character with name '{settings.Name}' does not exist.");
+                return Result<int>.Fail($"Character with name '{entityName}' does not exist.");
             }
             
             var rows = _partyMemberRepository.RemoveMember(existingParty.Id, existingPc.Id);

@@ -20,7 +20,7 @@ public class RemovePartyMemberCommand : Command<RemovePartyMemberSettings>
             return -1;
         }
         
-        var result = _partyService.RemoveMemberFromParty(settings);
+        var result = _partyService.RemoveMemberFromParty(settings.Name, settings.Party);
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }
