@@ -10,11 +10,13 @@ namespace gm_codex.Application.Services;
 public class PartyService
 {
     private readonly IPartyRepository  _partyRepository;
+    private readonly IPartyMemberRepository _partyMemberRepository;
     private readonly IEntityRepository _entityRepository;
 
-    public PartyService(IPartyRepository partyRepository, IEntityRepository entityRepository)
+    public PartyService(IPartyRepository partyRepository, IPartyMemberRepository partyMemberRepository,IEntityRepository entityRepository)
     {
         _partyRepository = partyRepository;
+        _partyMemberRepository = partyMemberRepository;
         _entityRepository = entityRepository;
     } 
 
@@ -62,7 +64,7 @@ public class PartyService
         }
     }
 
-    public Result<int> AddPcToParty(AddPartyMemberSettings settings)
+    public Result<int> AddEntityToParty(AddPartyMemberSettings settings)
     {
         ArgumentNullException.ThrowIfNull(settings);
 
@@ -81,7 +83,7 @@ public class PartyService
                 return Result<int>.Fail($"Character with name '{settings.Name}' does not exist.");
             }
 
-            var rows = _partyRepository.InsertEntityToParty(existingParty.Id, existingPc.Id);
+            var rows = _partyMemberRepository.InsertMember(existingParty.Id, existingPc.Id);
 
             return rows != 1
                 ? Result<int>.Fail("Something went wrong.")
@@ -91,6 +93,38 @@ public class PartyService
         catch (Exception e)
         {
             return Result<int>.Fail(e.Message);
+        }
+    }
+    
+    public Result<int> RemoveMemberFromParty(RemovePartyMemberSettings settings)
+    {
+        ArgumentNullException.ThrowIfNull(settings);
+
+        try
+        {
+            var existingParty = _partyRepository.GetParty(settings.Party);
+            if (existingParty is null)
+            {
+                return Result<int>.Fail($"Party with name '{settings.Party}' does not exist.");
+            }
+
+            var existingPc = _entityRepository.GetEntityByName(settings.Name, EntityType.pc);
+            
+            if (existingPc is null)
+            {
+                return Result<int>.Fail($"Character with name '{settings.Name}' does not exist.");
+            }
+            
+            var rows = _partyMemberRepository.RemoveMember(existingParty.Id, existingPc.Id);
+            return rows != 1
+                ? Result<int>.Fail("Something went wrong.")
+                : Result<int>.Ok(rows);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }

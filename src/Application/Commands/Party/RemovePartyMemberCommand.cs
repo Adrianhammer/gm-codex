@@ -6,13 +6,13 @@ using Spectre.Console.Cli;
 
 namespace gm_codex.Application.Commands.Party;
 
-public class AddPartyMemberCommand : Command<AddPartyMemberSettings>
+public class RemovePartyMemberCommand : Command<RemovePartyMemberSettings>
 {
     private readonly PartyService _partyService;
     
-    public AddPartyMemberCommand(PartyService partyService) => _partyService = partyService;
+    public RemovePartyMemberCommand(PartyService partyService) => _partyService = partyService;
 
-    public override int Execute(CommandContext context, AddPartyMemberSettings settings)
+    public override int Execute(CommandContext context, RemovePartyMemberSettings settings)
     {
         if (string.IsNullOrWhiteSpace(settings.Name) && string.IsNullOrWhiteSpace(settings.Party))
         {
@@ -20,9 +20,8 @@ public class AddPartyMemberCommand : Command<AddPartyMemberSettings>
             return -1;
         }
         
-        var result = _partyService.AddEntityToParty(settings);
+        var result = _partyService.RemoveMemberFromParty(settings);
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }
-
 }

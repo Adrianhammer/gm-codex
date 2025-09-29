@@ -55,14 +55,4 @@ public class PartyRepository : IPartyRepository
         
         return connection.Query<PartyRecord>(query).ToList();
     }
-
-    public int InsertEntityToParty(int partyId, int entityId)
-    {
-        using var connection = _db.CreateConnection();
-        connection.Open();
-        
-        var query = @"INSERT INTO PartyMember (PartyId, EntityId) VALUES (@PartyId, @EntityId)";
-        
-        return connection.Execute(query, new { PartyId = partyId, EntityId = entityId });
-    }
 }

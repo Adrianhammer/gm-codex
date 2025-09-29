@@ -173,6 +173,8 @@ app.Configure(configuration =>
         party.SetDescription("Party commands");
         party.AddCommand<AddPartyMemberCommand>("add")
             .WithDescription("Add party member");
+        party.AddCommand<RemovePartyMemberCommand>("remove")
+            .WithDescription("Remove party member");
     });
 });
 

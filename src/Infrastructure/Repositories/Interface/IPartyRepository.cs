@@ -6,7 +6,6 @@ namespace gm_codex.Infrastructure.Repositories.Interface;
 public interface IPartyRepository
 {
     int InsertParty(Party party);
-    int InsertEntityToParty(int partyId, int entityId);
     PartyRecord? GetParty(String name);
     IEnumerable<PartyRecord> GetParties();
 }
