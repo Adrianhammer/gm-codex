@@ -1,6 +1,7 @@
 ﻿using gm_codex.Application.Commands;
 using gm_codex.Application.Commands.Encounters;
 using gm_codex.Application.Commands.Entities;
+using gm_codex.Application.Commands.Import;
 using gm_codex.Application.Commands.Party;
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
@@ -42,6 +43,7 @@ services.AddScoped<EntityService>();
 services.AddScoped<EncounterService>();
 services.AddScoped<EncounterParticipantService>();
 services.AddScoped<PartyService>();
+services.AddScoped<ImportService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
@@ -164,6 +166,14 @@ app.Configure(configuration =>
         // Encounters
         update.AddCommand<UpdateEncounterCommand>("encounter")
             .WithDescription("Update one encounter");
+    });
+    
+    // Import branch
+    configuration.AddBranch("import", import =>
+    {
+        import.SetDescription("Import various game entities");
+        import.AddCommand<ImportMonstersCommand>("monsters")
+            .WithDescription("Import monsters from Open5e");
     });
     
     // Encounter participant section
