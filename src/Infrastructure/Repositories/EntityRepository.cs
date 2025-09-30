@@ -92,6 +92,16 @@ public class EntityRepository : IEntityRepository
         return connection.Execute(query, characterEntity);
     }
 
+    public IEnumerable<EntityRecord> GetEntitiesById(IEnumerable<int> id)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+
+        var query = @"SELECT * FROM Entities WHERE Id IN @Id";
+        
+        return connection.Query<EntityRecord>(query, new { Id = id });
+    }
+
     public EntityRecord? GetEntityByName(string name, EntityType entityType)
     {
         using var connection = _db.CreateConnection();
@@ -123,7 +133,6 @@ public class EntityRepository : IEntityRepository
             EntityType = entityType.ToString().ToLower()
         });
     }
-
     public IEnumerable<EntityRecord> GetAllPlayableCharacters()
     {
         using var connection = _db.CreateConnection();

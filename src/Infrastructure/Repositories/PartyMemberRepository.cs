@@ -1,5 +1,4 @@
 using Dapper;
-using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Repositories.Interface;
 
@@ -28,11 +27,33 @@ public class PartyMemberRepository : IPartyMemberRepository
         connection.Execute(query);
     }
 
-    public int InsertMember(Entity entityId, Party partyId)
+    public int InsertMember(int partyId, int entityId)
     {
-        throw new NotImplementedException();
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"INSERT INTO PartyMember (PartyId, EntityId) VALUES (@PartyId, @EntityId)";
+        
+        return connection.Execute(query, new { PartyId = partyId, EntityId = entityId });
     }
-    
-    public int RemoveMember(Entity entityId, Party partyId) => throw new NotImplementedException();
-    public PartyMemberRecord GetMemberByPartyId(int partyId) => throw new NotImplementedException();
+
+    public int RemoveMember(int partyId, int entityId)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"DELETE FROM PartyMember WHERE PartyId = @PartyId AND EntityId = @EntityId";
+        
+        return connection.Execute(query, new { PartyId = partyId, EntityId = entityId });
+    }
+
+    public IEnumerable<PartyMemberRecord>? GetMemberByPartyId(int partyId)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+        
+        var query = @"SELECT * FROM PartyMember WHERE PartyId = @PartyId";
+        
+        return connection.Query<PartyMemberRecord>(query, new { PartyId = partyId });
+    }
 }

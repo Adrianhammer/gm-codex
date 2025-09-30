@@ -4,6 +4,6 @@ public class PartyMemberRecord
 {
     public int Id { get; set; }
     public int PartyId { get; set; }
-    public int MemberId { get; set; }
+    public int EntityId { get; set; }
     
 }

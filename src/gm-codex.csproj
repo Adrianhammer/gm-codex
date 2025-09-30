@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <Folder Include="Domain\" />
+      <Folder Include="Infrastructure\Data\Mappers\ToRecord\" />
       <Folder Include="Resources\" />
       <Folder Include="Presentation\" />
     </ItemGroup>
