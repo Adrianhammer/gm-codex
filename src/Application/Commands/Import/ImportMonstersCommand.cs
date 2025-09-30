@@ -1,4 +1,3 @@
-using gm_codex.Application.Commands.Settings.Import;
 using gm_codex.Application.Services;
 using Spectre.Console.Cli;
 
@@ -12,6 +11,7 @@ public class ImportMonstersCommand : Command
 
     public override int Execute(CommandContext context)
     {
-        throw new NotImplementedException();
+        var result = _importService.ImportAllMonsters();
+        return result.Success ? 0 : 1;
     }
 }

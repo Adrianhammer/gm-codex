@@ -11,6 +11,10 @@ public class ImportService
 
     public Result<int> ImportAllMonsters()
     {
+        // Check if imported before
+        // Call C# method in future Open5E that calls api and pulls down monsters
+        // Map entities to domain or records
+        // Call repo method and send the imported monsters there for db import
         throw new NotImplementedException();
     }
 }
