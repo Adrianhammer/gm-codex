@@ -152,4 +152,13 @@ public class EntityRepository : IEntityRepository
         
         return connection.Query<EntityRecord>(query).ToList();
     }
+
+    public int ImportEntities()
+    {
+        // This method just handles insertion of monsters/npc/entities to db
+        // Will take in param later
+        // param: mapped entities from Open5E (mapping happens in service)
+        Console.WriteLine("Now in repo class");
+        return 1;
+    }
 }
