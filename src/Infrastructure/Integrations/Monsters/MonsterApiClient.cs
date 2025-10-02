@@ -14,26 +14,29 @@ public class MonsterApiClient : IMonsterDataProvider
     
     public async Task<IEnumerable<Entity>> GetAllMonstersAsync()
     {
-        
         var monsters = new List<Entity>();
-        var url = "monsters/?limit=5";
-        
-        var page = await _open5EApiClient.GetAsync<MonsterPageDto>(url);
+        var url = "monsters/";
 
-        if (page?.Results != null)
+        while (url != null)
         {
-            foreach (var dto in page.Results)
+            var page = await _open5EApiClient.GetAsync<MonsterPageDto>(url);
+            
+            if (page?.results != null)
             {
-                monsters.Add(new Entity
+                foreach (var dto in page.results)
                 {
-                    Name = dto.Name,
-                    EntityType = EntityType.npc,
-                    Race = Race.alseid,
-                    EntityClass = Class.monster,
-                    MaxHp = dto.hit_points.ToString(),
-                    ArmorClass = dto.armor_class.ToString()
-                });
+                    monsters.Add(new Entity
+                    {
+                        Name = dto.Name,
+                        EntityType = EntityType.npc,
+                        Race = Race.alseid,
+                        EntityClass = Class.monster,
+                        MaxHp = dto.hit_points.ToString(),
+                        ArmorClass = dto.armor_class.ToString()
+                    });
+                }
             }
+            url = page?.next;
         }
         return monsters;
     }

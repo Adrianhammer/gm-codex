@@ -153,7 +153,7 @@ public class EntityRepository : IEntityRepository
         return connection.Query<EntityRecord>(query).ToList();
     }
 
-    public int ImportEntities(IEnumerable<EntityRecord> entities)
+    public async Task<int> ImportEntitiesAsync(IEnumerable<EntityRecord> entities)
     {
         using var connection = _db.CreateConnection();
         connection.Open();
@@ -161,6 +161,6 @@ public class EntityRepository : IEntityRepository
         var query = @"INSERT INTO Entities (Name, EntityType, Race, SubRace, EntityClass, SubClass, MaxHp, ArmorClass) 
                          VALUES (@Name, @EntityType, @Race, @SubRace, @EntityClass, @SubClass, @MaxHp, @ArmorClass);"; 
         
-        return connection.Execute(query, entities);
+        return await connection.ExecuteAsync(query, entities);
     }
 }

@@ -11,8 +11,7 @@ public class ImportMonstersCommand : AsyncCommand
 
     public override async Task<int> ExecuteAsync(CommandContext context)
     {
-        var result = _importService.ImportAllMonsters();
-        await ImportUi.ViewImportMonstersAsync(result);
-        return result.Success ? 0 : 1;
+                await ImportUi.ViewImportMonstersAsync(_importService);
+                return 0;
     }
 }

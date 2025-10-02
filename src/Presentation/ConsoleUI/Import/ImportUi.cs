@@ -1,45 +1,75 @@
-using gm_codex.Application.Common;
-using gm_codex.Domain.Models;
+using System.Diagnostics;
+using gm_codex.Application.Services;
 using Spectre.Console;
 
 namespace gm_codex.Presentation.ConsoleUI.Import;
 
 public static class ImportUi
 {
-    public static async Task ViewImportMonstersAsync(Result<int> result)
+    public static async Task ViewImportMonstersAsync(ImportService service)
     {
-        if (!result.Success)
-        {
-            AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
-        }
-
+        string[] flavourText =
+        new [] {
+            "Summoning creatures from the abyss...", 
+            "Summoning creatures from the abyss...", 
+            "Checking for mimics... oh wait, all of them are mimics.",
+            "Polishing troll clubs...",
+            "Sneaking kobolds into the dungeon...",
+            "Rolling monster HP (average, don’t worry)...",
+            "Releasing the kraken... cautiously.",
+            "Counting how many tentacles are too many...",
+            "Soon done!",
+            "Rolling dice behind the screen (honestly, trust me)...",
+            "Checking the Monster Manual index... A for Aboleth, Z for Zombie...",
+            "Converting CR to TPK probability...",
+            "Feeding the mimic… careful with your hand.",
+            "Balancing goblins on each other’s shoulders for a trenchcoat disguise...",
+            "Teaching owlbears how to hoo and growl in sync...",
+            "Convincing the lich to smile for the portrait...",
+            "Polishing gelatinous cubes until crystal clear...",
+            "Waking up the rust monsters (lock away the swords!)",
+            "Telling beholders their eye‑rays are all equally beautiful.",
+            "Warning: Dragons may contain traces of treasure."
+        };
         
-        await AnsiConsole.Progress()
-            .AutoRefresh(false)
-            .AutoClear(false)
-            .HideCompleted(false)
-            .Columns(new ProgressColumn[]
-            {
-                new TaskDescriptionColumn(),    // Task description
-                new ProgressBarColumn(),        // Progress bar
-                new PercentageColumn(),         // Percentage
-                new RemainingTimeColumn(),      // Remaining time
-                new SpinnerColumn(),            // Spinner
-                //new DownloadedColumn(),         // Downloaded
-                //new TransferSpeedColumn(),      // Transfer speed
-            })
-            .Start(async ctx =>
-            {
-                var task1 = ctx.AddTask("[green]Importing monsters...[/]");
-                var task2 = ctx.AddTask("[blue]Saving monsters...[/]");
 
-                while (!ctx.IsFinished)
+        await AnsiConsole.Status()
+            .Spinner(Spinner.Known.Dots)
+            .SpinnerStyle(Style.Parse("green"))
+            .StartAsync("text", async ctx =>
+            {
+                
+                var rand = new Random();
+                var stopWatch = Stopwatch.StartNew();
+
+                var shuffled = flavourText.OrderBy(x => rand.Next()).ToArray();
+
+                var importTask = service.ImportAllMonstersAsync();
+
+                while (!importTask.IsCompleted)
                 {
-                    //Simulate work
-                    await Task.Delay(10);
-                    
-                    task1.Increment(15);
-                    task2.Increment(50);
+                    foreach (var phrase in shuffled)
+                    {
+                        ctx.Status = phrase;
+                        await Task.WhenAny(importTask, Task.Delay(5000));
+                    }
+                }
+                
+                var result = await importTask;
+                stopWatch.Stop();
+                TimeSpan elapsed = stopWatch.Elapsed;
+                
+
+                if (!result.Success)
+                {
+                    AnsiConsole.MarkupLine($"[red]ERROR[/]: {result.Error}");
+                }
+                else
+                {
+                    var elapsedMsg = elapsed.Minutes > 0
+                        ? $"{elapsed.Minutes}m {elapsed.Seconds}s"
+                        : $"{elapsed.Seconds}s";
+                    AnsiConsole.MarkupLine($":check_mark_button: [green]{result.Value} monsters imported![/] Total time elapsed: [yellow]{elapsedMsg} s[/]");
                 }
             });
     }

@@ -1,5 +1,4 @@
 using gm_codex.Application.Common;
-using gm_codex.Domain.Models;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.Data.Mappers;
 using gm_codex.Infrastructure.Interface;
@@ -18,26 +17,26 @@ public class ImportService
         _monsterDataProvider = monsterDataProvider;
     } 
 
-    public Result<int> ImportAllMonsters()
+    public async Task<Result<int>> ImportAllMonstersAsync()
     {
-        var importedEntities = new List<EntityRecord>();
-
         try
         {
-            // Check if imported before
+            // Implement later: Check if imported before
 
-            var npc = _monsterDataProvider.GetAllMonstersAsync();
-            
-            foreach (var monster in npc.Result)
+            var importedEntities = new List<EntityRecord>();
+            var importResult = await _monsterDataProvider.GetAllMonstersAsync();
+
+            foreach (var monster in importResult)
             {
                 importedEntities.Add(EntityMapper.ToRecord(monster));
             }
             
-            var rows = _repository.ImportEntities(importedEntities);
+            var rows = await _repository.ImportEntitiesAsync(importedEntities);
             
             return rows > 0
                 ? Result<int>.Ok(rows) 
-                : Result<int>.Fail("Error importing monsters");
+                : Result<int>.Fail("Something went wrong"); 
+            
         }
         catch (Exception e)
         {
