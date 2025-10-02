@@ -18,7 +18,7 @@ public class ConsoleUi
         // Core Commands
         // ───────────────────────
         var core = new Table().HideHeaders().Border(TableBorder.None).AddColumns("Command", "Description");
-        core.AddRow("[gold1]gmctl help[/]", "📖 Show this help screen");
+        core.AddRow("[gold1]gm help[/]", "📖 Show this help screen");
 
         AnsiConsole.Write(new Panel(core)
             .Header("[bold yellow]📖 Core Commands[/]")
@@ -29,13 +29,14 @@ public class ConsoleUi
         // Entity Management
         // ───────────────────────
         var entity = new Table().HideHeaders().Border(TableBorder.None).AddColumns("Command", "Description");
-        entity.AddRow("[gold1]gmctl create pc[/]",
-            "👤 Create a playable character\n   Syntax: gmctl create pc -n <name> -r <race> -c <class> | optional: --subclass -h <hp> -a <ac>");
-        entity.AddRow("[gold1]gmctl create npc[/]",
-            "👾 Create a non-playable character\n   Syntax: gmctl create npc -n <name> -r <race> -c <class> -h <hp> -a <ac>");
-        entity.AddRow("[gold1]gmctl list pc/npc[/]", "👤 List all player characters or NPCs");
-        entity.AddRow("[gold1]gmctl list all[/]", "👾 List everything");
-        entity.AddRow("[gold1]gmctl delete <name>[/]", "🗑️ Delete entity by name");
+        entity.AddRow("[gold1]gm create pc[/]",
+            "👤 Create a playable character\n   Syntax: gm create pc -n <name> -r <race> -c <class> | optional: --subclass -h <hp> -a <ac>");
+        entity.AddRow("[gold1]gm create npc[/]",
+            "👾 Create a non-playable character\n   Syntax: gm create npc -n <name> -r <race> -c <class> -h <hp> -a <ac>");
+        entity.AddRow("[gold1]gm list pc/npc[/]", "👤 List all player characters or NPCs");
+        entity.AddRow("[gold1]gm list all[/]", "👾 List everything");
+        entity.AddRow("[gold1]gm delete <name>[/]", "🗑️ Delete entity by name");
+        entity.AddRow("[gold1]gm import monsters[/]", "🗑️ Import over 3000 monsters from Open5E");
 
         AnsiConsole.Write(new Panel(entity)
             .Header("[bold yellow]👤 Entity Management[/]")
@@ -46,11 +47,11 @@ public class ConsoleUi
         // Encounter Management
         // ───────────────────────
         var encounter = new Table().HideHeaders().Border(TableBorder.None).AddColumns("Command", "Description");
-        encounter.AddRow("[gold1]gmctl create encounter[/]",
-            "🗡️ Create a new encounter\n Syntax: gmctl create encounter -n <name> -d <description> \n");
-        encounter.AddRow("[gold1]gmctl list encounters[/]", "🗡️ List all encounters");
-        encounter.AddRow("[gold1]gmctl add -npc goblin:3 troll:1 -e <encounter>[/]",
-            "🗡️ Add NPCs to an encounter\n Syntax: gmctl add -n goblin:3 -n troll:1 -e Goblin_Ambush");
+        encounter.AddRow("[gold1]gm create encounter[/]",
+            "🗡️ Create a new encounter\n Syntax: gm create encounter -n <name> -d <description> \n");
+        encounter.AddRow("[gold1]gm list encounters[/]", "🗡️ List all encounters");
+        encounter.AddRow("[gold1]gm add -npc goblin:3 troll:1 -e <encounter>[/]",
+            "🗡️ Add NPCs to an encounter\n Syntax: gm add -n goblin:3 -n troll:1 -e Goblin_Ambush");
 
         AnsiConsole.Write(new Panel(encounter)
             .Header("[bold yellow]🗡️ Encounter Management[/]")
@@ -80,10 +81,10 @@ public class ConsoleUi
         // ───────────────────────
         // Quick Examples
         // ───────────────────────
-        var examples = @"[green]gmctl create pc -n Astarion -r Elf -c Ranger[/]
-[green]gmctl create npc -n Goblin -r Goblinoid -c barbarian -h 7 -a 13[/]
-[green]gmctl create encounter -n Goblin Ambush -d Goblins leap from the trees![/]
-[green]gmctl add -n goblin:3 -n troll:1 -e Goblin Ambush[/]";
+        var examples = @"[green]gm create pc -n Astarion -r Elf -c Ranger[/]
+[green]gm create npc -n Goblin -r Goblinoid -c barbarian -h 7 -a 13[/]
+[green]gm create encounter -n Goblin Ambush -d Goblins leap from the trees![/]
+[green]gm add -n goblin:3 -n troll:1 -e Goblin Ambush[/]";
 
         AnsiConsole.Write(new Panel(examples)
             .Header("[bold red]🔥 Quick Examples[/]")

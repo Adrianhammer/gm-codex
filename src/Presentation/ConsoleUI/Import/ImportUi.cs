@@ -69,7 +69,7 @@ public static class ImportUi
                     var elapsedMsg = elapsed.Minutes > 0
                         ? $"{elapsed.Minutes}m {elapsed.Seconds}s"
                         : $"{elapsed.Seconds}s";
-                    AnsiConsole.MarkupLine($":check_mark_button: [green]{result.Value} monsters imported![/] Total time elapsed: [yellow]{elapsedMsg} s[/]");
+                    AnsiConsole.MarkupLine($":check_mark_button: [green]{result.Value} monsters imported![/] Total time elapsed: [yellow]{elapsedMsg}[/]");
                 }
             });
     }
