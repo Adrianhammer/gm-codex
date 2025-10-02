@@ -16,7 +16,7 @@ public class MonsterApiClient : IMonsterDataProvider
     {
         
         var monsters = new List<Entity>();
-        var url = "v1/monsters/";
+        var url = "monsters/?limit=5";
         
         var page = await _open5EApiClient.GetAsync<MonsterPageDto>(url);
 
@@ -30,8 +30,8 @@ public class MonsterApiClient : IMonsterDataProvider
                     EntityType = EntityType.npc,
                     Race = Race.alseid,
                     EntityClass = Class.monster,
-                    MaxHp = dto.MaxHp.ToString(),
-                    ArmorClass = dto.ArmorClass.ToString()
+                    MaxHp = dto.hit_points.ToString(),
+                    ArmorClass = dto.armor_class.ToString()
                 });
             }
         }

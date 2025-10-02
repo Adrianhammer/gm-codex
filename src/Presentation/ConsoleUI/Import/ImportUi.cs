@@ -6,7 +6,7 @@ namespace gm_codex.Presentation.ConsoleUI.Import;
 
 public static class ImportUi
 {
-    public static async Task ViewImportMonstersAsync(Result<IEnumerable<Entity>> result)
+    public static async Task ViewImportMonstersAsync(Result<int> result)
     {
         if (!result.Success)
         {
@@ -42,24 +42,5 @@ public static class ImportUi
                     task2.Increment(50);
                 }
             });
-
-        var table = new Table()
-            .Border(TableBorder.Rounded)
-            .AddColumn("[grey]ID[/]")
-            .AddColumn("[yellow]Name[/]")
-            .AddColumn("Max HP")
-            .AddColumn("Armor class");
-
-        foreach (var entity in result.Value!)
-        {
-            table.AddRow(
-                entity.Id.ToString(),
-                entity.Name,
-                entity.MaxHp ?? "-",
-                entity.ArmorClass ?? "-"
-            );
-        }
-        
-        AnsiConsole.Write(table);
     }
 }
