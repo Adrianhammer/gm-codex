@@ -19,4 +19,20 @@ public static class EntityMapper
             ArmorClass = record.ArmorClass,
         };
     }
+
+    public static EntityRecord ToRecord(Entity entity)
+    {
+        return new EntityRecord
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            EntityType = entity.EntityType.ToString(),
+            Race = entity.Race.ToString(),
+            SubRace = entity.SubRace,
+            EntityClass = entity.EntityClass.ToString(),
+            SubClass = entity.SubClass,
+            MaxHp = entity.MaxHp,
+            ArmorClass = entity.ArmorClass,
+        };
+    }
 }

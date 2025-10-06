@@ -1,11 +1,15 @@
 ﻿using gm_codex.Application.Commands;
 using gm_codex.Application.Commands.Encounters;
 using gm_codex.Application.Commands.Entities;
+using gm_codex.Application.Commands.Import;
 using gm_codex.Application.Commands.Party;
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.DependencyInjection;
+using gm_codex.Infrastructure.Integrations.Monsters;
+using gm_codex.Infrastructure.Integrations.Open5e;
+using gm_codex.Infrastructure.Interface;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Presentation.ConsoleUI;
@@ -36,12 +40,15 @@ services.AddScoped<EncounterRepository>();
 services.AddScoped<EncounterParticipantsRepository>();
 services.AddScoped<PartyRepository>();
 services.AddScoped<PartyMemberRepository>();
+services.AddScoped<MonsterApiClient>();
+
 
 // Register services (scoped per command execution)
 services.AddScoped<EntityService>();
 services.AddScoped<EncounterService>();
 services.AddScoped<EncounterParticipantService>();
 services.AddScoped<PartyService>();
+services.AddScoped<ImportService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
@@ -49,9 +56,18 @@ services.AddScoped<IEncounterRepository, EncounterRepository>();
 services.AddScoped<IEncounterParticipantRepository, EncounterParticipantsRepository>();
 services.AddScoped<IPartyRepository, PartyRepository>();
 services.AddScoped<IPartyMemberRepository, PartyMemberRepository>();
+services.AddScoped<IMonsterDataProvider, MonsterApiClient>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
+
+
+services.AddHttpClient<Open5EApiClient>(client =>
+{
+    client.BaseAddress = new Uri("https://api.open5e.com/");
+    client.DefaultRequestHeaders.Accept.Add(
+        new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+});
 
 // ---------------------------
 // 3. Initialize Database & UI
@@ -164,6 +180,14 @@ app.Configure(configuration =>
         // Encounters
         update.AddCommand<UpdateEncounterCommand>("encounter")
             .WithDescription("Update one encounter");
+    });
+    
+    // Import branch
+    configuration.AddBranch("import", import =>
+    {
+        import.SetDescription("Import various game entities");
+        import.AddCommand<ImportMonstersCommand>("monsters")
+            .WithDescription("Import monsters from Open5e");
     });
     
     // Encounter participant section

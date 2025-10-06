@@ -13,5 +13,6 @@ public enum Class
     rogue,
     sorcerer,
     warlock,
-    wizard
+    wizard,
+    monster
 }

@@ -182,6 +182,5 @@ public class EntityService
         {
             return Result<List<EntityRecord>>.Fail($"Failed to get non-playable characters: {e.Message}");
         }
-        
     }
 }

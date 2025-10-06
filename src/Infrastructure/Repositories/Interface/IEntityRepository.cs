@@ -13,4 +13,5 @@ public interface IEntityRepository
     int DeleteEntityByName(string name,  EntityType entityType);
     IEnumerable<EntityRecord> GetAllPlayableCharacters();
     IEnumerable<EntityRecord> GetAllNonPlayableCharacters();
+    Task<int> ImportEntitiesAsync(IEnumerable<EntityRecord> entities);
 }
