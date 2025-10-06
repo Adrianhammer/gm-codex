@@ -1,4 +1,3 @@
-using gm_codex.Application.Common;
 using gm_codex.Application.Services;
 using gm_codex.Domain.Enums;
 using gm_codex.Domain.Models;
@@ -37,7 +36,15 @@ public class EntityServiceTests
         public int DeleteEntityByName(string name, EntityType entityType) => 1; 
         public IEnumerable<EntityRecord> GetAllPlayableCharacters() => Enumerable.Empty<EntityRecord>();
         public IEnumerable<EntityRecord> GetAllNonPlayableCharacters() => Enumerable.Empty<EntityRecord>();
-        
+        public IEnumerable<EntityRecord> GetEntitiesById(IEnumerable<int> id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> ImportEntitiesAsync(IEnumerable<EntityRecord> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [Fact]
