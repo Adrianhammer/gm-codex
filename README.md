@@ -1,7 +1,7 @@
 # GM Codex 🧙‍♂️⚔️
 
 <div align="center">
-<img src="src/Resources/Images/gmctl_logo.png" width="175">
+<img src="src/Resources/Images/GMCODEX.png" width="500">
 </div>
 
 
@@ -64,6 +64,9 @@ dotnet tool update --global --add-source ./nupkg gm-codex --version 1.0.1
 ```bash
 dotnet tool uninstall --global gm-codex
 ```
+<div align="center">
+<img src="src/Resources/Images/GMCODEXICON.png" width="175">
+</div>
 
 ## Naming Ideas 💡
 
