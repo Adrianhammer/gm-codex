@@ -1,9 +1,8 @@
 # GM Codex 🧙‍♂️⚔️
 
 <div align="center">
-<img src="src/Resources/Images/GMCODEX.png" width="500">
+<img src="src/Resources/Images/GMCODEXTERMINAL.png" width="500">
 </div>
-
 
 GM Codex is an upcoming command-line interface (CLI) tool designed for Game Masters (GMs) who want to run smoother, more organized encounters in their tabletop role-playing game (TTRPG) sessions. Whether you’re tracking initiative, managing monsters, or keeping tabs on player actions, GM Codex is your digital encounter command center.
 
@@ -64,9 +63,6 @@ dotnet tool update --global --add-source ./nupkg gm-codex --version 1.0.1
 ```bash
 dotnet tool uninstall --global gm-codex
 ```
-<div align="center">
-<img src="src/Resources/Images/GMCODEXICON.png" width="175">
-</div>
 
 ## Naming Ideas 💡
 
