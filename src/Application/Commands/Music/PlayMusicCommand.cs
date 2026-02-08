@@ -1,6 +1,5 @@
 using gm_codex.Application.Commands.Settings.Music;
 using gm_codex.Application.Services;
-using gm_codex.Presentation.ConsoleUI.Entities;
 using gm_codex.Presentation.ConsoleUI.Music;
 using Spectre.Console;
 using Spectre.Console.Cli;
