@@ -2,6 +2,7 @@
 using gm_codex.Application.Commands.Encounters;
 using gm_codex.Application.Commands.Entities;
 using gm_codex.Application.Commands.Import;
+using gm_codex.Application.Commands.Music;
 using gm_codex.Application.Commands.Party;
 using Microsoft.Extensions.Configuration;
 using gm_codex.Application.Services;
@@ -49,6 +50,7 @@ services.AddScoped<EncounterService>();
 services.AddScoped<EncounterParticipantService>();
 services.AddScoped<PartyService>();
 services.AddScoped<ImportService>();
+services.AddScoped<MusicService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
@@ -202,6 +204,14 @@ app.Configure(configuration =>
             .WithDescription("Add party member");
         party.AddCommand<RemovePartyMemberCommand>("remove")
             .WithDescription("Remove party member");
+    });
+    
+    // Music branch
+    configuration.AddBranch("play", music =>
+    {
+        music.SetDescription("Music commands");
+        music.AddCommand<PlayMusicCommand>("music")
+            .WithDescription("Play music");
     });
 });
 
