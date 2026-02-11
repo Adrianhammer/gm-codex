@@ -9,19 +9,31 @@ namespace gm_codex.Application.Commands.Encounters;
 public class DeleteEncounterCommand : Command<DeleteEncounterSettings>
 {
     private readonly EncounterService _encounterService;
-    
-    public DeleteEncounterCommand(EncounterService encounterService) => _encounterService = encounterService;
+
+    public DeleteEncounterCommand(EncounterService encounterService) =>
+        _encounterService = encounterService;
 
     public override int Execute(CommandContext context, DeleteEncounterSettings settings)
     {
         if (String.IsNullOrEmpty(settings.Name))
         {
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
-            return -1;        
+            return -1;
         }
-        
+
         var result = _encounterService.DeleteEncounter(settings.Name);
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : 1;
     }
 }
+
+public static class DeleteEncounterCommandExtensions
+{
+    public static void AddDeleteEncounterCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration
+            .AddCommand<DeleteEncounterCommand>("encounter")
+            .WithDescription("Delete one encounter");
+    }
+}
+

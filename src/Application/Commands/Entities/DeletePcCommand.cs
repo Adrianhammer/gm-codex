@@ -20,11 +20,22 @@ public class DeletePcCommand : Command<DeleteEntitySettings>
             AnsiConsole.MarkupLine("[red]ERROR:[/] Name is required.");
             return -1;
         }
-        
+
         entitySettings.EntityType = context.Name == "pc" ? EntityType.pc : EntityType.npc;
-        
+
         var result = _entityService.DeleteEntity(entitySettings.Name, entitySettings.EntityType);
         DeleteEntityUi.ViewDeleteEntity(result, entitySettings.Name);
         return result.Success ? 0 : -1;
     }
 }
+
+public static class DeletePcCommandExtensions
+{
+    public static void AddDeletePcCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration
+            .AddCommand<DeletePcCommand>("pc")
+            .WithDescription("Delete one playable character");
+    }
+}
+

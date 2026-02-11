@@ -19,9 +19,18 @@ public class ReadEntityCommand : Command<ReadEntitySettings>
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
             return -1;
         }
-        
+
         var result = _entityService.ReadEntity(entitySettings.Name, entitySettings.EntityType);
         ReadPcUi.ViewSingleEntity(result);
         return result.Success ? 0 : -1;
     }
 }
+
+public static class ReadEntityCommandExtensions
+{
+    public static void AddReadEntityCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration.AddCommand<ReadEntityCommand>("entity").WithDescription("Read one entity");
+    }
+}
+

@@ -8,9 +8,10 @@ namespace gm_codex.Application.Commands.Encounters;
 
 public class EncounterParticipantCommand : Command<EncounterParticipantSetting>
 {
-    private readonly EncounterParticipantService  _participantService;
+    private readonly EncounterParticipantService _participantService;
 
-    public EncounterParticipantCommand(EncounterParticipantService participantService) => _participantService = participantService;
+    public EncounterParticipantCommand(EncounterParticipantService participantService) =>
+        _participantService = participantService;
 
     public override int Execute(CommandContext context, EncounterParticipantSetting settings)
     {
@@ -25,9 +26,23 @@ public class EncounterParticipantCommand : Command<EncounterParticipantSetting>
             AnsiConsole.MarkupLine("[red]ERROR:[/]: At least one NPC is required.");
             return -1;
         }
-        
-        var result = _participantService.AddParticipantsToEncounter(settings.EncounterName, settings.Npc);
+
+        var result = _participantService.AddParticipantsToEncounter(
+            settings.EncounterName,
+            settings.Npc
+        );
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }
 }
+
+public static class EncounterParticipantCommandExtensions
+{
+    public static void AddEncounterParticipantCommand(this IConfigurator configuration)
+    {
+        configuration
+            .AddCommand<EncounterParticipantCommand>("add")
+            .WithDescription("Add entities to encounter");
+    }
+}
+
