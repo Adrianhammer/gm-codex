@@ -22,9 +22,29 @@ public class CreatePcCommand : Command<CreateEntitySettings>
         }
 
         entitySettings.EntityType = context.Name == "pc" ? EntityType.pc : EntityType.npc;
-        
-        var result = _entityService.CreateEntity(entitySettings.Name, entitySettings.EntityType, entitySettings.Race, entitySettings.SubRace, entitySettings.EntityClass, entitySettings.SubClass, entitySettings.MaxHp, entitySettings.ArmorClass);
+
+        var result = _entityService.CreateEntity(
+            entitySettings.Name,
+            entitySettings.EntityType,
+            entitySettings.Race,
+            entitySettings.SubRace,
+            entitySettings.EntityClass,
+            entitySettings.SubClass,
+            entitySettings.MaxHp,
+            entitySettings.ArmorClass
+        );
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }
 }
+
+public static class CreatePcCommandExtensions
+{
+    public static void AddCreatePcCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration
+            .AddCommand<CreatePcCommand>("pc")
+            .WithDescription("Create one playable character");
+    }
+}
+

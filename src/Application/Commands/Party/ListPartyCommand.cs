@@ -9,7 +9,7 @@ namespace gm_codex.Application.Commands.Party;
 public class ListPartyCommand : Command
 {
     private readonly PartyService _service;
-    
+
     public ListPartyCommand(PartyService service) => _service = service;
 
     public override int Execute(CommandContext context)
@@ -19,3 +19,12 @@ public class ListPartyCommand : Command
         return result.Success ? 0 : -1;
     }
 }
+
+public static class ListPartyCommandExtensions
+{
+    public static void AddListPartyCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration.AddCommand<ListPartyCommand>("parties").WithDescription("List all parties");
+    }
+}
+
