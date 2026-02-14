@@ -20,11 +20,31 @@ public class CreateNpcCommand : Command<CreateEntitySettings>
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
             return -1;
         }
-        
+
         entitySettings.EntityType = context.Name == "npc" ? EntityType.npc : EntityType.pc;
-        
-        var result = _entityService.CreateEntity(entitySettings.Name, entitySettings.EntityType, entitySettings.Race, entitySettings.SubRace, entitySettings.EntityClass, entitySettings.SubClass, entitySettings.MaxHp, entitySettings.ArmorClass);
+
+        var result = _entityService.CreateEntity(
+            entitySettings.Name,
+            entitySettings.EntityType,
+            entitySettings.Race,
+            entitySettings.SubRace,
+            entitySettings.EntityClass,
+            entitySettings.SubClass,
+            entitySettings.MaxHp,
+            entitySettings.ArmorClass
+        );
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }
 }
+
+public static class CreateNpcCommandExtensions
+{
+    public static void AddCreateNpcCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration
+            .AddCommand<CreateNpcCommand>("npc")
+            .WithDescription("Create one non playable character");
+    }
+}
+

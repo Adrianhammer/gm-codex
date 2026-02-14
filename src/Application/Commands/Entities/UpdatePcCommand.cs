@@ -10,7 +10,7 @@ namespace gm_codex.Application.Commands.Entities;
 public class UpdatePcCommand : Command<UpdateEntitySettings>
 {
     private readonly EntityService _entityService;
-    
+
     public UpdatePcCommand(EntityService entityService) => _entityService = entityService;
 
     public override int Execute(CommandContext context, UpdateEntitySettings entitySettings)
@@ -20,11 +20,29 @@ public class UpdatePcCommand : Command<UpdateEntitySettings>
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Name is required.");
             return -1;
         }
-        
+
         entitySettings.EntityType = context.Name == "pc" ? EntityType.pc : EntityType.npc;
-        
-        var result = _entityService.UpdateEntity(entitySettings.Name, entitySettings.EntityType, entitySettings.Race, entitySettings.SubRace, entitySettings.EntityClass, entitySettings.SubClass, entitySettings.MaxHp, entitySettings.ArmorClass);
+
+        var result = _entityService.UpdateEntity(
+            entitySettings.Name,
+            entitySettings.EntityType,
+            entitySettings.Race,
+            entitySettings.SubRace,
+            entitySettings.EntityClass,
+            entitySettings.SubClass,
+            entitySettings.MaxHp,
+            entitySettings.ArmorClass
+        );
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
     }
 }
+
+public static class UpdatePcCommandExtensions
+{
+    public static void AddUpdatePcCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration.AddCommand<UpdatePcCommand>("pc").WithDescription("Update one entity");
+    }
+}
+

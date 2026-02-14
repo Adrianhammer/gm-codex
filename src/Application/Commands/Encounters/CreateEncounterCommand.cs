@@ -9,9 +9,10 @@ namespace gm_codex.Application.Commands.Encounters;
 public class CreateEncounterCommand : Command<CreateEncounterSettings>
 {
     private readonly EncounterService _encounterService;
-    
-    public CreateEncounterCommand(EncounterService encounterService) => _encounterService = encounterService;
-    
+
+    public CreateEncounterCommand(EncounterService encounterService) =>
+        _encounterService = encounterService;
+
     public override int Execute(CommandContext context, CreateEncounterSettings settings)
     {
         if (string.IsNullOrWhiteSpace(settings.Name))
@@ -25,3 +26,14 @@ public class CreateEncounterCommand : Command<CreateEncounterSettings>
         return result.Success ? 0 : -1;
     }
 }
+
+public static class CreateEncounterCommandExtensions
+{
+    public static void AddCreateEncounterCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration
+            .AddCommand<CreateEncounterCommand>("encounter")
+            .WithDescription("Create one encounter");
+    }
+}
+

@@ -7,7 +7,7 @@ namespace gm_codex.Application.Commands.Entities;
 public class ListNpcCommand : Command
 {
     private readonly EntityService _entityService;
-    
+
     public ListNpcCommand(EntityService entityService) => _entityService = entityService;
 
     public override int Execute(CommandContext context)
@@ -17,3 +17,14 @@ public class ListNpcCommand : Command
         return 0;
     }
 }
+
+public static class ListNpcCommandExtensions
+{
+    public static void AddListNpcCommand(this IConfigurator<CommandSettings> configuration)
+    {
+        configuration
+            .AddCommand<ListNpcCommand>("npc")
+            .WithDescription("List all non playable characters");
+    }
+}
+
