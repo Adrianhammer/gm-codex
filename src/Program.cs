@@ -5,6 +5,7 @@ using gm_codex.Application.Commands.Import;
 using gm_codex.Application.Commands.Music;
 using gm_codex.Application.Commands.Party;
 using gm_codex.Application.Services;
+using gm_codex.Authorization;
 using gm_codex.Infrastructure.Data;
 using gm_codex.Infrastructure.DependencyInjection;
 using gm_codex.Infrastructure.Integrations.Monsters;
@@ -63,6 +64,11 @@ services.AddScoped<IMonsterDataProvider, MonsterApiClient>();
 // Register UI
 services.AddSingleton<ConsoleUi>();
 
+// Register auth
+services.AddScoped<RequestUserAuth>();
+services.AddHttpClient();
+services.AddScoped<SpotifyTokenClient>();
+services.AddScoped<SpotifyPlaybackClient>();
 
 services.AddHttpClient<Open5EApiClient>(client =>
 {
@@ -81,8 +87,7 @@ using (var scope = provider.CreateScope())
 {
     var entityRepository = scope.ServiceProvider.GetRequiredService<EntityRepository>();
     var encounterRepository = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
-    var encounterParticipantsRepository =
-        scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
+    var encounterParticipantsRepository = scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
     var partyRepository = scope.ServiceProvider.GetRequiredService<PartyRepository>();
     var partyMemberRepository = scope.ServiceProvider.GetRequiredService<PartyMemberRepository>();
 
@@ -209,11 +214,11 @@ app.Configure(configuration =>
     );
     
     // Music branch
-    configuration.AddBranch("play", music =>
+    configuration.AddBranch("play", 
+        music =>
     {
         music.SetDescription("Music commands");
-        music.AddCommand<PlayMusicCommand>("music")
-            .WithDescription("Play music");
+        music.AddPlayMusicCommand();
     });
 });
 

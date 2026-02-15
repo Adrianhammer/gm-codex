@@ -8,7 +8,7 @@
         <Nullable>enable</Nullable>
         <PackAsTool>true</PackAsTool>
 
-        <ToolCommandName>gm</ToolCommandName>
+        <ToolCommandName>gmctl</ToolCommandName>
         <PackageOutputPath>./nupkg</PackageOutputPath>
         <Version>1.0.0</Version>
         <PackAsToolTargetFramework>net9.0</PackAsToolTargetFramework>

@@ -6,6 +6,10 @@ using Spectre.Console.Cli;
 
 namespace gm_codex.Application.Commands.Music;
 
+// TODO: Await service call and use its result.
+// If failed, print error from Result and return non-zero exit code.
+// If success, pass result data to UI (do not call UI blindly).
+
 public class PlayMusicCommand : AsyncCommand<PlayMusicSettings>
 {
     private readonly MusicService _musicService;
@@ -20,8 +24,22 @@ public class PlayMusicCommand : AsyncCommand<PlayMusicSettings>
             return -1;
         }
         
-        var result = _musicService.PlayMusicAsync();
-        await PlayMusicUi.ViewPlaylistAsync(_musicService);
+        var result = await _musicService.GetProfileAsync();
+        if (!result.Success || result.Value == null)
+        {
+            AnsiConsole.MarkupLine("[red]ERROR:[/]: Music playback failed: " + result.Error);
+            return -1;
+        }
+        
+        PlayMusicUi.ViewPlaylistAsync(result.Value);
         return 0;
+    }
+}
+
+public static class PlayMusicCommandExtensions
+{
+    public static void AddPlayMusicCommand(this IConfigurator<CommandSettings> configuration)
+    {
+            configuration.AddCommand<PlayMusicCommand>("music").WithDescription("Play music");
     }
 }

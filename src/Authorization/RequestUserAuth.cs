@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 
 namespace gm_codex.Authorization;
@@ -30,5 +31,15 @@ public class RequestUserAuth
         
         return $"https://accounts.spotify.com/authorize?{qs}";
     }
-    
+
+    public static void OpenAuthorizeUrl(string url)
+    {
+        // Responsibility: open browser
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = url,
+            UseShellExecute = true
+        });
+    }
+
 }
