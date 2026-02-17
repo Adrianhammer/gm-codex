@@ -1,4 +1,5 @@
 # Visual Studio Code specific files
+db/
 .vscode/
 
 # Rider specific files
@@ -12,6 +13,7 @@
 [Oo]bj/
 [Dd]ist/
 [Oo]ut/
+**/nupkg/
 .vs/
 
 # NuGet packages
