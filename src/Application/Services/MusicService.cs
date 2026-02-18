@@ -70,6 +70,8 @@ public class MusicService
                 return Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Fail(output.Error);
             }
             
+            var playback = await _spotifyPlaybackClient.StartPlaybackAsync(tokenResult.Value);
+            
             return output.Success ? Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Ok(output.Value) : Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Fail("Token exchange failed: " + output.Error);
             
         }

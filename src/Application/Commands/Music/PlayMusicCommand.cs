@@ -25,6 +25,7 @@ public class PlayMusicCommand : AsyncCommand<PlayMusicSettings>
         }
         
         var result = await _musicService.GetProfileAsync();
+        
         if (!result.Success || result.Value == null)
         {
             AnsiConsole.MarkupLine("[red]ERROR:[/]: Music playback failed: " + result.Error);
