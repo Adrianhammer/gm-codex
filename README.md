@@ -1,7 +1,7 @@
 # GM Codex 🧙‍♂️⚔️
 
 <div align="center">
-<img src="src/Resources/Images/GMCODEXTERMINAL.png" width="500">
+<img src="gm_codex.Presentation/Resources/Images/GMCODEXTERMINAL.png" width="500">
 </div>
 
 GM Codex is an upcoming command-line interface (CLI) tool designed for Game Masters (GMs) who want to run smoother, more organized encounters in their tabletop role-playing game (TTRPG) sessions. Whether you’re tracking initiative, managing monsters, or keeping tabs on player actions, GM Codex is your digital encounter command center.
@@ -18,22 +18,22 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
 1. Clone the repository:
     ```bash
     git clone https://github.com/krigrin/gm-codex.git
-    cd gm-codex/src
+    cd gm-codex/
     ```
 
 2. Pack the tool into a NuGet pakcage:
     ```bash
     dotnet pack -c Release
    ```
-   This will create a `.nupkg` file in the `./nupkg` folder.
+   This will create a `.nupkg` file in the `./nupkg` folder in the `gm_codex.Presentation` folder.
 
 
 3. Install the tool globally from the local package:
     ```bash
-    dotnet tool install --global --add-source ./nupkg gm-codex --version 1.0.0
+    dotnet tool install --global --add-source ./gm_codex.Presentation/nupkg gm-codex --version 1.0.0
     ```
 
-   > ⚠️ Note: The **package id** is `gm-codex`, but the installed **command** is `gmctl` (set in the project file).  
+   > ⚠️ Note: The **package id** is `gm-codex`, but the installed **command** is `gmctl` (set in the project file).
    > If you previously installed an older version, uninstall it first:
    > ```bash
    > dotnet tool uninstall --global gm-codex
@@ -56,12 +56,47 @@ gmctl create pc
 If you make changes to the code:
 ```bash
 dotnet pack -c Release
-dotnet tool update --global --add-source ./nupkg gm-codex --version 1.0.1
+dotnet tool update --global --add-source ./gm_codex.Presentation/nupkg gm-codex --version 1.0.1
 ```
 
 ### Uninstall
 ```bash
 dotnet tool uninstall --global gm-codex
+```
+
+## Build And Pack (Just)
+
+If you want quick root-level commands, use `just`:
+
+```bash
+just build
+just build-release
+just test
+just run
+just pack
+```
+
+Install `just` if you do not have it:
+```bash
+brew install just
+```
+
+Notes:
+- `just pack` packages the Presentation project in Release mode.
+- The `.nupkg` is written to `gm_codex.Presentation/nupkg`.
+
+### Development Shortcuts
+
+You can run the CLI during development with either of these:
+
+```bash
+just run <command>
+```
+
+Or directly with dotnet:
+
+```bash
+dotnet run --project gm_codex.Presentation <command>
 ```
 
 ## Naming Ideas 💡

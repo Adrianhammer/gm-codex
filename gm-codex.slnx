@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="gm_codex.Tests/gm_codex.Tests.csproj" />
+  <Project Path="gm_codex.Domain/gm_codex.Domain.csproj" />
+  <Project Path="gm_codex.Infrastructure/gm_codex.Infrastructure.csproj" />
+  <Project Path="gm_codex.Application/gm_codex.Application.csproj" />
+  <Project Path="gm_codex.Presentation/gm_codex.Presentation.csproj" />
+</Solution>
