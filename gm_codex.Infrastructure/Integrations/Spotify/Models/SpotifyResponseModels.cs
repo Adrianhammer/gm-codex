@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace gm_codex.Authorization;
+namespace gm_codex.Infrastructure.Integrations.Spotify.Models;
 
 public class SpotifyResponseModels
 {
@@ -18,7 +18,7 @@ public class SpotifyResponseModels
         [JsonPropertyName("display_name")] public string? DisplayName { get; set; }
         [JsonPropertyName("id")] public string? Id { get; set; }
         [JsonPropertyName("type")] public string? Type { get; set; }
-        [JsonPropertyName("user")] public string? Country { get; set; }
+        [JsonPropertyName("country")] public string? Country { get; set; }
         [JsonPropertyName("uri")] public string? Uri { get; set; }
     }
 }

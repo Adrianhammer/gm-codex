@@ -1,6 +1,6 @@
 using gm_codex.Application.Common;
 using gm_codex.Application.Services;
-using gm_codex.Authorization;
+using gm_codex.Infrastructure.Integrations.Spotify.Models;
 using Spectre.Console;
 
 namespace gm_codex.Presentation.ConsoleUI.Music;

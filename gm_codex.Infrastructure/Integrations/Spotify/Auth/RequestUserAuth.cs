@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 
-namespace gm_codex.Authorization;
+namespace gm_codex.Infrastructure.Integrations.Spotify.Auth;
 
 public class RequestUserAuth
 {

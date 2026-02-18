@@ -1,7 +1,7 @@
 using System.Text.Json;
-using gm_codex.Application.Common;
+using gm_codex.Infrastructure.Integrations.Spotify.Models;
 
-namespace gm_codex.Authorization;
+namespace gm_codex.Infrastructure.Integrations.Spotify.Auth;
 
 public class SpotifyTokenClient
 {
@@ -13,11 +13,10 @@ public class SpotifyTokenClient
             _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<Result<string?>> ExchangeCodeAsync(string code, string redirectUri, string clientId,
+    public async Task<SpotifyResponseModels.SpotifyTokenResponse> ExchangeCodeAsync(string code, string redirectUri, string clientId,
         string codeVerifier)
     {
-        
-        var url = "https://accounts.spotify.com/api/token";
+        const string url = "https://accounts.spotify.com/api/token";
         
         Dictionary<string, string> payload = new Dictionary<string, string>
         {
@@ -31,18 +30,17 @@ public class SpotifyTokenClient
         var httpClient = _httpClientFactory.CreateClient();
         
         var response = await httpClient.PostAsync(url, new FormUrlEncodedContent(payload));
-
         if (!response.IsSuccessStatusCode)
         {
-            return Result<string?>.Fail("something went wrong: " + await response.Content.ReadAsStringAsync());
+            var errorBody  = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Spotify token exchange failed ({(int)response.StatusCode} {response.ReasonPhrase}. Body: {errorBody}) )");
         }
         
         var json = await response.Content.ReadAsStringAsync();
         
         SpotifyResponseModels.SpotifyTokenResponse? spotifyTokenResponse = JsonSerializer.Deserialize<SpotifyResponseModels.SpotifyTokenResponse>(json);
-        
-        return spotifyTokenResponse is not null 
-            ? Result<string?>.Ok(spotifyTokenResponse.AccessToken) 
-            : Result<string?>.Fail("something went wrong");
+
+        return spotifyTokenResponse ?? throw new InvalidOperationException(
+            $"Spotify token response could not be deserialized. Response body did not match expected schema. Body: {json}");
     }
 }
