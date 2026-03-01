@@ -27,7 +27,7 @@ public class EntityService
             
             var character = new Entity
             {
-                Name = name.ToLower(),
+                Name = name,
                 Race = race,
                 EntityType = entityType,
                 SubRace = subRace?.ToLower(),
