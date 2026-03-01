@@ -17,7 +17,7 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/krigrin/gm-codex.git
+    git clone https://github.com/Adrianhammer/gm-codex.git
     cd gm-codex/
     ```
 
@@ -46,11 +46,12 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
 
 ## Usage 🚀
 
-Once installed, you can run the tool from **anywhere** in your terminal:
+Once installed, you can run the tool from **anywhere** in your terminal. run command below to get an overview of everything
 
 ```bash
-gm-codex list pc
-gm-codex create pc
+gmctl help
+gmctl list pc
+gmctl create pc
 ```
 ### Updating after changes
 If you make changes to the code:
@@ -99,6 +100,7 @@ Or directly with dotnet:
 dotnet run --project gm_codex.Presentation <command>
 ```
 
+
 ## Naming Ideas 💡
 
 - TTRPG Console
@@ -113,4 +115,4 @@ dotnet run --project gm_codex.Presentation <command>
 
 ---
 
-Made with ❤️ by [krigrin](https://github.com/krigrin) and [Adrianhammer](https://github.com/Adrianhammer)
+Made with ❤️ by [krigrin](https://github.com/krigrin), [Adrianhammer](https://github.com/Adrianhammer) and [Her0elt](https://github.com/Her0elt)

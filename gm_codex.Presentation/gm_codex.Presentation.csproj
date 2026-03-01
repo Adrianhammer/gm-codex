@@ -8,15 +8,13 @@
     <PackAsTool>true</PackAsTool>
 
     <PackageId>gm-codex</PackageId>
-    <ToolCommandName>gm-codex</ToolCommandName>
+    <ToolCommandName>gmctl</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <Version>1.0.0</Version>
     <PackAsToolTargetFramework>net9.0</PackAsToolTargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.7" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
     <PackageReference Include="Spectre.Console" Version="0.50.0" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.50.0" />
   </ItemGroup>

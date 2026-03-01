@@ -1,7 +1,8 @@
-﻿using gm_codex.Application.Commands;
+using gm_codex.Application.Commands;
 using gm_codex.Application.Commands.Encounters;
 using gm_codex.Application.Commands.Entities;
 using gm_codex.Application.Commands.Import;
+using gm_codex.Application.Commands.Music;
 using gm_codex.Application.Commands.Party;
 using gm_codex.Application.ConsoleUI;
 using gm_codex.Application.Services;
@@ -11,6 +12,9 @@ using gm_codex.Infrastructure.Integrations.Open5e;
 using gm_codex.Infrastructure.Interface;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
+using gm_codex.Application.ConsoleUI;
+using gm_codex.Infrastructure.Integrations.Spotify.Auth;
+using gm_codex.Infrastructure.Integrations.Spotify.Playback;
 using gm_codex.Presentation.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,12 +46,14 @@ services.AddScoped<PartyRepository>();
 services.AddScoped<PartyMemberRepository>();
 services.AddScoped<MonsterApiClient>();
 
+
 // Register services (scoped per command execution)
 services.AddScoped<EntityService>();
 services.AddScoped<EncounterService>();
 services.AddScoped<EncounterParticipantService>();
 services.AddScoped<PartyService>();
 services.AddScoped<ImportService>();
+services.AddScoped<MusicService>();
 
 // Register Interface
 services.AddScoped<IEntityRepository, EntityRepository>();
@@ -59,6 +65,12 @@ services.AddScoped<IMonsterDataProvider, MonsterApiClient>();
 
 // Register UI
 services.AddSingleton<ConsoleUi>();
+
+// Register auth
+services.AddScoped<RequestUserAuth>();
+services.AddHttpClient();
+services.AddScoped<SpotifyTokenClient>();
+services.AddScoped<SpotifyPlaybackClient>();
 
 services.AddHttpClient<Open5EApiClient>(client =>
 {
@@ -77,8 +89,7 @@ using (var scope = provider.CreateScope())
 {
     var entityRepository = scope.ServiceProvider.GetRequiredService<EntityRepository>();
     var encounterRepository = scope.ServiceProvider.GetRequiredService<EncounterRepository>();
-    var encounterParticipantsRepository =
-        scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
+    var encounterParticipantsRepository = scope.ServiceProvider.GetRequiredService<EncounterParticipantsRepository>();
     var partyRepository = scope.ServiceProvider.GetRequiredService<PartyRepository>();
     var partyMemberRepository = scope.ServiceProvider.GetRequiredService<PartyMemberRepository>();
 
@@ -87,6 +98,7 @@ using (var scope = provider.CreateScope())
     encounterRepository.CreateTable();
     partyRepository.CreateTable();
     partyMemberRepository.CreateTable();
+    
 }
 
 // --------------------
@@ -202,6 +214,14 @@ app.Configure(configuration =>
             party.AddRemovePartyMemberCommand();
         }
     );
+    
+    // Music branch
+    configuration.AddBranch("play", 
+        music =>
+    {
+        music.SetDescription("Music commands");
+        music.AddPlayMusicCommand();
+    });
 });
 
 return app.Run(args);
