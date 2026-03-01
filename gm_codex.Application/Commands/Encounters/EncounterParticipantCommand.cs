@@ -1,6 +1,6 @@
 using gm_codex.Application.Commands.Settings.Encounters;
-using gm_codex.Application.Services;
 using gm_codex.Application.ConsoleUI.Entities;
+using gm_codex.Application.Services;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -26,10 +26,16 @@ public class EncounterParticipantCommand : Command<EncounterParticipantSetting>
             AnsiConsole.MarkupLine("[red]ERROR:[/]: At least one NPC is required.");
             return -1;
         }
+        if (settings.Pc.Length == 0)
+        {
+            AnsiConsole.MarkupLine("[red]ERROR:[/]: At least one PC is required.");
+            return -1;
+        }
 
         var result = _participantService.AddParticipantsToEncounter(
             settings.EncounterName,
-            settings.Npc
+            settings.Npc,
+            settings.Pc
         );
         ReadPcUi.ViewConfirmation(result);
         return result.Success ? 0 : -1;
@@ -38,11 +44,12 @@ public class EncounterParticipantCommand : Command<EncounterParticipantSetting>
 
 public static class EncounterParticipantCommandExtensions
 {
-    public static void AddEncounterParticipantCommand(this IConfigurator configuration)
+    public static void AddEncounterParticipantCommand(
+        this IConfigurator<CommandSettings> configuration
+    )
     {
         configuration
-            .AddCommand<EncounterParticipantCommand>("add")
+            .AddCommand<EncounterParticipantCommand>("encounter-participant")
             .WithDescription("Add entities to encounter");
     }
 }
-

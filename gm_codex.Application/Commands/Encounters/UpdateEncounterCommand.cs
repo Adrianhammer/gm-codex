@@ -1,8 +1,6 @@
-using System.ComponentModel;
 using gm_codex.Application.Commands.Settings.Encounters;
-using gm_codex.Application.Services;
 using gm_codex.Application.ConsoleUI.Entities;
-using JetBrains.Annotations;
+using gm_codex.Application.Services;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -38,4 +36,3 @@ public static class UpdateEncounterCommandExtensions
             .WithDescription("Update one encounter");
     }
 }
-
