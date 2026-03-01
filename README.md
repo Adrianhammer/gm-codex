@@ -50,8 +50,8 @@ Once installed, you can run the tool from **anywhere** in your terminal. run com
 
 ```bash
 gmctl help
-gm-codex list pc
-gm-codex create pc
+gmctl list pc
+gmctl create pc
 ```
 ### Updating after changes
 If you make changes to the code:
