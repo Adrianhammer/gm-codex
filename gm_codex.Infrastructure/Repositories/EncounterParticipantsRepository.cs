@@ -43,6 +43,25 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
         return enc;
     }
 
+    public int UpdateParticipant(EncounterParticipantRecord participant)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+
+        var query =
+            @"UPDATE EncounterParticipants SET CurrentHp = @CurrentHp, Conditions = @Conditions WHERE Id = @Id";
+
+        return connection.Execute(
+            query,
+            new
+            {
+                participant.CurrentHp,
+                participant.Conditions,
+                participant.Id,
+            }
+        );
+    }
+
     public IEnumerable<EncounterParticipantRecord> GetEncounterById(int encounterId)
     {
         using var connection = _db.CreateConnection();
@@ -70,6 +89,22 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
         );
     }
 
+    public EncounterParticipantRecord? GetEncounterParticipantById(int encounterId, int entityId)
+    {
+        using var connection = _db.CreateConnection();
+        connection.Open();
+
+        var query =
+            "SELECT * FROM EncounterParticipants WHERE EncounterId = @EncounterId AND EntityId = @EntityId";
+
+        return connection
+            .Query<EncounterParticipantRecord>(
+                query,
+                new EncounterParticipantRecord { EncounterId = encounterId, EntityId = entityId }
+            )
+            .FirstOrDefault();
+    }
+
     public int InsertParticipant(EncounterParticipant participant)
     {
         using var connection = _db.CreateConnection();
@@ -92,4 +127,3 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
         return connection.Execute(query, participantRecord);
     }
 }
-
