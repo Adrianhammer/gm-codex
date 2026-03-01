@@ -44,7 +44,7 @@ public class EncounterParticipantCommand : Command<EncounterParticipantSetting>
 
 public static class EncounterParticipantCommandExtensions
 {
-    public static void AddEncounterParticipantCommand(
+    public static void AddCreateEncounterParticipantCommand(
         this IConfigurator<CommandSettings> configuration
     )
     {

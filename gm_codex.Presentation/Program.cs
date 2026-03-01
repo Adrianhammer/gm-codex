@@ -161,6 +161,8 @@ app.Configure(configuration =>
             create.AddCreateEncounterCommand();
 
             create.AddCreatePartyCommand();
+
+            create.AddCreateEncounterParticipantCommand();
         }
     );
 
@@ -177,7 +179,6 @@ app.Configure(configuration =>
             update.AddUpdateNpcCommand();
 
             update.AddUpdateEncounterCommand();
-            update.AddEncounterParticipantCommand();
         }
     );
 
