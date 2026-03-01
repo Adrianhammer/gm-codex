@@ -83,6 +83,10 @@ public class EncounterParticipantService
                     existingEncounter.Id,
                     domainEntity.Id
                 );
+                if (existingCount >= 1)
+                {
+                    continue;
+                }
                 for (int i = 0; i < count; i++)
                 {
                     var participant = BuildParticipant(existingEncounter.Id, domainEntity);
@@ -148,4 +152,3 @@ public class EncounterParticipantService
         };
     }
 }
-
