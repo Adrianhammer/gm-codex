@@ -1,12 +1,12 @@
-﻿using gm_codex.Application.Commands;
+using gm_codex.Application.Commands;
 using gm_codex.Application.Commands.Encounters;
 using gm_codex.Application.Commands.Entities;
 using gm_codex.Application.Commands.Import;
 using gm_codex.Application.Commands.Music;
 using gm_codex.Application.Commands.Party;
+using gm_codex.Application.ConsoleUI;
 using gm_codex.Application.Services;
 using gm_codex.Infrastructure.Data;
-using gm_codex.Presentation.DependencyInjection;
 using gm_codex.Infrastructure.Integrations.Monsters;
 using gm_codex.Infrastructure.Integrations.Open5e;
 using gm_codex.Infrastructure.Interface;
@@ -15,6 +15,7 @@ using gm_codex.Infrastructure.Repositories.Interface;
 using gm_codex.Application.ConsoleUI;
 using gm_codex.Infrastructure.Integrations.Spotify.Auth;
 using gm_codex.Infrastructure.Integrations.Spotify.Playback;
+using gm_codex.Presentation.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
@@ -172,6 +173,8 @@ app.Configure(configuration =>
             create.AddCreateEncounterCommand();
 
             create.AddCreatePartyCommand();
+
+            create.AddCreateEncounterParticipantCommand();
         }
     );
 
@@ -200,8 +203,6 @@ app.Configure(configuration =>
             import.AddImportMonstersCommand();
         }
     );
-
-    configuration.AddEncounterParticipantCommand();
 
     // Party section
     configuration.AddBranch(
