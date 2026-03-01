@@ -10,9 +10,15 @@ public class EncounterParticipantSetting : CommandSettings
     [Description("Add one or more NPC types with optional counts, e.g. goblin:3 troll:2")]
     [UsedImplicitly]
     public required string[] Npc { get; set; } = Array.Empty<string>();
-    
+
+    [CommandOption("-p|--pc <PC>")]
+    [Description("Add one or more PC types with optional counts, e.g. albert john")]
+    [UsedImplicitly]
+    public required string[] Pc { get; set; } = Array.Empty<string>();
+
     [CommandOption("-e|--encounter <name>")]
     [Description("The name of the encounter to be created")]
     [UsedImplicitly]
     public required string EncounterName { get; set; }
 }
+

@@ -18,8 +18,9 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
     {
         using var connection = _db.CreateConnection();
         connection.Open();
-        
-        var query = @"CREATE TABLE IF NOT EXISTS EncounterParticipants (
+
+        var query =
+            @"CREATE TABLE IF NOT EXISTS EncounterParticipants (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
                         EncounterId INTEGER NOT NULL,
                         EntityId INTEGER NOT NULL,
@@ -30,7 +31,7 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
                         FOREIGN KEY (EncounterId) REFERENCES Encounters(Id),
                         FOREIGN KEY (EntityId) REFERENCES Entities(Id)
                     )";
-        
+
         connection.Execute(query);
     }
 
@@ -38,10 +39,7 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
     {
         Console.WriteLine("You reached repository: GetEncounterIdByName method");
         Console.WriteLine(encounterName);
-        var enc = new EncounterParticipantRecord
-        {
-            DisplayName = encounterName,
-        };
+        var enc = new EncounterParticipantRecord { DisplayName = encounterName };
         return enc;
     }
 
@@ -49,10 +47,13 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
     {
         using var connection = _db.CreateConnection();
         connection.Open();
-        
+
         var query = @"SELECT * FROM EncounterParticipants WHERE EncounterId = @EncounterId";
-        
-        return connection.Query<EncounterParticipantRecord>(query, new EncounterParticipantRecord { EncounterId = encounterId });
+
+        return connection.Query<EncounterParticipantRecord>(
+            query,
+            new EncounterParticipantRecord { EncounterId = encounterId }
+        );
     }
 
     public int GetParticipantCount(int encounterId, int entityId)
@@ -60,9 +61,13 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
         using var connection = _db.CreateConnection();
         connection.Open();
 
-        var query = "SELECT COUNT(*) FROM EncounterParticipants WHERE EncounterId = @EncounterId AND EntityId = @EntityId";
-        
-        return connection.ExecuteScalar<int>(query, new EncounterParticipantRecord { EncounterId = encounterId , EntityId = entityId });
+        var query =
+            "SELECT COUNT(*) FROM EncounterParticipants WHERE EncounterId = @EncounterId AND EntityId = @EntityId";
+
+        return connection.ExecuteScalar<int>(
+            query,
+            new EncounterParticipantRecord { EncounterId = encounterId, EntityId = entityId }
+        );
     }
 
     public int InsertParticipant(EncounterParticipant participant)
@@ -83,7 +88,8 @@ public class EncounterParticipantsRepository : IEncounterParticipantRepository
         var query =
             @"INSERT INTO EncounterParticipants (EncounterId, EntityId, DisplayName, CurrentHp, Initiative, Conditions) 
               VALUES (@EncounterId, @EntityId, @DisplayName, @CurrentHp, @Initiative, @Conditions)";
-        
+
         return connection.Execute(query, participantRecord);
     }
 }
+
