@@ -11,6 +11,7 @@ jobs:
     permissions:  # use permissions because use of pr-comments
       contents: read
       pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v5
         with:
