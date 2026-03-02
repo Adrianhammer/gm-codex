@@ -33,7 +33,6 @@ GM Codex is an upcoming command-line interface (CLI) tool designed for Game Mast
     dotnet tool install --global --add-source ./gm_codex.Presentation/nupkg gm-codex --version 1.0.0
     ```
 
-   > ⚠️ Note: The **package id** is `gm-codex`, and the installed **command** is also `gm-codex` (set in the project file).
    > If you previously installed an older version, uninstall it first:
    > ```bash
    > dotnet tool uninstall --global gm-codex
