@@ -74,6 +74,7 @@ just build-release
 just test
 just run
 just pack
+just install
 ```
 
 Install `just` if you do not have it:
