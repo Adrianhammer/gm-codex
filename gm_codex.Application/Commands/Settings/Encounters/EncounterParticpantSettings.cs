@@ -21,4 +21,3 @@ public class EncounterParticipantSetting : CommandSettings
     [UsedImplicitly]
     public required string EncounterName { get; set; }
 }
-

@@ -105,6 +105,49 @@ public class EncounterParticipantService
         }
     }
 
+    public Result<int> UpdateEncounterParticipant(
+        string encounterName,
+        string entityName,
+        EntityType entityType,
+        int? health,
+        string? conditions
+    )
+    {
+        var encounter = EnsureEncounterExists(encounterName);
+        if (encounter is null)
+        {
+            return Result<int>.Fail($"Encounter '{encounterName}' does not exist.");
+        }
+        var entity = EnsureEntityExists(entityName, entityType);
+        if (entity is null)
+        {
+            return Result<int>.Fail($"Entity '{entityName}' not found.");
+        }
+        var encounterParticipant = _participantRepository.GetEncounterParticipantById(
+            encounter.Id,
+            entity.Id
+        );
+        if (encounterParticipant is null)
+        {
+            return Result<int>.Fail(
+                $"Encounter '{encounterName}' does not have participant '{entityName}'."
+            );
+        }
+        if (health is not null)
+        {
+            encounterParticipant.CurrentHp = health.Value;
+        }
+        if (conditions is not null)
+        {
+            encounterParticipant.Conditions = conditions;
+        }
+        var updated = _participantRepository.UpdateParticipant(encounterParticipant);
+
+        return updated > 0
+            ? Result<int>.Ok(updated)
+            : Result<int>.Fail("No participants were updated.");
+    }
+
     private EncounterRecord? EnsureEncounterExists(string encounterName) =>
         _encounterRepository.GetEncounter(encounterName);
 

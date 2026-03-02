@@ -191,6 +191,8 @@ app.Configure(configuration =>
             update.AddUpdateNpcCommand();
 
             update.AddUpdateEncounterCommand();
+
+            update.AddUpdateEncounterParticipantCommand();
         }
     );
 
