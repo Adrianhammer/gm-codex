@@ -22,7 +22,7 @@
       ]
     }
   },
-  "postCreateCommand": "dotnet --info && dotnet restore gm-codex.slnx",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y just && dotnet --info && dotnet restore gm-codex.slnx",
   "portsAttributes": {
     "8000": {
       "label": "Spotify OAuth callback",
