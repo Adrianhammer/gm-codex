@@ -1,0 +1,33 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+{
+	"name": "gm-codex (.NET 10)",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/dotnet:2-10.0",
+	"features": {
+		"ghcr.io/nikiforovall/devcontainer-features/dotnet-csharpier:1": {}
+	},
+	  "customizations": {
+    "vscode": {
+      "settings": {
+        "dotnet.defaultSolution": "gm-codex.slnx",
+        "files.exclude": {
+          "**/bin": true,
+          "**/obj": true
+        }
+      },
+	        "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit"
+      ]
+    }
+  },
+  "postCreateCommand": "dotnet --info && dotnet restore gm-codex.slnx",
+  "portsAttributes": {
+    "8000": {
+      "label": "Spotify OAuth callback",
+      "onAutoForward": "silent"
+    }
+  },
+  "remoteUser": "vscode"
+}
