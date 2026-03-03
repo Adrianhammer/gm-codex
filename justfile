@@ -17,3 +17,11 @@ pack:
 
 clean:
     dotnet clean
+
+install:
+    dotnet tool uninstall --global gm-codex >/dev/null 2>&1 || true
+    dotnet pack -c Release
+    dotnet tool install --global \
+      --add-source ./gm_codex.Presentation/nupkg \
+      gm-codex \
+      --version 1.0.0
