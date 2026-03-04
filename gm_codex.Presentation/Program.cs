@@ -12,7 +12,6 @@ using gm_codex.Infrastructure.Integrations.Open5e;
 using gm_codex.Infrastructure.Interface;
 using gm_codex.Infrastructure.Repositories;
 using gm_codex.Infrastructure.Repositories.Interface;
-using gm_codex.Application.ConsoleUI;
 using gm_codex.Infrastructure.Integrations.Spotify.Auth;
 using gm_codex.Infrastructure.Integrations.Spotify.Playback;
 using gm_codex.Presentation.DependencyInjection;
