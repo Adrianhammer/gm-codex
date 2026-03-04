@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>gm_codex.Presentation</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -11,7 +10,7 @@
     <ToolCommandName>gmctl</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <Version>1.0.0</Version>
-    <PackAsToolTargetFramework>net9.0</PackAsToolTargetFramework>
+    <PackAsToolTargetFramework>$(TargetFramework)</PackAsToolTargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,5 +34,9 @@
     <None Update="Resources\Fonts\Delta Corps Priest 1.flf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="nupkg\" />
   </ItemGroup>
 </Project>
