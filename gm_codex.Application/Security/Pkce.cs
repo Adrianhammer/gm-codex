@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace gm_codex.Infrastructure.Integrations.Spotify.Auth;
+namespace gm_codex.Application.Security;
 
 public class Pkce
 {

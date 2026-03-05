@@ -1,30 +1,37 @@
 using System.Net;
 using gm_codex.Application.Common;
+using gm_codex.Application.Security;
+using gm_codex.Contracts.Abstractions.Integrations.Spotify.Interfaces;
+using gm_codex.Contracts.Abstractions.Integrations.Spotify.Models;
 using gm_codex.Infrastructure.Integrations.Spotify.Auth;
-using gm_codex.Infrastructure.Integrations.Spotify.Models;
-using gm_codex.Infrastructure.Integrations.Spotify.Playback;
 
 namespace gm_codex.Application.Services;
 
-public class MusicService 
+public class MusicService
 {
-    private readonly SpotifyTokenClient _spotifyTokenClient;
-    private readonly SpotifyPlaybackClient _spotifyPlaybackClient;
+    private readonly ISpotifyTokenClient _spotifyTokenClient;
+    private readonly ISpotifyPlaybackClient _spotifyPlaybackClient;
 
-    public MusicService(SpotifyTokenClient spotifyTokenClient, SpotifyPlaybackClient spotifyPlaybackClient)
+    public MusicService(
+        ISpotifyTokenClient spotifyTokenClient,
+        ISpotifyPlaybackClient spotifyPlaybackClient
+    )
     {
-        _spotifyTokenClient =  spotifyTokenClient;
+        _spotifyTokenClient = spotifyTokenClient;
         _spotifyPlaybackClient = spotifyPlaybackClient;
     }
 
-    public async Task<Result<SpotifyResponseModels.SpotifyUserProfileResponse>> GetProfileAsync()
+    public async Task<Result<SpotifyUserProfile>> GetProfileAsync()
     {
         try
         {
             var pkce = Pkce.Generate();
 
-            var authUrl = RequestUserAuth.BuildAuthUrl("10d87a3d47dc45c19d2cd21e343a3d0a",
-                "http://127.0.0.1:8000/callback/", pkce.code_challenge);
+            var authUrl = RequestUserAuth.BuildAuthUrl(
+                "10d87a3d47dc45c19d2cd21e343a3d0a",
+                "http://127.0.0.1:8000/callback/",
+                pkce.code_challenge
+            );
 
             using var listener = new HttpListener();
             listener.Prefixes.Add("http://127.0.0.1:8000/callback/");
@@ -48,25 +55,26 @@ public class MusicService
 
             if (!string.IsNullOrWhiteSpace(error) || string.IsNullOrWhiteSpace(code))
             {
-                return Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Fail("Something went wrong: " + error);
+                return Result<SpotifyUserProfile>.Fail("Something went wrong: " + error);
             }
 
             var tokenResult = await _spotifyTokenClient.ExchangeCodeAsync(
                 code,
                 "http://127.0.0.1:8000/callback/",
                 "10d87a3d47dc45c19d2cd21e343a3d0a",
-                pkce.verifier);
+                pkce.verifier
+            );
 
             if (tokenResult.AccessToken is null)
             {
-                return Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Fail("Access token is null.");
+                return Result<SpotifyUserProfile>.Fail("Access token is null.");
             }
 
             var output = await _spotifyPlaybackClient.GetProfileAsync(tokenResult.AccessToken);
 
             if (output.DisplayName is null)
             {
-                return Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Fail("No user found.");
+                return Result<SpotifyUserProfile>.Fail("No user found.");
             }
 
             // Temporary. Will replace with variable
@@ -77,14 +85,14 @@ public class MusicService
             }
             catch (Exception e)
             {
-                return Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Fail(e.Message);
+                return Result<SpotifyUserProfile>.Fail(e.Message);
             }
-            
-            return Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Ok(output);
+
+            return Result<SpotifyUserProfile>.Ok(output);
         }
         catch (Exception e)
         {
-            return Result<SpotifyResponseModels.SpotifyUserProfileResponse>.Fail(e.Message);
+            return Result<SpotifyUserProfile>.Fail(e.Message);
         }
     }
 }

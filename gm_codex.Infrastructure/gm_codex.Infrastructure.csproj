@@ -15,5 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\gm_codex.Domain\gm_codex.Domain.csproj" />
+    <ProjectReference Include="..\gm_codex.Contracts\gm_codex.Contracts.csproj" />
   </ItemGroup>
 </Project>
